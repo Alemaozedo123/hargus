@@ -283,17 +283,69 @@ p{ margin:0 0 1em; line-height:1.7; }
 .intro p{ max-width:46ch; font-size:1rem; margin-top:20px; }
 .intro-imagem img{ width:100%; height:auto; filter:drop-shadow(0 22px 32px rgba(0,53,39,.18)); }
 
-/* ============ SOBRE ============ */
-.sobre{ padding:110px 0; background:var(--branco); }
-.sobre-grid{ display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
-.sobre-foto{ border-radius:6px; overflow:hidden; aspect-ratio:6/5; }
-.sobre-foto img{ width:100%; height:100%; object-fit:cover; }
+/* ============ SOBRE (parallax: do branco para o gradiente institucional) ============
+   A seção entra com o gradiente da marca (verde → roxo, na horizontal como no
+   manual) entrando pela esquerda: a seção começa branca e vai ganhando cor
+   conforme atravessa a tela — no meio do caminho ela inteira é um degradê
+   horizontal cor → branco. São duas camadas movidas só por transform, dirigidas
+   pelas variáveis --coloracao (0 = branco, 1 = gradiente cheio) e --desloc (px),
+   que o <script> escreve na seção a cada quadro.
+   O texto mora num cartão branco: assim a legibilidade nunca depende do scroll. */
+.sobre{
+  --coloracao:0;
+  --desloc:0px;
+  position:relative;
+  isolation:isolate;      /* prende as camadas de z-index negativo dentro da seção */
+  overflow:hidden;
+  display:flex; align-items:center;
+  min-height:min(86vh, 800px);
+  padding:120px 0;
+  background:var(--branco);
+}
+.sobre-fundo{
+  /* a sobra lateral (128% de largura) é o que o deslocamento horizontal consome:
+     sem ela o parallax descobriria a borda do gradiente nos extremos */
+  position:absolute; top:0; bottom:0; left:-14%; width:128%; z-index:-2;
+  background:linear-gradient(90deg, var(--verde) 0%, var(--roxo) 100%);
+  transform:translate3d(var(--desloc), 0, 0);
+  will-change:transform;
+}
+/* as ondas correm em outro ritmo e no sentido oposto — é a diferença entre as
+   camadas que dá profundidade, não o deslocamento em si */
+.sobre-ondas{
+  position:absolute; left:-16%; top:-6%; width:132%; height:112%;
+  transform:translate3d(calc(var(--desloc) * -1.4), calc(var(--desloc) * .28), 0);
+}
+.sobre-veu{
+  position:absolute; top:0; bottom:0; left:0; width:250%; z-index:-1;
+  background:linear-gradient(to right, rgba(255,255,255,0) 0%, var(--branco) 40%);
+  /* +40% = véu inteiro à direita da seção (gradiente cheio) · -40% = seção toda
+     branca · 0 = a própria seção vira o degradê cor → branco */
+  transform:translate3d(calc(var(--coloracao) * 80% - 40%), 0, 0);
+  will-change:transform;
+}
+.sobre-painel{ position:relative; max-width:min(600px, 56%); margin-left:auto; }
+/* A sombra vive num pseudo-elemento para poder sumir por opacity junto com a
+   coloração: repintar um box-shadow de 80px de blur a cada quadro sairia caro. */
+.sobre-painel::before{
+  content:""; position:absolute; inset:0; z-index:-1; border-radius:8px;
+  box-shadow:0 34px 80px rgba(0,10,8,.34);
+  opacity:var(--coloracao);
+}
+.sobre-texto{
+  background:var(--branco); border-radius:8px;
+  padding:clamp(34px,3.6vw,58px);
+}
 .sobre h2{ font-size:clamp(1.9rem,3.2vw,2.5rem); }
 .sobre-link{
   display:inline-flex; align-items:center; gap:10px; margin-top:8px;
   color:var(--verde); font-weight:600; font-size:14px;
 }
 .sobre-link svg{ width:18px; height:18px; }
+@media (prefers-reduced-motion: reduce){
+  /* sem scroll dirigindo nada: a seção fica parada num ponto agradável da transição */
+  .sobre{ --coloracao:.42; --desloc:0px; }
+}
 
 /* ============ SERVIÇOS ============ */
 .servicos{ padding:110px 0; background:#f7f8f7; }
@@ -457,7 +509,6 @@ p{ margin:0 0 1em; line-height:1.7; }
 /* ============ RESPONSIVO ============ */
 @media (max-width:1080px){
   :root{ --nav-h:72px; }
-  .sobre-grid{ gap:44px; }
   .servicos-grid{ grid-template-columns:repeat(3,1fr); }
   .diferenciais-grid{ grid-template-columns:repeat(2,1fr); row-gap:44px; }
   .diferencial-item:nth-child(2n+1){ border-left:none; padding-left:0; }
@@ -488,8 +539,9 @@ p{ margin:0 0 1em; line-height:1.7; }
 
   .intro-grid{ grid-template-columns:1fr; gap:36px; }
 
-  .sobre-grid{ grid-template-columns:1fr; }
-  .sobre-foto{ aspect-ratio:16/10; }
+  .sobre{ min-height:0; padding:92px 0 100px; }
+  .sobre-painel{ max-width:none; }
+  .sobre-texto{ padding:34px 26px 40px; }
 
   .servicos-grid{ grid-template-columns:repeat(2,1fr); }
 
@@ -602,12 +654,19 @@ p{ margin:0 0 1em; line-height:1.7; }
 
   <!-- ============ SOBRE ============ -->
   <section class="sobre" id="sobre">
+    <!-- fundo em parallax: gradiente institucional + ondas da marca (Paleta de cores Z) -->
+    <div class="sobre-fundo" aria-hidden="true">
+      <svg class="sobre-ondas" viewBox="0 0 1440 760" preserveAspectRatio="none" focusable="false">
+        <path d="M-40,196 C250,86 520,246 780,172 C1030,100 1240,200 1480,134" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+        <path d="M-40,560 C240,648 500,492 760,558 C1010,622 1230,508 1480,572" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+    <!-- véu branco: recua para a direita conforme a cor entra pela esquerda -->
+    <div class="sobre-veu" aria-hidden="true"></div>
+
     <div class="container">
-      <div class="sobre-grid">
-        <div class="sobre-foto reveal reveal--esq">
-          <img src="navio.jpg" alt="Navio porta-contêineres da operação HARGUS navegando ao entardecer.">
-        </div>
-        <div class="reveal reveal--dir">
+      <div class="sobre-painel reveal reveal--dir">
+        <div class="sobre-texto">
           <p class="eyebrow">Sobre a Hargus</p>
           <h2>Mais que agenciar cargas.<br>Conectamos <span class="accent">soluções</span>.</h2>
           <p>A Hargus nasceu para tornar a logística mais simples, eficiente e confiável. Atuamos no agenciamento de cargas, conectando empresas às melhores soluções de transporte e comércio exterior.</p>
@@ -621,7 +680,6 @@ p{ margin:0 0 1em; line-height:1.7; }
       </div>
     </div>
   </section>
-
   <!-- ============ SERVIÇOS ============ -->
   <section class="servicos" id="servicos">
     <div class="container">
@@ -959,13 +1017,36 @@ p{ margin:0 0 1em; line-height:1.7; }
     elementosRevelaveis.forEach(function(el){ observador.observe(el); });
   }
 
-  /* ============ SCROLL: só o estado sólido da nav, coalescido por rAF ============
-     Sem trilhos sticky no site — a única coisa que reage ao scroll é a nav. */
+  /* ============ SOBRE: parallax do gradiente institucional ============
+     Uma única leitura de layout por quadro (getBoundingClientRect) e duas
+     variáveis CSS escritas na seção. Tudo o que se mexe depois disso é
+     transform/opacity, então quem anima é o compositor — não o layout. */
+  var sobre = document.getElementById('sobre');
+
+  function atualizarSobre(){
+    var alturaTela = window.innerHeight || document.documentElement.clientHeight;
+    var caixa = sobre.getBoundingClientRect();
+
+    /* travessia: 0 = topo da seção encostando no fundo da tela · 1 = base saindo por cima */
+    var travessia = (alturaTela - caixa.top) / (alturaTela + caixa.height);
+    travessia = Math.min(1, Math.max(0, travessia));
+
+    /* A cor só começa a entrar depois que a seção apareceu de vez e fecha antes
+       de ela sair: o visitante entra no branco e sai no gradiente cheio. */
+    var coloracao = Math.min(1, Math.max(0, (travessia - .38) / .42));
+
+    sobre.style.setProperty('--coloracao', coloracao.toFixed(3));
+    sobre.style.setProperty('--desloc', ((travessia - .5) * 190).toFixed(1) + 'px');
+  }
+
+  /* ============ SCROLL: estado sólido da nav + parallax do SOBRE, coalescidos por rAF ============
+     Sem trilhos sticky no site — quem reage ao scroll é só a nav e a seção SOBRE. */
   var pedirAtualizacao = false;
 
   function atualizar(){
     pedirAtualizacao = false;
     nav.classList.toggle('nav--solida', window.scrollY > 40);
+    if (!reduzMovimento) atualizarSobre();
   }
 
   function pedirTick(){
@@ -976,8 +1057,10 @@ p{ margin:0 0 1em; line-height:1.7; }
   }
 
   window.addEventListener('scroll', pedirTick, { passive: true });
+  /* redimensionar muda a altura da seção e da tela: sem isto a coloração fica
+     presa no valor calculado para o tamanho antigo até o próximo scroll */
+  window.addEventListener('resize', pedirTick, { passive: true });
   atualizar();
-
 })();
 </script>
 </body>
