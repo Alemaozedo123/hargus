@@ -32,6 +32,9 @@
 
   --container: 1240px;
   --nav-h: 84px;
+  /* quanto a nav encolhe ao virar sólida — o painel do menu mobile se ancora
+     nela, então o valor precisa ser um só para os dois */
+  --nav-encolhe: 18px;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -40,6 +43,12 @@ html{ scroll-behavior:smooth; }
 
 body{
   margin:0;
+  /* as entradas .reveal--esq/--dir nascem 36px fora do lugar: no desktop isso
+     cabia na folga do container, no celular virava 14px de rolagem lateral.
+     'clip' corta sem criar caixa de rolagem (não quebra a nav fixa nem as
+     âncoras); 'hidden' antes dele é a saída para navegador que não conhece clip */
+  overflow-x:hidden;
+  overflow-x:clip;
   font-family:var(--fonte-corpo);
   font-weight:300;
   color:var(--cinza-texto);
@@ -136,6 +145,10 @@ p{ margin:0 0 1em; line-height:1.7; }
 }
 .skip-link:focus{ top:12px; }
 
+/* página congelada enquanto o menu mobile está aberto — o <script> guarda a
+   posição em body.style.top e a devolve ao fechar */
+body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden; }
+
 /* ============ REVELAÇÃO AO ROLAR ============
    Sistema genérico: elementos com .reveal entram com fade + leve deslocamento
    quando cruzam a viewport (IntersectionObserver, ver <script>). Variantes
@@ -167,7 +180,7 @@ p{ margin:0 0 1em; line-height:1.7; }
 .nav.nav--solida{
   background:var(--branco);
   box-shadow:0 4px 24px rgba(0,0,0,.08);
-  height:calc(var(--nav-h) - 18px);
+  height:calc(var(--nav-h) - var(--nav-encolhe));
 }
 .nav .container{
   display:flex; align-items:center; justify-content:space-between; gap:24px;
@@ -220,7 +233,9 @@ p{ margin:0 0 1em; line-height:1.7; }
    whoop.com: <video> com transform:none dentro de uma seção de altura normal,
    não um trilho sticky gigante. */
 .hero{
-  position:relative; height:100vh; min-height:560px; overflow:hidden;
+  /* 100svh = altura visível com a barra do navegador à mostra. Com 100vh puro o
+     celular reserva a tela sem a barra e o segundo botão nasce cortado. */
+  position:relative; height:100vh; height:100svh; min-height:560px; overflow:hidden;
   display:flex; align-items:center;
   background:var(--verde);
 }
@@ -297,6 +312,12 @@ p{ margin:0 0 1em; line-height:1.7; }
 .sobre{
   --coloracao:0;
   --desloc:0px;
+  /* comprimento da transição cor→branco, em larguras de seção. No desktop o
+     texto ocupa só a metade direita e uma rampa longa fica macia; no celular o
+     texto atravessa a tela inteira e a rampa longa deixava uma coluna inteira
+     de palavras no meio-tom — por isso ela encurta no @media lá embaixo.
+     O <script> lê este valor: mudar aqui muda fundo e tinta juntos. */
+  --rampa:.6;
   /* padrões seguros: sem o script, a seção fica branca com o texto escuro */
   --tinta0:-200%;
   --tinta1:-100%;
@@ -325,11 +346,12 @@ p{ margin:0 0 1em; line-height:1.7; }
 }
 .sobre-veu{
   position:absolute; top:0; bottom:0; left:0; width:250%; z-index:-1;
-  background:linear-gradient(to right, rgba(255,255,255,0) 0%, var(--branco) 24%);
-  /* +40% = véu inteiro à direita da seção (gradiente cheio) · -24% = seção toda
-     branca. A rampa cobre 60% da largura da seção: macia, mas não tão longa a
-     ponto de deixar meia frase no meio-tom (ver a virada da tinta no <script>). */
-  transform:translate3d(calc(var(--coloracao) * 64% - 24%), 0, 0);
+  /* o véu tem 2,5× a largura da seção, então a parada da rampa vale --rampa/2,5 */
+  background:linear-gradient(to right, rgba(255,255,255,0) 0%, var(--branco) calc(var(--rampa) * 40%));
+  /* a borda transparente do véu (onde a cor começa) percorre de -rampa até +1
+     largura de seção, ou seja (1 + rampa) de curso — os mesmos números que o
+     <script> usa para posicionar a virada da tinta */
+  transform:translate3d(calc((var(--coloracao) * (1 + var(--rampa)) - var(--rampa)) * 40%), 0, 0);
   will-change:transform;
 }
 .sobre-painel{ position:relative; max-width:min(600px, 56%); margin-left:auto; }
@@ -367,6 +389,12 @@ p{ margin:0 0 1em; line-height:1.7; }
   /* sem scroll dirigindo nada, a cor para antes de chegar no texto e os padrões
      de --tinta0/--tinta1 mantêm as letras escuras */
   .sobre{ --coloracao:.32; --desloc:0px; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width:860px){
+  /* .32 é calibrado para a rampa de .6: com a rampa curta do celular ele
+     deixaria a faixa esquerda da seção em cor cheia, com o texto escuro por
+     cima e ilegível. .153 recoloca a borda da cor no mesmo ponto relativo. */
+  .sobre{ --coloracao:.153; }
 }
 @media (forced-colors: active){
   /* no alto contraste o recorte no texto some: devolve cor sólida às letras */
@@ -557,24 +585,40 @@ p{ margin:0 0 1em; line-height:1.7; }
   .nav-menu, .nav-cta{ display:none; }
   .nav-hamburguer{ display:block; }
   .nav-menu-mobile{
-    position:fixed; top:var(--nav-h); left:0; right:0; bottom:0; z-index:400;
-    background:var(--branco); padding:36px 28px; display:flex; flex-direction:column; gap:26px;
+    /* o painel só aparece com a nav já sólida (portanto encolhida): ancorar em
+       --nav-h cheio deixava uma fresta da página aparecendo entre os dois */
+    position:fixed; top:calc(var(--nav-h) - var(--nav-encolhe)); left:0; right:0; bottom:0; z-index:400;
+    background:var(--branco); padding:24px 28px 40px; display:flex; flex-direction:column; gap:2px;
     transform:translateX(100%); transition:transform .3s ease; overflow-y:auto;
   }
   .nav-menu-mobile.aberto{ display:flex; }
   .nav-menu-mobile.aberto{ transform:translateX(0); }
-  .nav-menu-mobile a{
+  /* :not(.botao) é essencial — sem ele esta regra (0,1,1) vence o branco de
+     .botao--roxo (0,1,0) e o botão do menu fica preto sobre roxo escuro */
+  .nav-menu-mobile a:not(.botao){
     font-size:16px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--preto);
+    /* 20px de altura de linha não é alvo de toque: 14px em cima e embaixo levam
+       o item a 48px, o mínimo confortável para o dedo */
+    display:flex; align-items:center; min-height:48px; padding:2px 0;
   }
   .nav-menu-mobile .botao{ justify-content:center; margin-top:12px; }
 
-  .hero-conteudo h1{ font-size:2.2rem; }
-  .hero-botoes{ flex-direction:column; align-items:flex-start; }
+  .hero-conteudo h1{ font-size:clamp(1.9rem, 8.8vw, 2.2rem); }
+  /* empilhados e com largura automática os dois botões saíam com 273px e 284px:
+     desalinhados por 11px. Esticados, viram uma coluna só. */
+  .hero-botoes{ flex-direction:column; align-items:stretch; gap:12px; }
+  .hero-botoes .botao{ justify-content:center; }
 
   .intro-grid{ grid-template-columns:1fr; gap:36px; }
 
-  .sobre{ min-height:0; padding:92px 0 100px; }
+  /* Aqui o texto passa a ocupar a largura toda, e a rampa longa do desktop
+     deixava uma coluna inteira de palavras no meio-tom em que nem preto nem
+     branco contrastam. Encurtada, a virada passa por cada linha num piscar. */
+  .sobre{ min-height:0; padding:92px 0 100px; --rampa:.22; }
   .sobre-painel{ max-width:none; }
+  /* esticadas sobre uma seção alta e estreita, as ondas viram riscos quase
+     retos atravessando as frases — parecem defeito, não textura */
+  .sobre-ondas{ display:none; }
 
   .servicos-grid{ grid-template-columns:repeat(2,1fr); }
 
@@ -589,6 +633,61 @@ p{ margin:0 0 1em; line-height:1.7; }
   .especialista-contatos{ width:100%; justify-content:space-between; }
 
   .rodape-grid{ grid-template-columns:1fr; }
+
+  /* O piso dos clamp() era pensado para desktop (1,8–2rem) e no celular
+     encostava nas duas margens, quebrando manchete em três linhas com órfã na
+     última. Abaixo do ponto em que o piso passa a doer, a medida volta a
+     seguir a largura da tela; acima dele nada muda. */
+  .intro h2{ font-size:clamp(1.4rem, 6.4vw, 1.8rem); }
+  .sobre h2,
+  .servicos-topo h2,
+  .diferenciais-topo h2,
+  .trabalhamos-topo h2{ font-size:clamp(1.45rem, 6.4vw, 1.9rem); }
+  .cta-final h2{ font-size:clamp(1.6rem, 7.4vw, 2rem); }
+}
+
+/* ============ CELULAR ============ */
+@media (max-width:560px){
+  /* Duas colunas aqui davam cartões de 151px: descontado o respiro, sobravam
+     ~107px de texto, uns treze caracteres por linha. Em coluna única o cartão
+     deita — ícone à esquerda, texto à direita — e a seção não vira seis telas. */
+  .servicos-grid{ grid-template-columns:1fr; gap:12px; margin-bottom:32px; }
+  .servico-card{
+    display:grid; grid-template-columns:40px 1fr; column-gap:16px;
+    align-items:start; text-align:left; padding:20px 18px;
+  }
+  .servico-card svg{ width:34px; height:34px; margin:2px 0 0; grid-row:span 2; }
+  .servico-card h3{ margin-bottom:6px; }
+  .servico-card p{ font-size:13.5px; }
+  .servico-card:hover{ transform:none; }
+
+  /* o teto de 14ch é o que dá o corte da manchete no desktop; em 320px ele fica
+     mais estreito que a própria coluna e quebra "Conectamos você" no meio */
+  .hero-conteudo h1{ max-width:none; }
+
+  /* respiros de desktop (100–120px) somavam quase uma tela de vazio entre as
+     seções num aparelho de 780px de altura */
+  .intro{ padding:68px 0; }
+  .sobre{ padding:72px 0 78px; }
+  .servicos{ padding:76px 0; }
+  .diferenciais{ padding:76px 0; }
+  .trabalhamos{ padding:76px 0; }
+  .cta-final{ padding:88px 0; }
+  .rodape{ padding:60px 0 24px; }
+  .servicos-topo, .diferenciais-topo{ margin-bottom:34px; }
+  .trabalhamos-topo{ margin-bottom:38px; }
+
+  .diferenciais-grid{ row-gap:30px; }
+  .diferencial-item{ padding-top:26px !important; }
+
+  .etapas{ row-gap:30px; }
+  .etapa-icone{ width:54px; height:54px; margin-bottom:14px; }
+  .etapa-icone svg{ width:22px; height:22px; }
+
+  /* space-between numa linha que quebra jogava telefone e e-mail para os
+     cantos opostos; empilhados, viram uma lista de contato */
+  .especialista-contatos{ flex-direction:column; align-items:stretch; gap:16px; }
+  .especialista-contatos .botao{ justify-content:center; }
 }
 </style>
 </head>
@@ -960,10 +1059,36 @@ p{ margin:0 0 1em; line-height:1.7; }
   var hamburguer = document.getElementById('hamburguer');
   var menuMobile = document.getElementById('menu-mobile');
 
+  var scrollTravado = 0;
+
+  /* Sem isto o dedo rola o site por baixo do painel aberto e, ao fechar, a
+     página reaparece em outro ponto. position:fixed no <body> é o que segura de
+     verdade no iOS — o topo negativo preserva onde a leitura estava. */
+  function travarPagina(travar){
+    if (travar){
+      scrollTravado = window.scrollY;
+      document.body.style.top = (-scrollTravado) + 'px';
+      document.body.classList.add('menu-travado');
+    } else if (document.body.classList.contains('menu-travado')){
+      document.body.classList.remove('menu-travado');
+      document.body.style.top = '';
+      /* devolver o scroll com scroll-behavior:smooth ligado faria a página voar
+         de volta; desligado por um instante, ela só reaparece onde estava */
+      var raiz = document.documentElement;
+      raiz.style.scrollBehavior = 'auto';
+      window.scrollTo(0, scrollTravado);
+      raiz.style.scrollBehavior = '';
+    }
+  }
+
   function abrirMenu(aberto){
     hamburguer.setAttribute('aria-expanded', String(aberto));
     hamburguer.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
     menuMobile.classList.toggle('aberto', aberto);
+    travarPagina(aberto);
+    /* com o painel branco encostado embaixo dela, a nav transparente sobre a
+       foto do hero ficava solta no ar: aberta, ela vira sólida junto */
+    nav.classList.toggle('nav--solida', aberto || window.scrollY > 40);
   }
   hamburguer.addEventListener('click', function(){
     abrirMenu(hamburguer.getAttribute('aria-expanded') !== 'true');
@@ -1063,7 +1188,13 @@ p{ margin:0 0 1em; line-height:1.7; }
   function medirSobre(){
     var x = 0;
     for (var el = textoSobre; el && el !== sobre; el = el.offsetParent) x += el.offsetLeft;
-    medidas = { secao: sobre.offsetWidth, esq: x, largura: textoSobre.offsetWidth };
+    /* a rampa mora no CSS (muda por @media): é lida aqui, junto das medidas,
+       para que fundo e tinta nunca saiam de sincronia */
+    var rampa = parseFloat(getComputedStyle(sobre).getPropertyValue('--rampa'));
+    medidas = {
+      secao: sobre.offsetWidth, esq: x, largura: textoSobre.offsetWidth,
+      rampa: rampa > 0 ? rampa : .6
+    };
   }
 
   function atualizarSobre(){
@@ -1081,9 +1212,9 @@ p{ margin:0 0 1em; line-height:1.7; }
     /* Mesma rampa do .sobre-veu, em pixels da seção: em x0 o véu ainda é
        transparente (cor cheia) e RAMPA larguras de seção adiante ele já é
        branco de vez. Os números saem direto do transform do véu. */
-    var RAMPA = .6;
+    var RAMPA = medidas.rampa;
     var S = medidas.secao;
-    var x0 = (1.6 * coloracao - .6) * S;
+    var x0 = (coloracao * (1 + RAMPA) - RAMPA) * S;
 
     /* A tinta vira num trecho bem mais curto que o fundo (α de .44 a .56): é o
        que mantém no máximo uma palavra por vez no meio-tom em que nem o preto
@@ -1093,7 +1224,11 @@ p{ margin:0 0 1em; line-height:1.7; }
     var viradaEsq = ((medidas.esq - x0) / (RAMPA * S) - .44) / .12;
 
     sobre.style.setProperty('--coloracao', coloracao.toFixed(3));
-    sobre.style.setProperty('--desloc', ((travessia - .5) * 190).toFixed(1) + 'px');
+    /* o .sobre-fundo sobra 14% da largura para cada lado; deslocar mais do que
+       essa sobra descobre a borda do gradiente. Em telas largas 190px cabem
+       folgados, em 390px não — daí o teto proporcional à seção. */
+    var amplitude = Math.min(190, medidas.secao * .22);
+    sobre.style.setProperty('--desloc', ((travessia - .5) * amplitude).toFixed(1) + 'px');
     sobre.style.setProperty('--tinta0', ((xa - medidas.esq) / medidas.largura * 100).toFixed(1) + '%');
     sobre.style.setProperty('--tinta1', ((xb - medidas.esq) / medidas.largura * 100).toFixed(1) + '%');
     /* usada pelos dois elementos que não são texto (o traço do eyebrow e a seta
@@ -1107,7 +1242,7 @@ p{ margin:0 0 1em; line-height:1.7; }
 
   function atualizar(){
     pedirAtualizacao = false;
-    nav.classList.toggle('nav--solida', window.scrollY > 40);
+    nav.classList.toggle('nav--solida', window.scrollY > 40 || menuMobile.classList.contains('aberto'));
     if (!reduzMovimento) atualizarSobre();
   }
 
@@ -1122,6 +1257,9 @@ p{ margin:0 0 1em; line-height:1.7; }
   /* redimensionar muda a altura da seção, a da tela e a caixa do texto: sem
      remedir, a virada da tinta fica presa na geometria antiga */
   window.addEventListener('resize', function(){
+    /* acima de 860px o painel volta a display:none — se ele ainda estivesse
+       "aberto", a página ficaria travada sem nada na tela explicando por quê */
+    if (window.innerWidth > 860) abrirMenu(false);
     if (!reduzMovimento) medirSobre();
     pedirTick();
   }, { passive: true });
