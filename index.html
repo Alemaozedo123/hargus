@@ -562,6 +562,136 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   text-align:center; font-size:12.5px; color:rgba(255,255,255,.5);
 }
 
+/* ============ MODAL DE COTAÇÃO ============
+   <dialog> nativo: o foco fica preso dentro dele, Esc fecha e o resto da
+   página fica inerte sem uma linha de JS para isso. Quem não tiver suporte
+   (navegador antigo) nunca chega aqui — o clique segue o href="#contato"
+   original e cai na seção de contato, ver o <script>. */
+.cotacao{
+  width:min(520px, calc(100vw - 28px));
+  max-height:calc(100vh - 28px);
+  max-height:calc(100dvh - 28px);
+  padding:0; border:none; border-radius:10px;
+  background:var(--branco); color:var(--cinza-texto);
+  box-shadow:0 30px 80px rgba(0,10,8,.38);
+  overflow:hidden;
+}
+/* o display só no estado aberto: uma regra de autor sem [open] venceria o
+   display:none que o navegador dá ao <dialog> fechado (origem de autor ganha
+   da origem do navegador) e o modal ocuparia espaço em branco no fim da página */
+.cotacao[open]{ display:flex; flex-direction:column; }
+.cotacao::backdrop{ background:rgba(0,14,10,.62); }
+.cotacao[open]{ animation:cotacao-entra .28s cubic-bezier(.16,.8,.24,1); }
+.cotacao[open]::backdrop{ animation:cotacao-veu .28s ease; }
+@keyframes cotacao-entra{ from{ opacity:0; transform:translateY(14px) scale(.98); } }
+@keyframes cotacao-veu{ from{ opacity:0; } }
+@media (prefers-reduced-motion: reduce){
+  .cotacao[open], .cotacao[open]::backdrop{ animation:none; }
+}
+
+.cotacao-topo{
+  flex:none; position:relative;
+  background:var(--gradiente-institucional); color:var(--branco);
+  padding:26px 56px 26px 28px;
+}
+.cotacao-topo .eyebrow{ color:rgba(255,255,255,.82); margin-bottom:10px; }
+.cotacao-topo .eyebrow::before{ background:var(--verde-claro); }
+.cotacao-topo h2{ color:var(--branco); font-size:1.55rem; margin:0; }
+.cotacao-fechar{
+  position:absolute; top:16px; right:16px;
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.3); background:transparent; color:var(--branco);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s ease, border-color .2s ease;
+}
+.cotacao-fechar:hover{ background:rgba(255,255,255,.16); border-color:var(--branco); }
+.cotacao-fechar svg{ width:16px; height:16px; }
+
+/* as três telas do modal moram no mesmo <dialog> e trocam por data-estado —
+   assim o que o visitante digitou sobrevive a uma falha de envio */
+.cotacao-forma, .cotacao-enviando, .cotacao-sucesso{ display:none; }
+.cotacao[data-estado="formulario"] .cotacao-forma{ display:block; }
+.cotacao[data-estado="enviando"] .cotacao-enviando{ display:flex; }
+.cotacao[data-estado="sucesso"] .cotacao-sucesso{ display:block; }
+
+.cotacao-forma, .cotacao-enviando, .cotacao-sucesso{
+  padding:26px 28px 28px; overflow-y:auto;
+}
+.cotacao-intro{ font-size:14px; margin:0 0 20px; }
+
+.cotacao-campo{ margin-bottom:16px; }
+.cotacao-campo label{
+  display:block; font-size:12px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--preto); margin-bottom:7px;
+}
+.cotacao-campo input{
+  width:100%; font-family:inherit; font-size:15px; font-weight:400; color:var(--preto);
+  padding:12px 14px; border:1px solid #d9dcda; border-radius:4px; background:var(--branco);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.cotacao-campo input::placeholder{ color:#a7aca9; }
+.cotacao-campo input:focus{
+  outline:none; border-color:var(--verde-claro);
+  box-shadow:0 0 0 3px rgba(62,158,126,.18);
+}
+.cotacao-campo input[aria-invalid="true"]{ border-color:#b3261e; }
+.cotacao-campo input[aria-invalid="true"]:focus{ box-shadow:0 0 0 3px rgba(179,38,30,.16); }
+.cotacao-erro{ display:block; font-size:12.5px; color:#b3261e; margin-top:6px; min-height:1px; }
+
+/* a isca do FormSubmit: preenchida só por robô, some da tela e da leitura de tela */
+.cotacao-isca{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+.cotacao-falha{
+  display:none; gap:10px; align-items:flex-start;
+  background:#fdecea; border:1px solid #f3c6c2; border-radius:4px;
+  padding:12px 14px; margin-bottom:16px; font-size:13.5px; color:#8c1d18;
+}
+.cotacao-falha a{ color:#8c1d18; text-decoration:underline; font-weight:600; }
+.cotacao[data-falhou="sim"] .cotacao-falha{ display:flex; }
+.cotacao-falha svg{ width:18px; height:18px; flex:none; margin-top:1px; }
+
+.cotacao-enviar{ width:100%; justify-content:center; margin-top:4px; }
+.cotacao-aviso{ font-size:11.5px; color:#8a8f8c; margin:14px 0 0; text-align:center; line-height:1.6; }
+
+.cotacao-enviando{
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; min-height:220px; text-align:center;
+}
+.cotacao-roda{
+  width:36px; height:36px; border-radius:50%;
+  border:3px solid rgba(0,53,39,.15); border-top-color:var(--verde);
+  animation:cotacao-gira .8s linear infinite;
+}
+@keyframes cotacao-gira{ to{ transform:rotate(360deg); } }
+@media (prefers-reduced-motion: reduce){ .cotacao-roda{ animation-duration:2.4s; } }
+
+.cotacao-sucesso{ text-align:center; }
+.cotacao-selo{
+  width:56px; height:56px; border-radius:50%; margin:6px auto 18px;
+  background:rgba(62,158,126,.14); color:var(--verde);
+  display:flex; align-items:center; justify-content:center;
+}
+.cotacao-selo svg{ width:26px; height:26px; }
+.cotacao-sucesso h3{ font-size:1.4rem; margin-bottom:10px; }
+.cotacao-sucesso p{ font-size:14px; margin:0 auto 20px; max-width:36ch; }
+.cotacao-whats{ width:100%; justify-content:center; background:#25D366; color:#0b3d20; }
+.cotacao-whats:hover{ background:#1fb955; }
+.cotacao-whats svg{ width:18px; height:18px; }
+.cotacao-secundario{
+  display:block; width:100%; margin-top:12px; padding:10px;
+  background:none; border:none; font-size:13px; font-weight:600; color:var(--cinza-texto);
+  text-decoration:underline;
+}
+
+@media (max-width:560px){
+  .cotacao{ width:calc(100vw - 20px); }
+  .cotacao-topo{ padding:22px 52px 22px 22px; }
+  .cotacao-topo h2{ font-size:1.3rem; }
+  .cotacao-forma, .cotacao-enviando, .cotacao-sucesso{ padding:22px 22px 24px; }
+  /* 16px é o mínimo para o iOS não dar zoom sozinho ao focar o campo */
+  .cotacao-campo input{ font-size:16px; }
+}
+
 /* ============ RESPONSIVO ============ */
 @media (max-width:1240px){
   /* daqui para baixo o container já não tem folga: crescer a foto espremeria a
@@ -712,7 +842,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       </ul>
     </nav>
 
-    <a href="#contato" class="botao botao--roxo nav-cta">
+    <a href="#contato" class="botao botao--roxo nav-cta" data-cotacao>
       Solicite uma cotação
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -729,7 +859,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <a href="#diferenciais">Diferenciais</a>
     <a href="#como-trabalhamos">Como Trabalhamos</a>
     <a href="#contato">Contato</a>
-    <a href="#contato" class="botao botao--roxo">
+    <a href="#contato" class="botao botao--roxo" data-cotacao>
       Solicite uma cotação
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
@@ -751,7 +881,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         <h1>Conectamos você<br>ao <span class="accent">seu destino</span></h1>
         <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
         <div class="hero-botoes">
-          <a href="#contato" class="botao botao--roxo">
+          <a href="#contato" class="botao botao--roxo" data-cotacao>
             Solicite uma cotação
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -955,7 +1085,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
           comercial@hargus.com.br
         </a>
-        <a href="#contato" class="botao botao--roxo">
+        <a href="#contato" class="botao botao--roxo" data-cotacao>
           Solicite uma cotação
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -968,7 +1098,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <img src="navio-aereo.jpg" alt="" aria-hidden="true">
     <div class="container">
       <h2 class="reveal">Vamos encontrar o melhor caminho para <span class="accent">sua carga</span>?</h2>
-      <a href="#contato" class="botao botao--roxo">
+      <a href="#contato" class="botao botao--roxo" data-cotacao>
         Solicite uma cotação
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
@@ -1046,6 +1176,80 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   </div>
 </footer>
 
+<!-- ============ MODAL DE COTAÇÃO ============
+     Aberto por qualquer botão com [data-cotacao]. Sem JS (ou em navegador sem
+     <dialog>) o clique segue o href e leva à seção de contato. -->
+<dialog class="cotacao" id="cotacao" data-estado="formulario" aria-labelledby="cotacao-titulo">
+  <div class="cotacao-topo">
+    <p class="eyebrow">Solicite uma cotação</p>
+    <h2 id="cotacao-titulo">Deixe seus dados</h2>
+    <button type="button" class="cotacao-fechar" data-fechar-cotacao aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <form class="cotacao-forma" id="cotacao-forma" novalidate>
+    <p class="cotacao-intro">Nossa equipe retorna com a cotação da sua carga. É rápido.</p>
+
+    <div class="cotacao-falha" role="alert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <span>Não conseguimos enviar agora. Tente de novo em instantes ou
+        <a href="#" id="cotacao-falha-whats" target="_blank" rel="noopener noreferrer">fale direto no WhatsApp</a>.</span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-nome">Nome completo</label>
+      <input id="cotacao-nome" name="nome" type="text" autocomplete="name"
+             placeholder="Como podemos te chamar?" aria-describedby="erro-nome" required>
+      <span class="cotacao-erro" id="erro-nome"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-telefone">Telefone / WhatsApp</label>
+      <input id="cotacao-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
+             placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-telefone" required>
+      <span class="cotacao-erro" id="erro-telefone"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-email">E-mail</label>
+      <input id="cotacao-email" name="email" type="email" autocomplete="email"
+             placeholder="voce@empresa.com.br" aria-describedby="erro-email" required>
+      <span class="cotacao-erro" id="erro-email"></span>
+    </div>
+
+    <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
+    <div class="cotacao-isca" aria-hidden="true">
+      <label for="cotacao-isca">Não preencha este campo</label>
+      <input id="cotacao-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button type="submit" class="botao botao--roxo cotacao-enviar">
+      Enviar solicitação
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="cotacao-aviso">Usamos seus dados apenas para responder a esta solicitação.</p>
+  </form>
+
+  <div class="cotacao-enviando" aria-live="polite">
+    <div class="cotacao-roda" aria-hidden="true"></div>
+    <p>Enviando sua solicitação…</p>
+  </div>
+
+  <div class="cotacao-sucesso" aria-live="polite">
+    <div class="cotacao-selo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
+    </div>
+    <h3>Solicitação enviada</h3>
+    <p>Recebemos seus dados. Para adiantar, continue a conversa no WhatsApp — a mensagem já vai preenchida.</p>
+    <a class="botao cotacao-whats" id="cotacao-whats" href="#" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+      Continuar no WhatsApp
+    </a>
+    <button type="button" class="cotacao-secundario" data-fechar-cotacao>Fechar</button>
+  </div>
+</dialog>
+
 <script>
 (function(){
   'use strict';
@@ -1099,6 +1303,177 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') abrirMenu(false);
   });
+
+  /* ============ COTAÇÃO: modal de captação ============
+     Qualquer botão [data-cotacao] abre o mesmo <dialog>. O envio vai por
+     FormSubmit (o site é estático, não há servidor próprio para receber POST)
+     e a conversa segue no WhatsApp da HARGUS com a mensagem já montada. */
+
+  /* Para onde a demanda chega. O FormSubmit só passa a entregar depois que o
+     dono deste endereço clicar uma vez no e-mail de confirmação que ele manda
+     no primeiro envio — até lá o formulário mostra o aviso de falha. */
+  var COTACAO_DESTINO = 'Luiz@horizoncomercial.com.br';
+
+  /* TROCAR pelo WhatsApp real da HARGUS: só dígitos, com o 55 na frente.
+     Hoje repete o número de exemplo que está no rodapé do site. */
+  var WHATSAPP_HARGUS = '5541987654321';
+
+  var dialogo = document.getElementById('cotacao');
+
+  /* Navegador sem <dialog>: nada é interceptado e o href="#contato" dos botões
+     leva à seção de contato, como antes deste modal existir. */
+  if (dialogo && typeof dialogo.showModal === 'function') (function(){
+    var forma = document.getElementById('cotacao-forma');
+    var isca = document.getElementById('cotacao-isca');
+    var linkWhats = document.getElementById('cotacao-whats');
+    var linkFalha = document.getElementById('cotacao-falha-whats');
+    var campos = {
+      nome:     document.getElementById('cotacao-nome'),
+      telefone: document.getElementById('cotacao-telefone'),
+      email:    document.getElementById('cotacao-email')
+    };
+    var nomes = Object.keys(campos);
+    var quemAbriu = null;
+
+    var regras = {
+      nome: function(v){
+        return v.trim().length >= 2 ? '' : 'Digite seu nome.';
+      },
+      telefone: function(v){
+        var d = v.replace(/\D/g, '');
+        return (d.length === 10 || d.length === 11) ? '' : 'Informe DDD e número, ex.: (41) 99999-9999.';
+      },
+      email: function(v){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Digite um e-mail válido.';
+      }
+    };
+
+    function mostrarErro(nome, texto){
+      document.getElementById('erro-' + nome).textContent = texto;
+      if (texto) campos[nome].setAttribute('aria-invalid', 'true');
+      else campos[nome].removeAttribute('aria-invalid');
+      return !texto;
+    }
+    function validar(nome){ return mostrarErro(nome, regras[nome](campos[nome].value)); }
+
+    /* (41) 99999-9999 enquanto digita — número colado de outro lugar vem com
+       pontuação variada e a máscara normaliza tudo antes da validação */
+    function mascarar(v){
+      var d = v.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 2)  return d;
+      if (d.length <= 6)  return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    }
+    campos.telefone.addEventListener('input', function(){ this.value = mascarar(this.value); });
+
+    /* só cobra o campo depois que a pessoa sai dele; a partir daí corrige ao vivo */
+    nomes.forEach(function(nome){
+      campos[nome].addEventListener('blur', function(){ validar(nome); });
+      campos[nome].addEventListener('input', function(){
+        if (campos[nome].getAttribute('aria-invalid') === 'true') validar(nome);
+      });
+    });
+
+    function linkDoWhats(dados){
+      var texto = 'Olá! Gostaria de solicitar uma cotação.';
+      if (dados){
+        texto += '\n\nNome: ' + dados.nome +
+                 '\nTelefone: ' + dados.telefone +
+                 '\nE-mail: ' + dados.email;
+      }
+      return 'https://wa.me/' + WHATSAPP_HARGUS + '?text=' + encodeURIComponent(texto);
+    }
+
+    function abrir(origem){
+      quemAbriu = origem || null;
+      abrirMenu(false);            /* veio do menu mobile: destrava antes de travar de novo */
+      dialogo.dataset.estado = 'formulario';
+      dialogo.dataset.falhou = 'nao';
+      linkFalha.href = linkDoWhats(null);
+      dialogo.showModal();
+      travarPagina(true);
+      campos.nome.focus();
+    }
+    function fechar(){ dialogo.close(); }
+
+    /* um só lugar de limpeza: vale para o X, para o Esc e para o clique no fundo */
+    dialogo.addEventListener('close', function(){
+      travarPagina(false);
+      forma.reset();
+      nomes.forEach(function(nome){ mostrarErro(nome, ''); });
+      dialogo.dataset.estado = 'formulario';
+      dialogo.dataset.falhou = 'nao';
+      /* preventScroll: travarPagina acabou de devolver a posição de leitura e
+         focar o botão de origem a puxaria de volta para onde ele está */
+      if (quemAbriu){ quemAbriu.focus({ preventScroll: true }); quemAbriu = null; }
+    });
+
+    /* o <dialog> não tem preenchimento próprio, então ele só é o alvo do
+       clique quando o toque cai no fundo escurecido, fora do conteúdo */
+    dialogo.addEventListener('click', function(e){ if (e.target === dialogo) fechar(); });
+    document.querySelectorAll('[data-fechar-cotacao]').forEach(function(b){
+      b.addEventListener('click', fechar);
+    });
+    document.querySelectorAll('[data-cotacao]').forEach(function(b){
+      b.addEventListener('click', function(e){ e.preventDefault(); abrir(b); });
+    });
+
+    forma.addEventListener('submit', function(e){
+      e.preventDefault();
+      /* .map antes do .every: valida todos os campos, não para no primeiro */
+      var valido = nomes.map(validar).every(Boolean);
+      if (!valido){
+        campos[nomes.filter(function(n){
+          return campos[n].getAttribute('aria-invalid') === 'true';
+        })[0]].focus();
+        return;
+      }
+
+      var dados = {
+        nome: campos.nome.value.trim(),
+        telefone: campos.telefone.value.trim(),
+        email: campos.email.value.trim()
+      };
+      /* montado antes do envio: se a entrega falhar, o atalho do WhatsApp no
+         aviso de erro já sai preenchido com o que a pessoa digitou */
+      linkWhats.href = linkDoWhats(dados);
+      linkFalha.href = linkDoWhats(dados);
+      dialogo.dataset.falhou = 'nao';
+      dialogo.dataset.estado = 'enviando';
+
+      fetch('https://formsubmit.co/ajax/' + COTACAO_DESTINO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Nova solicitação de cotação — ' + dados.nome,
+          _template: 'table',
+          _captcha: 'false',
+          _honey: isca.value,
+          Nome: dados.nome,
+          Telefone: dados.telefone,
+          'E-mail': dados.email,
+          Origem: window.location.href
+        })
+      }).then(function(r){
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(resposta){
+        /* o FormSubmit responde 200 mesmo quando recusa (endereço ainda não
+           confirmado, isca preenchida): quem decide é o campo success */
+        if (resposta && String(resposta.success) === 'false'){
+          throw new Error(resposta.message || 'envio recusado');
+        }
+        dialogo.dataset.estado = 'sucesso';
+        linkWhats.focus();
+      }).catch(function(){
+        /* volta ao formulário com o que já estava digitado — perder os dados
+           num erro de rede seria pior que o próprio erro */
+        dialogo.dataset.estado = 'formulario';
+        dialogo.dataset.falhou = 'sim';
+      });
+    });
+  })();
 
   /* ============ HERO: vídeo opcional no lugar da foto ============ */
   var VIDEO_HERO = 'navio-loop.mp4'; /* se não existir, a <img> permanece e nada quebra */
