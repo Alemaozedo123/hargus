@@ -253,6 +253,52 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   .hero-veu{ background:linear-gradient(180deg, rgba(0,20,15,.72) 0%, rgba(0,20,15,.4) 32%, rgba(0,20,15,.1) 58%, rgba(0,20,15,0) 76%); }
 }
 
+/* cortina que cobre o corte seco do loop do vídeo — e é também a onda
+   decorativa do rodapé da hero: em repouso, um clip-path só deixa a fresta
+   ondulada visível (a "onda"); no gatilho da transição, o mesmo clip-path
+   se abre até virar um retângulo cheio, cobrindo tudo. Onda e cortina são
+   literalmente o mesmo elemento/gradiente — nunca desencontram em cor, e a
+   onda "sobe junto" porque é a borda de cima desse clip subindo. */
+.hero-cortina{
+  position:absolute; inset:0; z-index:1;
+  background:var(--gradiente-institucional);
+  clip-path:polygon(
+    0% 91.1%, 13.9% 94.1%, 26.9% 92.6%, 39.7% 90.5%, 52.8% 91.7%,
+    65.6% 93.7%, 77.4% 92.8%, 88.7% 91.7%, 100% 93%, 100% 100%, 0% 100%
+  );
+  transition:clip-path 1.6s ease-in-out;
+  will-change:clip-path;
+}
+.hero-cortina.hero-cortina--ativa{
+  clip-path:polygon(
+    0% 0%, 13.9% 0%, 26.9% 0%, 39.7% 0%, 52.8% 0%,
+    65.6% 0%, 77.4% 0%, 88.7% 0%, 100% 0%, 100% 100%, 0% 100%
+  );
+}
+/* precisa vencer ".hero-midia-caixa img" (que estica qualquer <img> pra
+   100%/cover) — daí o seletor composto em vez de só ".hero-cortina-logo" */
+.hero-cortina .hero-cortina-logo{
+  position:absolute; inset:auto; top:50%; left:68%; right:auto; bottom:auto;
+  width:min(170px, 15vw); height:auto; object-fit:contain;
+  opacity:0; transform:translate(-50%,-50%) scale(.9);
+  transition:opacity .9s ease .5s, transform .9s ease .5s;
+}
+.hero-cortina.hero-cortina--ativa .hero-cortina-logo{
+  opacity:1; transform:translate(-50%,-50%) scale(1);
+}
+@media (max-width:860px){
+  .hero-cortina .hero-cortina-logo{ left:50%; width:110px; }
+  /* no mobile a largura cai muito mas a altura da hero quase não muda —
+     com a mesma faixa de 14% a onda ficaria alta e ultrapassaria a curva
+     branca; encolhe a faixa pra acompanhar melhor */
+  .hero-cortina{
+    clip-path:polygon(
+      0% 94.9%, 13.9% 96.7%, 26.9% 95.8%, 39.7% 94.6%, 52.8% 95.3%,
+      65.6% 96.4%, 77.4% 95.9%, 88.7% 95.3%, 100% 96%, 100% 100%, 0% 100%
+    );
+  }
+}
+
 .hero-conteudo{
   position:relative; z-index:2; width:100%;
 }
@@ -266,6 +312,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   text-shadow:0 4px 24px rgba(0,10,8,.5);
 }
 .hero-conteudo h1 .accent{ font-style:normal; }
+/* peso 300 deixa o circunflexo de "você" fino e pontudo demais no tamanho do hero */
+.hero-conteudo h1 .hero-voce{ font-weight:400; }
 .hero-conteudo p{
   color:rgba(255,255,255,.85); font-size:1.05rem; max-width:44ch; margin-bottom:2em;
   text-shadow:0 2px 14px rgba(0,10,8,.5);
@@ -354,6 +402,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   transform:translate3d(calc((var(--coloracao) * (1 + var(--rampa)) - var(--rampa)) * 40%), 0, 0);
   will-change:transform;
 }
+.sobre .container{ display:flex; align-items:center; gap:5vw; }
+.sobre-logo{ width:clamp(120px, 16vw, 210px); height:auto; flex:none; object-fit:contain; }
 .sobre-painel{ position:relative; max-width:min(600px, 56%); margin-left:auto; }
 /* A VIRADA DA TINTA
    O mesmo degradê horizontal do fundo, recortado nos glifos: preto enquanto o
@@ -745,6 +795,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
      deixava uma coluna inteira de palavras no meio-tom em que nem preto nem
      branco contrastam. Encurtada, a virada passa por cada linha num piscar. */
   .sobre{ min-height:0; padding:92px 0 100px; --rampa:.22; }
+  .sobre .container{ flex-direction:column; align-items:flex-start; gap:28px; }
+  .sobre-logo{ width:130px; }
   .sobre-painel{ max-width:none; }
   /* esticadas sobre uma seção alta e estreita, as ondas viram riscos quase
      retos atravessando as frases — parecem defeito, não textura */
@@ -873,12 +925,15 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <div class="hero-midia-caixa" id="hero-midia-caixa">
       <img id="hero-imagem" src="navio.jpg" alt="Navio porta-contêineres navegando ao entardecer, representando as operações internacionais da HARGUS.">
       <div class="hero-veu" aria-hidden="true"></div>
+      <div class="hero-cortina" id="hero-cortina" aria-hidden="true">
+        <img class="hero-cortina-logo" src="logo-branco.png" alt="">
+      </div>
     </div>
 
     <div class="container">
       <div class="hero-conteudo" id="hero-conteudo">
         <p class="hero-eyebrow">Agenciamento de cargas e soluções logísticas</p>
-        <h1>Conectamos você<br>ao <span class="accent">seu destino</span></h1>
+        <h1>Conectamos <span class="accent hero-voce">você</span><br>ao <span class="accent">seu destino</span></h1>
         <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
         <div class="hero-botoes">
           <a href="#contato" class="botao botao--roxo" data-cotacao>
@@ -890,9 +945,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       </div>
     </div>
 
+    <!-- a faixa roxa/verde da onda não é mais desenhada aqui: é a própria
+         .hero-cortina (clip-path) espiando por baixo — cor sempre idêntica
+         à cortina, sem risco de dessincronizar -->
     <div class="onda-divisor" aria-hidden="true">
       <svg viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#330243" d="M0,40 C280,110 500,0 760,45 C1020,90 1220,20 1440,55 L1440,110 L0,110 Z"/>
         <path fill="#FFFFFF" d="M0,70 C300,20 560,95 820,55 C1080,15 1260,80 1440,50 L1440,110 L0,110 Z"/>
       </svg>
     </div>
@@ -927,6 +984,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <div class="sobre-veu" aria-hidden="true"></div>
 
     <div class="container">
+      <img class="sobre-logo reveal" src="logo-branco.png" alt="HARGUS Shipping Brazil">
       <div class="sobre-painel reveal reveal--dir">
         <div class="sobre-texto">
           <p class="eyebrow">Sobre a Hargus</p>
@@ -1070,7 +1128,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   <section class="especialista" id="contato">
     <div class="container">
       <div class="especialista-intro reveal reveal--esq">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/><path d="M4.5 11.5a7.5 7.5 0 0115 0"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
         <div>
           <h3>Fale com um especialista</h3>
           <p>Nossa equipe está pronta para entender sua necessidade e oferecer a melhor solução para o seu negócio.</p>
@@ -1480,9 +1538,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   (function tentarVideoHero(){
     var caixa = document.getElementById('hero-midia-caixa');
     var imgAtual = document.getElementById('hero-imagem');
+    var cortina = document.getElementById('hero-cortina');
     var v = document.createElement('video');
     v.muted = true;
-    v.loop = true;
+    /* com movimento reduzido, mantém o loop nativo simples (sem cortina) */
+    v.loop = reduzMovimento;
     v.playsInline = true;
     v.setAttribute('aria-hidden', 'true');
     v.addEventListener('canplay', function(){
@@ -1495,6 +1555,44 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       v.play().catch(function(){});
     });
     v.addEventListener('error', function(){ /* sem vídeo: mantém a foto */ });
+
+    /* disfarça o corte seco do loop: a cortina começa a subir ainda com o
+       vídeo em movimento — dispara quando falta exatamente o tempo da subida
+       para o vídeo acabar, então ele só some de vista já dentro da cortina,
+       nunca congelado. Ela reinicia escondida, e a cortina só começa a descer
+       depois de garantir que o vídeo já está rodando de novo — assim ele
+       nunca é revelado parado no frame zero. */
+    if (!reduzMovimento){
+      var DURACAO_CORTINA = 1600;  /* ms — bate com a transition do CSS */
+      var TEMPO_COBERTA = 1100;    /* ms — quanto a cortina fica fechada */
+      var cortinaEmCiclo = false;
+
+      function iniciarCicloCortina(){
+        if (cortinaEmCiclo) return;
+        cortinaEmCiclo = true;
+        cortina.classList.add('hero-cortina--ativa');
+        setTimeout(function(){
+          /* cortina já cobriu tudo — reinicia o vídeo escondido e libera a
+             detecção pro próximo ciclo (a partir daqui "resta muito tempo") */
+          v.currentTime = 0;
+          v.play().catch(function(){});
+          cortinaEmCiclo = false;
+        }, DURACAO_CORTINA);
+        setTimeout(function(){
+          cortina.classList.remove('hero-cortina--ativa');
+        }, DURACAO_CORTINA + TEMPO_COBERTA);
+      }
+
+      v.addEventListener('timeupdate', function(){
+        if (!v.duration || cortinaEmCiclo) return;
+        var restanteMs = (v.duration - v.currentTime) * 1000;
+        if (restanteMs <= DURACAO_CORTINA) iniciarCicloCortina();
+      });
+      /* reforço: se o navegador nunca disparar um timeupdate perto o
+         suficiente do fim, garante que a cortina ainda dispare */
+      v.addEventListener('ended', iniciarCicloCortina);
+    }
+
     v.src = VIDEO_HERO;
     v.load();
   })();
