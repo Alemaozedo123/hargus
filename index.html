@@ -186,6 +186,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   height:calc(var(--nav-h) - var(--nav-encolhe));
 }
 .nav .container{
+  /* a nav pode usar mais largura que o resto do site (que fica em 1240px) —
+     é só aqui que 7 itens de menu + botão + WhatsApp precisam caber numa linha */
+  max-width:1440px;
   display:flex; align-items:center; justify-content:space-between; gap:24px;
 }
 .nav-logo{ position:relative; display:block; width:150px; height:44px; flex:none; }
@@ -198,11 +201,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav.nav--solida .nav-logo .logo-branca{ opacity:0; }
 
 .nav-menu{
-  display:flex; align-items:center; gap:clamp(8px, 0.8vw, 12px);
+  display:flex; align-items:center; gap:clamp(12px, 1vw, 18px);
   list-style:none; margin:0; padding:0;
 }
 .nav-menu a{
-  font-size:10.5px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
+  font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
   color:var(--branco); padding:6px 2px 2px; border-bottom:2px solid transparent;
   line-height:1.3; white-space:nowrap;
   transition:color .3s ease, border-color .2s ease;
@@ -805,14 +808,14 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 }
 
 /* ============ RESPONSIVO ============ */
-@media (max-width:1240px){
-  /* daqui para baixo o container já não tem folga: crescer a foto espremeria a
-     manchete da intro em três linhas, então volta a proporção que dá ar ao texto */
-  .intro-grid{ grid-template-columns:1.1fr 1fr; gap:56px; }
 
-  /* Os 6 itens do menu + botão de cotação + WhatsApp não cabem numa linha só
-     dentro do container (max-width 1240px) — abaixo disso vira menu mobile,
-     que já tem espaço de sobra em qualquer largura. */
+/* A nav usa um container mais largo (1440px, ver .nav .container) que o resto
+   do site (1240px) — precisa desse espaço extra para os 7 itens do menu +
+   botão de cotação + WhatsApp caberem numa linha com fonte legível. Por isso
+   o breakpoint dela é mais alto que o breakpoint geral logo abaixo: com fonte
+   ≥12px o conjunto só cabe a partir de ~1340px, então vira menu mobile antes
+   disso — inclusive em notebooks comuns de 1366px. */
+@media (max-width:1400px){
   .nav-menu, .nav-cta{ display:none; }
   .nav-hamburguer{ display:block; }
   .nav-menu-mobile{
@@ -833,6 +836,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     display:flex; align-items:center; min-height:48px; padding:2px 0;
   }
   .nav-menu-mobile .botao{ justify-content:center; margin-top:12px; }
+}
+
+@media (max-width:1240px){
+  /* daqui para baixo o container já não tem folga: crescer a foto espremeria a
+     manchete da intro em três linhas, então volta a proporção que dá ar ao texto */
+  .intro-grid{ grid-template-columns:1.1fr 1fr; gap:56px; }
 }
 
 @media (max-width:1080px){
