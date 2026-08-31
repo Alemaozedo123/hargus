@@ -1,0 +1,2097 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- protótipo em avaliação: fora dos buscadores até subir no domínio oficial -->
+<meta name="robots" content="noindex, nofollow">
+<title>HARGUS Shipping Brazil — Conectamos você ao seu destino</title>
+<meta name="description" content="Agenciamento de cargas e soluções logísticas em Curitiba/PR. Frete nacional e internacional, assessoria aduaneira, importação, exportação e consultoria ANVISA.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  /* paleta oficial (manual de marca) */
+  --verde:  #003527;
+  --roxo:   #330243;
+  --preto:  #000000;
+  --branco: #FFFFFF;
+  --gradiente-institucional: linear-gradient(120deg, var(--verde) 0%, var(--roxo) 100%);
+
+  /* NÃO-OFICIAIS — não constam no manual de marca, criadas para cobrir o que os mockups pedem.
+     Validar com o cliente antes de publicar. */
+  --verde-claro: #3E9E7E; /* destaque de palavras nos títulos ("seu destino", "sua logística"...) */
+  --cinza-texto: #4A4A4A; /* corpo de texto — preto puro em 300 cansava a leitura */
+
+  --fonte-titulo: 'Cormorant Garamond', 'Georgia', serif;
+  --fonte-corpo: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+
+  --container: 1240px;
+  --nav-h: 84px;
+  /* quanto a nav encolhe ao virar sólida — o painel do menu mobile se ancora
+     nela, então o valor precisa ser um só para os dois */
+  --nav-encolhe: 18px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  /* as entradas .reveal--esq/--dir nascem 36px fora do lugar: no desktop isso
+     cabia na folga do container, no celular virava 14px de rolagem lateral.
+     'clip' corta sem criar caixa de rolagem (não quebra a nav fixa nem as
+     âncoras); 'hidden' antes dele é a saída para navegador que não conhece clip */
+  overflow-x:hidden;
+  overflow-x:clip;
+  font-family:var(--fonte-corpo);
+  font-weight:300;
+  color:var(--cinza-texto);
+  background:var(--branco);
+  -webkit-font-smoothing:antialiased;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+h1,h2,h3{
+  font-family:var(--fonte-titulo);
+  font-weight:300;
+  color:var(--preto);
+  margin:0 0 .4em;
+  line-height:1.15;
+}
+p{ margin:0 0 1em; line-height:1.7; }
+
+.accent{ color:var(--verde-claro); font-style:italic; }
+
+.container{
+  width:100%;
+  max-width:var(--container);
+  margin:0 auto;
+  padding:0 32px;
+}
+
+.eyebrow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--roxo);
+  margin-bottom:18px;
+}
+.eyebrow::before{
+  content:"";
+  width:28px;
+  height:2px;
+  background:var(--roxo);
+  display:block;
+}
+.eyebrow--claro{ color:var(--verde-claro); }
+.eyebrow--claro::before{ background:var(--verde-claro); }
+
+.botao{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 28px;
+  font-family:var(--fonte-corpo);
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  border-radius:3px;
+  border:1px solid transparent;
+  white-space:nowrap;
+  transition:transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+}
+.botao svg{ width:16px; height:16px; flex:none; transition:transform .2s ease; }
+.botao:hover svg{ transform:translateX(3px); }
+.botao:hover{ transform:translateY(-2px); }
+
+.botao--roxo{ background:var(--roxo); color:var(--branco); }
+.botao--roxo:hover{ background:#4a0361; }
+
+.botao--outline-claro{ background:transparent; color:var(--branco); border-color:rgba(255,255,255,.55); }
+.botao--outline-claro:hover{ background:rgba(255,255,255,.12); border-color:var(--branco); }
+
+.botao--outline-escuro{ background:transparent; color:var(--verde); border-color:rgba(0,53,39,.3); }
+.botao--outline-escuro:hover{ background:var(--verde); color:var(--branco); }
+
+.botao--whats{ background:#25D366; color:#0b3d20; }
+.botao--whats:hover{ background:#1fb955; }
+
+:focus-visible{
+  outline:3px solid var(--verde-claro);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+.skip-link{
+  position:fixed; top:-60px; left:12px; z-index:1000;
+  background:var(--branco); color:var(--verde);
+  padding:12px 18px; border-radius:4px; font-weight:600;
+  transition:top .2s ease;
+}
+.skip-link:focus{ top:12px; }
+
+/* página congelada enquanto o menu mobile está aberto — o <script> guarda a
+   posição em body.style.top e a devolve ao fechar */
+body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden; }
+
+/* ============ REVELAÇÃO AO ROLAR ============
+   Sistema genérico: elementos com .reveal entram com fade + leve deslocamento
+   quando cruzam a viewport (IntersectionObserver, ver <script>). Variantes
+   --esq/--dir mudam a direção do deslocamento para dar variedade às seções. */
+.reveal{
+  --atraso: 0s;
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity .8s cubic-bezier(.16,.8,.24,1) var(--atraso),
+             transform .8s cubic-bezier(.16,.8,.24,1) var(--atraso);
+}
+.reveal.visivel{ opacity:1; transform:translateY(0); }
+.reveal--esq{ transform:translateX(-36px); }
+.reveal--esq.visivel{ transform:translateX(0); }
+.reveal--dir{ transform:translateX(36px); }
+.reveal--dir.visivel{ transform:translateX(0); }
+@media (prefers-reduced-motion: reduce){
+  .reveal, .reveal--esq, .reveal--dir{ opacity:1; transform:none; transition:none; }
+}
+
+/* ============ NAV ============ */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:var(--nav-h);
+  display:flex; align-items:center;
+  background:transparent;
+  transition:background .35s ease, box-shadow .35s ease, height .35s ease;
+}
+.nav.nav--solida{
+  background:var(--branco);
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+  height:calc(var(--nav-h) - var(--nav-encolhe));
+}
+.nav .container{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+}
+.nav-logo{ position:relative; display:block; width:150px; height:44px; flex:none; margin-left:-16px; }
+.nav-logo img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:left center;
+  transition:opacity .3s ease;
+}
+.nav-logo .logo-cor{ opacity:0; }
+.nav.nav--solida .nav-logo .logo-cor{ opacity:1; }
+.nav.nav--solida .nav-logo .logo-branca{ opacity:0; }
+
+.nav-menu{
+  display:flex; align-items:center; gap:clamp(8px, .6vw, 14px);
+  list-style:none; margin:0; padding:0;
+}
+.nav-menu a{
+  font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--branco); padding:6px 2px 2px; border-bottom:2px solid transparent;
+  line-height:1.3; white-space:nowrap;
+  transition:color .3s ease, border-color .2s ease;
+}
+.nav.nav--solida .nav-menu a{ color:var(--preto); }
+.nav-menu a:hover, .nav-menu a.ativo{ border-color:var(--verde-claro); }
+.nav.nav--solida .nav-menu a:hover, .nav.nav--solida .nav-menu a.ativo{ color:var(--verde); }
+
+.nav-controles{ display:flex; align-items:center; gap:14px; flex:none; }
+.nav-cta{ flex:none; padding:12px 18px; font-size:11.5px; gap:6px; }
+.icone-whats{
+  flex:none; width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:#25D366; color:#0b3d20;
+  transition:transform .2s ease, background .2s ease;
+}
+.icone-whats:hover{ background:#1fb955; transform:translateY(-2px); }
+.icone-whats svg{ width:18px; height:18px; }
+.nav-hamburguer{
+  display:none; flex:none; width:44px; height:44px; border:none; background:transparent;
+  position:relative;
+}
+.nav-menu-mobile{ display:none; }
+.nav-hamburguer span, .nav-hamburguer::before, .nav-hamburguer::after{
+  content:""; position:absolute; left:10px; right:10px; height:2px; background:var(--branco);
+  transition:transform .25s ease, opacity .25s ease, background .3s ease;
+}
+.nav.nav--solida .nav-hamburguer span, .nav.nav--solida .nav-hamburguer::before, .nav.nav--solida .nav-hamburguer::after{
+  background:var(--verde);
+}
+.nav-hamburguer::before{ top:15px; }
+.nav-hamburguer span{ top:22px; }
+.nav-hamburguer::after{ top:29px; }
+.nav-hamburguer[aria-expanded="true"]::before{ top:22px; transform:rotate(45deg); }
+.nav-hamburguer[aria-expanded="true"] span{ opacity:0; }
+.nav-hamburguer[aria-expanded="true"]::after{ top:22px; transform:rotate(-45deg); }
+
+/* ============ ÂNCORAS DO MENU ============
+   A nav é position:fixed; sem isto, o salto do href="#contato" (e dos demais
+   itens do menu) para na borda exata da seção e o título fica escondido atrás
+   da nav. scroll-margin-top empurra o alvo para baixo da nav antes de parar. */
+#topo, #sobre, #servicos, #diferenciais, #como-trabalhamos, #contato{
+  scroll-margin-top:calc(var(--nav-h) + 16px);
+}
+
+/* ============ HERO ============
+   Vídeo estático (sem zoom/parallax no scroll) — mesmo padrão do hero da
+   whoop.com: <video> com transform:none dentro de uma seção de altura normal,
+   não um trilho sticky gigante. */
+.hero{
+  /* 100svh = altura visível com a barra do navegador à mostra. Com 100vh puro o
+     celular reserva a tela sem a barra e o segundo botão nasce cortado. */
+  position:relative; height:100vh; height:100svh; min-height:560px; overflow:hidden;
+  display:flex; align-items:center;
+  background:var(--verde);
+}
+.hero-midia-caixa{
+  position:absolute; inset:0; overflow:hidden;
+}
+.hero-midia-caixa img, .hero-midia-caixa video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.hero-veu{
+  position:absolute; inset:0;
+  background:linear-gradient(90deg, rgba(0,20,15,.75) 0%, rgba(0,20,15,.46) 26%, rgba(0,20,15,.14) 48%, rgba(0,20,15,0) 62%);
+}
+@media (max-width:860px){
+  .hero-veu{ background:linear-gradient(180deg, rgba(0,20,15,.72) 0%, rgba(0,20,15,.4) 32%, rgba(0,20,15,.1) 58%, rgba(0,20,15,0) 76%); }
+}
+
+/* cortina que cobre o corte seco do loop do vídeo — e é também a onda
+   decorativa do rodapé da hero: em repouso, um clip-path só deixa a fresta
+   ondulada visível (a "onda"); no gatilho da transição, o mesmo clip-path
+   se abre até virar um retângulo cheio, cobrindo tudo. Onda e cortina são
+   literalmente o mesmo elemento/gradiente — nunca desencontram em cor, e a
+   onda "sobe junto" porque é a borda de cima desse clip subindo. */
+.hero-cortina{
+  position:absolute; inset:0; z-index:1;
+  background:var(--gradiente-institucional);
+  clip-path:polygon(
+    0% 91.1%, 13.9% 94.1%, 26.9% 92.6%, 39.7% 90.5%, 52.8% 91.7%,
+    65.6% 93.7%, 77.4% 92.8%, 88.7% 91.7%, 100% 93%, 100% 100%, 0% 100%
+  );
+  transition:clip-path 1.6s ease-in-out;
+  will-change:clip-path;
+}
+.hero-cortina.hero-cortina--ativa{
+  clip-path:polygon(
+    0% 0%, 13.9% 0%, 26.9% 0%, 39.7% 0%, 52.8% 0%,
+    65.6% 0%, 77.4% 0%, 88.7% 0%, 100% 0%, 100% 100%, 0% 100%
+  );
+}
+/* precisa vencer ".hero-midia-caixa img" (que estica qualquer <img> pra
+   100%/cover) — daí o seletor composto em vez de só ".hero-cortina-logo" */
+.hero-cortina .hero-cortina-logo{
+  position:absolute; inset:auto; top:50%; left:68%; right:auto; bottom:auto;
+  width:min(230px, 19vw); height:auto; object-fit:contain;
+  opacity:0; transform:translate(-50%,-50%) scale(.9);
+  transition:opacity .9s ease .5s, transform .9s ease .5s;
+}
+.hero-cortina.hero-cortina--ativa .hero-cortina-logo{
+  opacity:1; transform:translate(-50%,-50%) scale(1);
+}
+@media (max-width:860px){
+  .hero-cortina .hero-cortina-logo{ left:50%; width:150px; }
+  /* no mobile a largura cai muito mas a altura da hero quase não muda —
+     com a mesma faixa de 14% a onda ficaria alta e ultrapassaria a curva
+     branca; encolhe a faixa pra acompanhar melhor */
+  .hero-cortina{
+    clip-path:polygon(
+      0% 94.9%, 13.9% 96.7%, 26.9% 95.8%, 39.7% 94.6%, 52.8% 95.3%,
+      65.6% 96.4%, 77.4% 95.9%, 88.7% 95.3%, 100% 96%, 100% 100%, 0% 100%
+    );
+  }
+}
+
+.hero-conteudo{
+  position:relative; z-index:2; width:100%;
+}
+.hero-eyebrow{
+  color:rgba(255,255,255,.85); font-size:12.5px; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; margin:0 0 22px;
+  text-shadow:0 2px 12px rgba(0,10,8,.55);
+}
+.hero-conteudo h1{
+  color:var(--branco); font-size:clamp(2.6rem, 6vw, 4.6rem); max-width:14ch; margin-bottom:.3em;
+  text-shadow:0 4px 24px rgba(0,10,8,.5);
+}
+.hero-conteudo h1 .accent{ font-style:normal; }
+/* peso 300 deixa o circunflexo de "você" fino e pontudo demais no tamanho do hero */
+.hero-conteudo h1 .hero-voce{ font-weight:400; }
+.hero-conteudo p{
+  color:rgba(255,255,255,.85); font-size:1.05rem; max-width:44ch; margin-bottom:2em;
+  text-shadow:0 2px 14px rgba(0,10,8,.5);
+}
+.hero-botoes{ display:flex; gap:18px; flex-wrap:wrap; }
+
+/* entrada suave do texto da hero ao carregar a página (independe do scroll) */
+.hero-eyebrow, .hero-conteudo h1, .hero-conteudo p, .hero-botoes{
+  animation:entrada-hero .9s cubic-bezier(.16,.8,.24,1) both;
+}
+.hero-eyebrow{ animation-delay:.15s; }
+.hero-conteudo h1{ animation-delay:.32s; }
+.hero-conteudo p{ animation-delay:.52s; }
+.hero-botoes{ animation-delay:.68s; }
+@keyframes entrada-hero{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion: reduce){
+  .hero-eyebrow, .hero-conteudo h1, .hero-conteudo p, .hero-botoes{ animation:none; opacity:1; transform:none; }
+}
+
+.onda-divisor{
+  position:absolute; left:0; right:0; bottom:-1px; z-index:3; line-height:0;
+}
+.onda-divisor svg{ width:100%; height:auto; display:block; }
+
+/* ============ INTRO ============ */
+.intro{ position:relative; background:#f4f5f4; padding:96px 0; margin-top:-4px; }
+.intro-grid{ display:grid; grid-template-columns:1fr 1.21fr; gap:48px; align-items:center; }
+.intro-conteudo{ max-width:560px; }
+.intro-marca{ width:28px; height:3px; background:var(--roxo); margin-bottom:22px; }
+.intro h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); }
+.intro h2 .linha-clara{ display:block; color:var(--verde-claro); font-style:italic; }
+.intro p{ max-width:46ch; font-size:1rem; margin-top:20px; }
+.intro-imagem img{ width:100%; height:auto; filter:drop-shadow(0 22px 32px rgba(0,53,39,.18)); }
+
+/* ============ SOBRE (parallax: do branco para o gradiente institucional) ============
+   A seção entra com o gradiente da marca (verde → roxo, na horizontal como no
+   manual) entrando pela esquerda: a seção começa branca e vai ganhando cor
+   conforme atravessa a tela — no meio do caminho ela inteira é um degradê
+   horizontal cor → branco. São duas camadas movidas só por transform, dirigidas
+   pelas variáveis --coloracao (0 = branco, 1 = gradiente cheio) e --desloc (px),
+   que o <script> escreve na seção a cada quadro.
+   As letras acompanham: escuras sobre o branco e brancas quando a cor as
+   alcança — a virada corre junto com o degradê (ver .sobre-texto). */
+.sobre{
+  --coloracao:0;
+  --desloc:0px;
+  /* comprimento da transição cor→branco, em larguras de seção. No desktop o
+     texto ocupa só a metade direita e uma rampa longa fica macia; no celular o
+     texto atravessa a tela inteira e a rampa longa deixava uma coluna inteira
+     de palavras no meio-tom — por isso ela encurta no @media lá embaixo.
+     O <script> lê este valor: mudar aqui muda fundo e tinta juntos. */
+  --rampa:.6;
+  /* padrões seguros: sem o script, a seção fica branca com o texto escuro */
+  --tinta0:-200%;
+  --tinta1:-100%;
+  --virada-esq:1;
+  position:relative;
+  isolation:isolate;      /* prende as camadas de z-index negativo dentro da seção */
+  overflow:hidden;
+  display:flex; align-items:center;
+  min-height:min(86vh, 800px);
+  padding:120px 0;
+  background:var(--branco);
+}
+.sobre-fundo{
+  /* a sobra lateral (128% de largura) é o que o deslocamento horizontal consome:
+     sem ela o parallax descobriria a borda do gradiente nos extremos */
+  position:absolute; top:0; bottom:0; left:-14%; width:128%; z-index:-2;
+  background:linear-gradient(90deg, var(--verde) 0%, var(--roxo) 100%);
+  transform:translate3d(var(--desloc), 0, 0);
+  will-change:transform;
+}
+/* as ondas correm em outro ritmo e no sentido oposto — é a diferença entre as
+   camadas que dá profundidade, não o deslocamento em si */
+.sobre-ondas{
+  position:absolute; left:-16%; top:-6%; width:132%; height:112%;
+  transform:translate3d(calc(var(--desloc) * -1.4), calc(var(--desloc) * .28), 0);
+}
+.sobre-veu{
+  position:absolute; top:0; bottom:0; left:0; width:250%; z-index:-1;
+  /* o véu tem 2,5× a largura da seção, então a parada da rampa vale --rampa/2,5 */
+  background:linear-gradient(to right, rgba(255,255,255,0) 0%, var(--branco) calc(var(--rampa) * 40%));
+  /* a borda transparente do véu (onde a cor começa) percorre de -rampa até +1
+     largura de seção, ou seja (1 + rampa) de curso — os mesmos números que o
+     <script> usa para posicionar a virada da tinta */
+  transform:translate3d(calc((var(--coloracao) * (1 + var(--rampa)) - var(--rampa)) * 40%), 0, 0);
+  will-change:transform;
+}
+.sobre .container{ display:flex; align-items:center; gap:5vw; }
+.sobre-logo{ width:clamp(160px, 20vw, 280px); height:auto; flex:none; object-fit:contain; }
+.sobre-painel{ position:relative; max-width:min(600px, 56%); margin-left:auto; }
+/* A VIRADA DA TINTA
+   O mesmo degradê horizontal do fundo, recortado nos glifos: preto enquanto o
+   fundo ali ainda é branco, branco quando a cor alcança aquela letra. --tinta0
+   e --tinta1 são as posições da virada dentro desta caixa, escritas pelo
+   <script>; como todos os filhos ocupam a largura do bloco, as mesmas
+   porcentagens valem para eles e a virada acontece na mesma coluna.
+   A rampa da tinta é curta de propósito: só uma ou duas letras por vez ficam
+   no meio-tom em que nem preto nem branco contrastariam com o fundo. */
+.sobre-texto{
+  background-image:linear-gradient(to right, var(--branco) var(--tinta0), var(--cinza-texto) var(--tinta1));
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+}
+.sobre-texto h2, .sobre .eyebrow, .sobre-link{
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+}
+.sobre-texto h2{ background-image:linear-gradient(to right, var(--branco) var(--tinta0), var(--preto) var(--tinta1)); }
+.sobre .eyebrow{ background-image:linear-gradient(to right, var(--branco) var(--tinta0), var(--roxo) var(--tinta1)); }
+.sobre-link{ background-image:linear-gradient(to right, var(--branco) var(--tinta0), var(--verde) var(--tinta1)); }
+/* o traço do eyebrow e a seta do link não são texto: seguem a virada da coluna
+   onde estão (a borda esquerda do bloco) por color-mix */
+.sobre .eyebrow::before{ background:color-mix(in srgb, var(--roxo) calc(var(--virada-esq) * 100%), var(--branco)); }
+.sobre-link svg{ stroke:color-mix(in srgb, var(--verde) calc(var(--virada-esq) * 100%), var(--branco)); }
+.sobre h2{ font-size:clamp(1.9rem,3.2vw,2.5rem); }
+.sobre-link{
+  display:flex; align-items:center; gap:10px; margin-top:8px;
+  font-weight:600; font-size:14px;
+}
+.sobre-link svg{ width:18px; height:18px; flex:none; }
+@media (prefers-reduced-motion: reduce){
+  /* sem scroll dirigindo nada, a cor para antes de chegar no texto e os padrões
+     de --tinta0/--tinta1 mantêm as letras escuras */
+  .sobre{ --coloracao:.32; --desloc:0px; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width:860px){
+  /* .32 é calibrado para a rampa de .6: com a rampa curta do celular ele
+     deixaria a faixa esquerda da seção em cor cheia, com o texto escuro por
+     cima e ilegível. .153 recoloca a borda da cor no mesmo ponto relativo. */
+  .sobre{ --coloracao:.153; }
+}
+@media (forced-colors: active){
+  /* no alto contraste o recorte no texto some: devolve cor sólida às letras */
+  .sobre-texto, .sobre-texto h2, .sobre .eyebrow, .sobre-link{
+    background-image:none; color:CanvasText;
+  }
+}
+
+/* ============ SERVIÇOS ============ */
+.servicos{ padding:110px 0; background:#f7f8f7; }
+.servicos-topo{ max-width:640px; margin-bottom:56px; }
+.servicos-topo h2{ font-size:clamp(1.9rem,3.2vw,2.5rem); }
+.servicos-grid{
+  display:grid; grid-template-columns:repeat(6,1fr); gap:18px; margin-bottom:44px;
+}
+.servico-card{
+  --atraso: 0s;
+  opacity:0;
+  background:var(--branco); border:1px solid #eaeaea; border-radius:6px;
+  padding:30px 22px; text-align:center;
+  /* uma única declaração de transition (não pode ser dividida entre regras: a
+     última a "ganhar" a cascata substituiria as demais por inteiro) — o atraso
+     de entrada fica isolado na var(--atraso) para não atrasar o hover */
+  transition: opacity .7s cubic-bezier(.16,.8,.24,1) var(--atraso),
+              transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.servico-card.visivel{ opacity:1; }
+@media (prefers-reduced-motion: reduce){ .servico-card{ opacity:1; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; } }
+.servico-card:hover{ transform:translateY(-6px); box-shadow:0 16px 32px rgba(0,53,39,.1); border-color:transparent; }
+.servico-card svg{ width:40px; height:40px; color:var(--verde); margin:0 auto 18px; transition:transform .3s ease; }
+.servico-card:hover svg{ transform:scale(1.12) translateY(-2px); }
+.servico-card h3{ font-family:var(--fonte-corpo); font-size:15px; font-weight:600; color:var(--preto); margin-bottom:10px; }
+.servico-card p{ font-size:13.5px; margin:0; }
+
+.servicos-grid .servico-card:nth-child(1){ --atraso:0s; }
+.servicos-grid .servico-card:nth-child(2){ --atraso:.06s; }
+.servicos-grid .servico-card:nth-child(3){ --atraso:.12s; }
+.servicos-grid .servico-card:nth-child(4){ --atraso:.18s; }
+.servicos-grid .servico-card:nth-child(5){ --atraso:.24s; }
+.servicos-grid .servico-card:nth-child(6){ --atraso:.3s; }
+
+/* ============ DIFERENCIAIS ============ */
+.diferenciais{ background:var(--verde); color:var(--branco); padding:100px 0; }
+.diferenciais .eyebrow{ color:var(--verde-claro); }
+.diferenciais .eyebrow::before{ background:var(--verde-claro); }
+.diferenciais-topo{ margin-bottom:56px; max-width:640px; }
+.diferenciais-topo h2{ color:var(--branco); font-size:clamp(1.9rem,3.2vw,2.5rem); }
+.diferenciais-topo h2 .accent{ color:var(--verde-claro); }
+.diferenciais-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.diferencial-item{ padding:0 30px; border-left:1px solid rgba(255,255,255,.18); }
+.diferencial-item:first-child{ border-left:none; padding-left:0; }
+.diferencial-item svg{ width:36px; height:36px; margin-bottom:20px; color:var(--verde-claro); transition:transform .35s ease; }
+.diferencial-item:hover svg{ transform:scale(1.15) rotate(-3deg); }
+.diferencial-item h3{ font-family:var(--fonte-corpo); color:var(--branco); font-size:15px; font-weight:600; margin-bottom:12px; }
+.diferencial-item p{ color:rgba(255,255,255,.82); font-size:13.5px; }
+
+.diferenciais-grid .diferencial-item:nth-child(1){ --atraso:0s; }
+.diferenciais-grid .diferencial-item:nth-child(2){ --atraso:.08s; }
+.diferenciais-grid .diferencial-item:nth-child(3){ --atraso:.16s; }
+.diferenciais-grid .diferencial-item:nth-child(4){ --atraso:.24s; }
+
+/* ============ COMO TRABALHAMOS (fundo: vídeo do mapa, em loop ambiente) ============ */
+.trabalhamos{ position:relative; padding:110px 0; overflow:hidden; background:var(--verde); }
+.trabalhamos-midia{ position:absolute; inset:0; }
+.trabalhamos-midia img, .trabalhamos-midia video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+}
+.trabalhamos-midia video{ opacity:0; transition:opacity .6s ease; }
+.trabalhamos-midia video.pronto{ opacity:1; }
+
+/* O roxo desenhado no clipe é um violeta bem mais saturado que o --roxo (#330243) da marca.
+   Opção de correção de cor — NÃO aplicar por padrão: afeta o mapa inteiro, não só os arcos.
+   Descomentar apenas se o cliente aprovar o efeito no vídeo inteiro.
+.trabalhamos-midia video{ filter: hue-rotate(-8deg) saturate(.7); }
+*/
+
+.trabalhamos-veu{ position:absolute; inset:0; background:rgba(0,18,13,.8); }
+
+.trabalhamos .container{ position:relative; z-index:2; }
+.trabalhamos-topo{ max-width:520px; margin-bottom:64px; }
+.trabalhamos-topo h2{ color:var(--branco); font-size:clamp(1.9rem,3.2vw,2.5rem); }
+.trabalhamos-topo h2 .accent{ color:var(--verde-claro); }
+.etapas{ display:grid; grid-template-columns:repeat(5,1fr); gap:20px; position:relative; }
+.etapa{ text-align:left; position:relative; }
+.etapa-icone{
+  width:64px; height:64px; border-radius:50%; border:1px solid rgba(255,255,255,.35);
+  display:flex; align-items:center; justify-content:center; margin-bottom:22px; position:relative; background:var(--branco); z-index:1;
+  transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+.etapa:hover .etapa-icone{ border-color:var(--verde-claro); transform:scale(1.08); box-shadow:0 8px 20px rgba(0,0,0,.3); }
+.etapa-icone svg{ width:26px; height:26px; color:var(--verde); }
+.etapa:not(:last-child)::after{
+  content:""; position:absolute; top:32px; left:calc(50% + 52px); width:calc(100% - 84px);
+  border-top:2px dotted rgba(255,255,255,.35);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .9s cubic-bezier(.16,.8,.24,1) calc(var(--atraso, 0s) + .25s);
+}
+.etapa.visivel:not(:last-child)::after{ transform:scaleX(1); }
+.etapa-numero{ color:var(--verde-claro); font-family:var(--fonte-titulo); font-size:1.6rem; margin-bottom:6px; display:block; }
+.etapa h3{ font-family:var(--fonte-corpo); font-size:14.5px; font-weight:600; color:var(--branco); margin-bottom:8px; }
+.etapa p{ font-size:13px; margin:0; color:rgba(255,255,255,.78); }
+
+.etapas .etapa:nth-child(1){ --atraso:0s; }
+.etapas .etapa:nth-child(2){ --atraso:.1s; }
+.etapas .etapa:nth-child(3){ --atraso:.2s; }
+.etapas .etapa:nth-child(4){ --atraso:.3s; }
+.etapas .etapa:nth-child(5){ --atraso:.4s; }
+@media (prefers-reduced-motion: reduce){
+  .etapa:not(:last-child)::after{ transform:scaleX(1); transition:none; }
+}
+
+/* ============ FALE COM ESPECIALISTA ============ */
+.especialista{
+  background:var(--gradiente-institucional);
+  color:var(--branco);
+  padding:36px 0;
+}
+.especialista .container{
+  display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;
+}
+.especialista-intro-grupo{ display:flex; align-items:center; gap:24px; }
+.especialista-intro{ display:flex; align-items:center; gap:18px; max-width:420px; }
+.especialista-intro svg{ width:48px; height:48px; flex:none; opacity:.9; }
+.especialista-intro h3{ font-family:var(--fonte-corpo); color:var(--branco); font-size:16px; font-weight:600; margin-bottom:6px; }
+.especialista-intro p{ font-size:13.5px; margin:0; color:rgba(255,255,255,.82); }
+.especialista-contatos{ display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
+.especialista-contatos a{ display:flex; align-items:center; gap:10px; font-size:14px; font-weight:500; }
+.especialista-contatos svg{ width:20px; height:20px; flex:none; }
+.especialista .botao--roxo{ background:rgba(0,0,0,.28); }
+.especialista .botao--roxo:hover{ background:rgba(0,0,0,.42); }
+
+/* ============ CTA FINAL ============ */
+.cta-final{ position:relative; padding:120px 0; overflow:hidden; background:var(--verde); }
+.cta-final img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:22% 26%; opacity:.55; }
+.cta-final::before{
+  content:""; position:absolute; inset:0;
+  background:var(--gradiente-institucional); opacity:.82;
+}
+.cta-final .container{ position:relative; z-index:1; text-align:center; }
+.cta-final h2{ color:var(--branco); font-size:clamp(2rem,4vw,3rem); max-width:18ch; margin:0 auto .5em; }
+.cta-final h2 .accent{ color:var(--verde-claro); }
+.cta-final .botao{ margin-top:12px; }
+
+/* ============ RODAPÉ ============ */
+.rodape{ background:#0a0a0a; color:rgba(255,255,255,.7); padding:80px 0 28px; }
+.rodape-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:56px; }
+.rodape-logo{ width:170px; margin-bottom:20px; }
+.rodape-sobre p{ font-size:13.5px; max-width:32ch; }
+.rodape h4{
+  color:var(--branco); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin:0 0 20px;
+}
+.rodape ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
+.rodape ul a{ font-size:13.5px; transition:color .2s ease; }
+.rodape ul a:hover{ color:var(--verde-claro); }
+.rodape-contato li{ display:flex; gap:10px; font-size:13.5px; align-items:flex-start; }
+.rodape-contato svg{ width:16px; height:16px; flex:none; margin-top:2px; color:var(--verde-claro); }
+.rodape-baixo{
+  border-top:1px solid rgba(255,255,255,.12); padding-top:24px;
+  text-align:center; font-size:12.5px; color:rgba(255,255,255,.5);
+}
+
+/* ============ MODAL DE COTAÇÃO ============
+   <dialog> nativo: o foco fica preso dentro dele, Esc fecha e o resto da
+   página fica inerte sem uma linha de JS para isso. Quem não tiver suporte
+   (navegador antigo) nunca chega aqui — o clique segue o href="#contato"
+   original e cai na seção de contato, ver o <script>. */
+.cotacao{
+  width:min(520px, calc(100vw - 28px));
+  max-height:calc(100vh - 28px);
+  max-height:calc(100dvh - 28px);
+  padding:0; border:none; border-radius:10px;
+  background:var(--branco); color:var(--cinza-texto);
+  box-shadow:0 30px 80px rgba(0,10,8,.38);
+  overflow:hidden;
+}
+/* o display só no estado aberto: uma regra de autor sem [open] venceria o
+   display:none que o navegador dá ao <dialog> fechado (origem de autor ganha
+   da origem do navegador) e o modal ocuparia espaço em branco no fim da página */
+.cotacao[open]{ display:flex; flex-direction:column; }
+.cotacao::backdrop{ background:rgba(0,14,10,.62); }
+.cotacao[open]{ animation:cotacao-entra .28s cubic-bezier(.16,.8,.24,1); }
+.cotacao[open]::backdrop{ animation:cotacao-veu .28s ease; }
+@keyframes cotacao-entra{ from{ opacity:0; transform:translateY(14px) scale(.98); } }
+@keyframes cotacao-veu{ from{ opacity:0; } }
+@media (prefers-reduced-motion: reduce){
+  .cotacao[open], .cotacao[open]::backdrop{ animation:none; }
+}
+
+.cotacao-topo{
+  flex:none; position:relative;
+  background:var(--gradiente-institucional); color:var(--branco);
+  padding:26px 56px 26px 28px;
+}
+.cotacao-topo .eyebrow{ color:rgba(255,255,255,.82); margin-bottom:10px; }
+.cotacao-topo .eyebrow::before{ background:var(--verde-claro); }
+.cotacao-topo h2{ color:var(--branco); font-size:1.55rem; margin:0; }
+.cotacao-fechar{
+  position:absolute; top:16px; right:16px;
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.3); background:transparent; color:var(--branco);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s ease, border-color .2s ease;
+}
+.cotacao-fechar:hover{ background:rgba(255,255,255,.16); border-color:var(--branco); }
+.cotacao-fechar svg{ width:16px; height:16px; }
+
+/* as três telas do modal moram no mesmo <dialog> e trocam por data-estado —
+   assim o que o visitante digitou sobrevive a uma falha de envio */
+.cotacao-forma, .cotacao-enviando, .cotacao-sucesso{ display:none; }
+.cotacao[data-estado="formulario"] .cotacao-forma{ display:block; }
+.cotacao[data-estado="enviando"] .cotacao-enviando{ display:flex; }
+.cotacao[data-estado="sucesso"] .cotacao-sucesso{ display:block; }
+
+.cotacao-forma, .cotacao-enviando, .cotacao-sucesso{
+  padding:26px 28px 28px; overflow-y:auto;
+}
+.cotacao-intro{ font-size:14px; margin:0 0 20px; }
+
+.cotacao-campo{ margin-bottom:16px; }
+.cotacao-campo label{
+  display:block; font-size:12px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--preto); margin-bottom:7px;
+}
+.cotacao-campo input{
+  width:100%; font-family:inherit; font-size:15px; font-weight:400; color:var(--preto);
+  padding:12px 14px; border:1px solid #d9dcda; border-radius:4px; background:var(--branco);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.cotacao-campo input::placeholder{ color:#a7aca9; }
+.cotacao-campo input:focus{
+  outline:none; border-color:var(--verde-claro);
+  box-shadow:0 0 0 3px rgba(62,158,126,.18);
+}
+.cotacao-campo input[aria-invalid="true"]{ border-color:#b3261e; }
+.cotacao-campo input[aria-invalid="true"]:focus{ box-shadow:0 0 0 3px rgba(179,38,30,.16); }
+.cotacao-erro{ display:block; font-size:12.5px; color:#b3261e; margin-top:6px; min-height:1px; }
+
+/* a isca do FormSubmit: preenchida só por robô, some da tela e da leitura de tela */
+.cotacao-isca{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+.cotacao-falha{
+  display:none; gap:10px; align-items:flex-start;
+  background:#fdecea; border:1px solid #f3c6c2; border-radius:4px;
+  padding:12px 14px; margin-bottom:16px; font-size:13.5px; color:#8c1d18;
+}
+.cotacao-falha a{ color:#8c1d18; text-decoration:underline; font-weight:600; }
+.cotacao[data-falhou="sim"] .cotacao-falha{ display:flex; }
+.cotacao-falha svg{ width:18px; height:18px; flex:none; margin-top:1px; }
+
+.cotacao-enviar{ width:100%; justify-content:center; margin-top:4px; }
+.cotacao-aviso{ font-size:11.5px; color:#8a8f8c; margin:14px 0 0; text-align:center; line-height:1.6; }
+
+.cotacao-enviando{
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:16px; min-height:220px; text-align:center;
+}
+.cotacao-roda{
+  width:36px; height:36px; border-radius:50%;
+  border:3px solid rgba(0,53,39,.15); border-top-color:var(--verde);
+  animation:cotacao-gira .8s linear infinite;
+}
+@keyframes cotacao-gira{ to{ transform:rotate(360deg); } }
+@media (prefers-reduced-motion: reduce){ .cotacao-roda{ animation-duration:2.4s; } }
+
+.cotacao-sucesso{ text-align:center; }
+.cotacao-selo{
+  width:56px; height:56px; border-radius:50%; margin:6px auto 18px;
+  background:rgba(62,158,126,.14); color:var(--verde);
+  display:flex; align-items:center; justify-content:center;
+}
+.cotacao-selo svg{ width:26px; height:26px; }
+.cotacao-sucesso h3{ font-size:1.4rem; margin-bottom:10px; }
+.cotacao-sucesso p{ font-size:14px; margin:0 auto 20px; max-width:36ch; }
+.cotacao-whats{ width:100%; justify-content:center; }
+.cotacao-whats svg{ width:18px; height:18px; }
+.cotacao-secundario{
+  display:block; width:100%; margin-top:12px; padding:10px;
+  background:none; border:none; font-size:13px; font-weight:600; color:var(--cinza-texto);
+  text-decoration:underline;
+}
+
+/* ============ MODAL DE TRABALHE CONOSCO (reaproveita a base .cotacao) ============
+   Mesmo <dialog> e mesmos estados (formulário/enviando/sucesso) do modal de
+   cotação — só o conteúdo muda. .cotacao--ampla dá espaço para o formulário
+   maior; .cotacao-linha agrupa dois campos por linha, como no modelo do cliente.
+   Precisa vir ANTES do @media(560px) abaixo: mesma especificidade, então quem
+   ganha no mobile é a regra que aparecer depois no arquivo — se estas bases
+   viessem depois, elas venceriam o empilhamento de 1 coluna do celular. */
+.cotacao--ampla{ width:min(640px, calc(100vw - 28px)); }
+.cotacao-linha{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.cotacao-campo textarea{
+  width:100%; font-family:inherit; font-size:15px; font-weight:400; color:var(--preto);
+  padding:12px 14px; border:1px solid #d9dcda; border-radius:4px; background:var(--branco);
+  resize:vertical; min-height:92px;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.cotacao-campo textarea::placeholder{ color:#a7aca9; }
+.cotacao-campo textarea:focus{
+  outline:none; border-color:var(--verde-claro);
+  box-shadow:0 0 0 3px rgba(62,158,126,.18);
+}
+
+.cotacao-campo input[type="file"]{
+  width:100%; font-family:inherit; font-size:13.5px; color:var(--cinza-texto);
+  padding:10px 12px; border:1px dashed #c8cdc9; border-radius:4px; background:#fafbfa;
+  cursor:pointer; transition:border-color .2s ease, background .2s ease;
+}
+.cotacao-campo input[type="file"]:hover{ border-color:var(--verde-claro); background:#f4f8f6; }
+.cotacao-campo input[type="file"]::file-selector-button{
+  margin-right:12px; padding:8px 14px; border:none; border-radius:3px;
+  background:var(--verde); color:var(--branco); font-family:inherit;
+  font-size:11.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s ease;
+}
+.cotacao-campo input[type="file"]::file-selector-button:hover{ background:#002018; }
+.cotacao-campo input[type="file"][aria-invalid="true"]{ border-color:#b3261e; border-style:solid; }
+
+.trabalhe-consentimento{
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13px; line-height:1.5; color:var(--cinza-texto);
+  margin:2px 0 4px; cursor:pointer;
+}
+.trabalhe-consentimento input{
+  width:16px; height:16px; margin-top:2px; flex:none; accent-color:var(--verde); cursor:pointer;
+}
+
+@media (max-width:560px){
+  .cotacao{ width:calc(100vw - 20px); }
+  .cotacao-topo{ padding:22px 52px 22px 22px; }
+  .cotacao-topo h2{ font-size:1.3rem; }
+  .cotacao-forma, .cotacao-enviando, .cotacao-sucesso{ padding:22px 22px 24px; }
+  /* 16px é o mínimo para o iOS não dar zoom sozinho ao focar o campo */
+  .cotacao-campo input, .cotacao-campo textarea{ font-size:16px; }
+  .cotacao-linha{ grid-template-columns:1fr; gap:0; }
+  .cotacao--ampla{ width:calc(100vw - 20px); }
+  .cotacao-campo input[type="file"]{ font-size:13px; }
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width:1240px){
+  /* daqui para baixo o container já não tem folga: crescer a foto espremeria a
+     manchete da intro em três linhas, então volta a proporção que dá ar ao texto */
+  .intro-grid{ grid-template-columns:1.1fr 1fr; gap:56px; }
+}
+
+@media (max-width:1080px){
+  :root{ --nav-h:72px; }
+  .servicos-grid{ grid-template-columns:repeat(3,1fr); }
+  .diferenciais-grid{ grid-template-columns:repeat(2,1fr); row-gap:44px; }
+  .diferencial-item:nth-child(2n+1){ border-left:none; padding-left:0; }
+  .etapas{ grid-template-columns:repeat(3,1fr); row-gap:44px; }
+  .etapa:nth-child(3)::after{ display:none; }
+  .rodape-grid{ grid-template-columns:1fr 1fr; row-gap:40px; }
+}
+
+/* 7 itens de menu + botão de cotação + WhatsApp não cabem numa linha abaixo de
+   ~1240px (onde o container já está no seu máximo de 1240px) — sem isso o
+   WhatsApp fica cortado fora da tela nessa faixa. Acima de 1240px sobra
+   espaço e cabe tudo, só com quebra de linha ocasional em itens compostos
+   (igual o site já fazia antes, sem virar menu lateral). */
+@media (max-width:1240px){
+  .nav-menu, .nav-cta{ display:none; }
+  .nav-hamburguer{ display:block; }
+  .nav-menu-mobile{
+    /* o painel só aparece com a nav já sólida (portanto encolhida): ancorar em
+       --nav-h cheio deixava uma fresta da página aparecendo entre os dois */
+    position:fixed; top:calc(var(--nav-h) - var(--nav-encolhe)); left:0; right:0; bottom:0; z-index:400;
+    background:var(--branco); padding:24px 28px 40px; display:flex; flex-direction:column; gap:2px;
+    transform:translateX(100%); transition:transform .3s ease; overflow-y:auto;
+  }
+  .nav-menu-mobile.aberto{ display:flex; }
+  .nav-menu-mobile.aberto{ transform:translateX(0); }
+  /* :not(.botao) é essencial — sem ele esta regra (0,1,1) vence o branco de
+     .botao--roxo (0,1,0) e o botão do menu fica preto sobre roxo escuro */
+  .nav-menu-mobile a:not(.botao){
+    font-size:16px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--preto);
+    /* 20px de altura de linha não é alvo de toque: 14px em cima e embaixo levam
+       o item a 48px, o mínimo confortável para o dedo */
+    display:flex; align-items:center; min-height:48px; padding:2px 0;
+  }
+  .nav-menu-mobile .botao{ justify-content:center; margin-top:12px; }
+}
+
+@media (max-width:860px){
+  .container{ padding:0 22px; }
+
+  .hero-conteudo h1{ font-size:clamp(1.9rem, 8.8vw, 2.2rem); }
+  /* empilhados e com largura automática os dois botões saíam com 273px e 284px:
+     desalinhados por 11px. Esticados, viram uma coluna só. */
+  .hero-botoes{ flex-direction:column; align-items:stretch; gap:12px; }
+  .hero-botoes .botao{ justify-content:center; }
+
+  .intro-grid{ grid-template-columns:1fr; gap:36px; }
+
+  /* Aqui o texto passa a ocupar a largura toda, e a rampa longa do desktop
+     deixava uma coluna inteira de palavras no meio-tom em que nem preto nem
+     branco contrastam. Encurtada, a virada passa por cada linha num piscar. */
+  .sobre{ min-height:0; padding:92px 0 100px; --rampa:.22; }
+  .sobre .container{ flex-direction:column; align-items:flex-start; gap:28px; }
+  .sobre-logo{ width:170px; }
+  .sobre-painel{ max-width:none; }
+  /* esticadas sobre uma seção alta e estreita, as ondas viram riscos quase
+     retos atravessando as frases — parecem defeito, não textura */
+  .sobre-ondas{ display:none; }
+
+  .servicos-grid{ grid-template-columns:repeat(2,1fr); }
+
+  .diferenciais-grid{ grid-template-columns:1fr; row-gap:36px; }
+  .diferencial-item{ border-left:none !important; padding-left:0 !important; border-top:1px solid rgba(255,255,255,.18); padding-top:30px; }
+  .diferencial-item:first-child{ border-top:none; padding-top:0; }
+
+  .etapas{ grid-template-columns:1fr; row-gap:36px; }
+  .etapa::after{ display:none !important; }
+
+  .especialista .container{ flex-direction:column; align-items:flex-start; }
+  .especialista-contatos{ width:100%; justify-content:space-between; }
+
+  .rodape-grid{ grid-template-columns:1fr; }
+
+  /* O piso dos clamp() era pensado para desktop (1,8–2rem) e no celular
+     encostava nas duas margens, quebrando manchete em três linhas com órfã na
+     última. Abaixo do ponto em que o piso passa a doer, a medida volta a
+     seguir a largura da tela; acima dele nada muda. */
+  .intro h2{ font-size:clamp(1.4rem, 6.4vw, 1.8rem); }
+  .sobre h2,
+  .servicos-topo h2,
+  .diferenciais-topo h2,
+  .trabalhamos-topo h2{ font-size:clamp(1.45rem, 6.4vw, 1.9rem); }
+  .cta-final h2{ font-size:clamp(1.6rem, 7.4vw, 2rem); }
+}
+
+/* ============ CELULAR ============ */
+@media (max-width:560px){
+  /* Duas colunas aqui davam cartões de 151px: descontado o respiro, sobravam
+     ~107px de texto, uns treze caracteres por linha. Em coluna única o cartão
+     deita — ícone à esquerda, texto à direita — e a seção não vira seis telas. */
+  .servicos-grid{ grid-template-columns:1fr; gap:12px; margin-bottom:32px; }
+  .servico-card{
+    display:grid; grid-template-columns:40px 1fr; column-gap:16px;
+    align-items:start; text-align:left; padding:20px 18px;
+  }
+  .servico-card svg{ width:34px; height:34px; margin:2px 0 0; grid-row:span 2; }
+  .servico-card h3{ margin-bottom:6px; }
+  .servico-card p{ font-size:13.5px; }
+  .servico-card:hover{ transform:none; }
+
+  /* o teto de 14ch é o que dá o corte da manchete no desktop; em 320px ele fica
+     mais estreito que a própria coluna e quebra "Conectamos você" no meio */
+  .hero-conteudo h1{ max-width:none; }
+
+  /* respiros de desktop (100–120px) somavam quase uma tela de vazio entre as
+     seções num aparelho de 780px de altura */
+  .intro{ padding:68px 0; }
+  .sobre{ padding:72px 0 78px; }
+  .servicos{ padding:76px 0; }
+  .diferenciais{ padding:76px 0; }
+  .trabalhamos{ padding:76px 0; }
+  .cta-final{ padding:88px 0; }
+  .rodape{ padding:60px 0 24px; }
+  .servicos-topo, .diferenciais-topo{ margin-bottom:34px; }
+  .trabalhamos-topo{ margin-bottom:38px; }
+
+  .diferenciais-grid{ row-gap:30px; }
+  .diferencial-item{ padding-top:26px !important; }
+
+  .etapas{ row-gap:30px; }
+  .etapa-icone{ width:54px; height:54px; margin-bottom:14px; }
+  .etapa-icone svg{ width:22px; height:22px; }
+
+  /* space-between numa linha que quebra jogava telefone e e-mail para os
+     cantos opostos; empilhados, viram uma lista de contato */
+  .especialista-contatos{ flex-direction:column; align-items:stretch; gap:16px; }
+  .especialista-contatos .botao{ justify-content:center; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="nav" id="nav">
+  <div class="container">
+    <a href="#topo" class="nav-logo" aria-label="HARGUS Shipping Brazil — página inicial">
+      <img class="logo-branca" src="logo-branco.png" alt="HARGUS Shipping Brazil">
+      <img class="logo-cor" src="logo.png" alt="HARGUS Shipping Brazil">
+    </a>
+
+    <nav aria-label="Navegação principal">
+      <ul class="nav-menu">
+        <li><a href="#topo" class="ativo">Home</a></li>
+        <li><a href="#sobre">Sobre a Hargus</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#diferenciais">Diferenciais</a></li>
+        <li><a href="#como-trabalhamos">Como Trabalhamos</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><a href="#contato" data-trabalhe>Trabalhe Conosco</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-controles">
+      <a href="#contato" class="botao botao--roxo nav-cta" data-cotacao>
+        Solicite uma cotação
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="https://wa.me/5541988766004" target="_blank" rel="noopener noreferrer" class="icone-whats" aria-label="Falar no WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+      </a>
+
+      <button class="nav-hamburguer" id="hamburguer" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu">
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-menu-mobile" id="menu-mobile" aria-label="Navegação móvel">
+    <a href="#topo">Home</a>
+    <a href="#sobre">Sobre a Hargus</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#diferenciais">Diferenciais</a>
+    <a href="#como-trabalhamos">Como Trabalhamos</a>
+    <a href="#contato">Contato</a>
+    <a href="#contato" data-trabalhe>Trabalhe Conosco</a>
+    <a href="#contato" class="botao botao--roxo" data-cotacao>
+      Solicite uma cotação
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </nav>
+</header>
+
+<main id="conteudo">
+
+  <!-- ============ HERO (vídeo estático, sem zoom no scroll) ============ -->
+  <section class="hero" id="topo">
+    <div class="hero-midia-caixa" id="hero-midia-caixa">
+      <img id="hero-imagem" src="navio.jpg" alt="Navio porta-contêineres navegando ao entardecer, representando as operações internacionais da HARGUS.">
+      <div class="hero-veu" aria-hidden="true"></div>
+      <div class="hero-cortina" id="hero-cortina" aria-hidden="true">
+        <img class="hero-cortina-logo" src="logo-icone-branco.png" alt="">
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-conteudo" id="hero-conteudo">
+        <p class="hero-eyebrow">Agenciamento de cargas e soluções logísticas</p>
+        <h1>Conectamos<br><span class="accent hero-voce">você</span> ao<br><span class="accent">seu destino</span></h1>
+        <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
+        <div class="hero-botoes">
+          <a href="#contato" class="botao botao--roxo" data-cotacao>
+            Solicite uma cotação
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#contato" class="botao botao--outline-claro" data-trabalhe>
+            Trabalhe Conosco
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- a faixa roxa/verde da onda não é mais desenhada aqui: é a própria
+         .hero-cortina (clip-path) espiando por baixo — cor sempre idêntica
+         à cortina, sem risco de dessincronizar -->
+    <div class="onda-divisor" aria-hidden="true">
+      <svg viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#FFFFFF" d="M0,70 C300,20 560,95 820,55 C1080,15 1260,80 1440,50 L1440,110 L0,110 Z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="container">
+      <div class="intro-grid">
+        <div class="intro-conteudo reveal reveal--esq">
+          <span class="intro-marca" aria-hidden="true"></span>
+          <h2>A logística pode ser complexa.<span class="linha-clara">O seu caminho não precisa ser.</span></h2>
+          <p>Na HARGUS, transformamos desafios logísticos em soluções inteligentes, conectando empresas às melhores oportunidades com eficiência e confiança.</p>
+        </div>
+        <div class="intro-imagem reveal reveal--dir">
+          <img src="containers.png" alt="Dois contêineres marítimos empilhados pintados com a marca HARGUS Shipping Brazil.">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOBRE ============ -->
+  <section class="sobre" id="sobre">
+    <!-- fundo em parallax: gradiente institucional + ondas da marca (Paleta de cores Z) -->
+    <div class="sobre-fundo" aria-hidden="true">
+      <svg class="sobre-ondas" viewBox="0 0 1440 760" preserveAspectRatio="none" focusable="false">
+        <path d="M-40,196 C250,86 520,246 780,172 C1030,100 1240,200 1480,134" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+        <path d="M-40,560 C240,648 500,492 760,558 C1010,622 1230,508 1480,572" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+    <!-- véu branco: recua para a direita conforme a cor entra pela esquerda -->
+    <div class="sobre-veu" aria-hidden="true"></div>
+
+    <div class="container">
+      <img class="sobre-logo reveal" src="logo-branco.png" alt="HARGUS Shipping Brazil">
+      <div class="sobre-painel reveal reveal--dir">
+        <div class="sobre-texto">
+          <p class="eyebrow">Sobre a Hargus</p>
+          <h2>Mais que agenciar cargas.<br>Conectamos <span class="accent">soluções</span>.</h2>
+          <p>A Hargus nasceu para tornar a logística mais simples, eficiente e confiável. Atuamos no agenciamento de cargas, conectando empresas às melhores soluções de transporte e comércio exterior.</p>
+          <p>Mais do que movimentar cargas, buscamos entender cada operação, encontrar o melhor caminho e acompanhar cada etapa, construindo relações de confiança e parceria com nossos clientes.</p>
+          <p>Com foco em sucesso do cliente, agilidade e confiança, trabalhamos para transformar desafios logísticos em soluções que geram valor para o negócio.</p>
+          <a href="#servicos" class="sobre-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Conectamos você ao seu destino
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ SERVIÇOS ============ -->
+  <section class="servicos" id="servicos">
+    <div class="container">
+      <div class="servicos-topo reveal">
+        <p class="eyebrow">Serviços</p>
+        <h2>Soluções completas<br>para <span class="accent">sua logística</span>.</h2>
+        <p>Atuamos em todas as etapas da cadeia logística para entregar a melhor experiência e resultados para o seu negócio.</p>
+      </div>
+
+      <div class="servicos-grid">
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="11" rx="1"/><path d="M3 8l3-4h12l3 4M8 12v3M12 12v3M16 12v3"/></svg>
+          <h3>Agenciamento de Cargas</h3>
+          <p>Gestão e coordenação da operação de transporte.</p>
+        </article>
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z"/></svg>
+          <h3>Frete Nacional e Internacional</h3>
+          <p>Soluções de transporte para movimentação de cargas no Brasil e no exterior.</p>
+        </article>
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9 15.5l2 2 4-4.5"/></svg>
+          <h3>Assessoria Aduaneira</h3>
+          <p>Orientação e suporte em processos e operações aduaneiras.</p>
+        </article>
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13M17 8l-3-3M17 8l-3 3"/><path d="M20 16H7M7 16l3-3M7 16l3 3"/></svg>
+          <h3>Assessoria em Importação e Exportação</h3>
+          <p>Suporte estratégico e operacional nas operações de comércio exterior.</p>
+        </article>
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15h5M9.5 18h3"/></svg>
+          <h3>Despacho Aduaneiro</h3>
+          <p>Gestão dos processos de desembaraço junto aos órgãos competentes.</p>
+        </article>
+        <article class="servico-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/><path d="M12 9v6M9 12h6"/></svg>
+          <h3>Consultoria ANVISA</h3>
+          <p>Suporte para operações sujeitas às exigências e regulamentações da ANVISA.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DIFERENCIAIS ============ -->
+  <section class="diferenciais" id="diferenciais">
+    <div class="container">
+      <div class="diferenciais-topo reveal">
+        <p class="eyebrow">Diferenciais</p>
+        <h2>Por que escolher<br>a <span class="accent">HARGUS</span>?</h2>
+      </div>
+      <div class="diferenciais-grid">
+        <div class="diferencial-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+          <h3>Sucesso do Cliente</h3>
+          <p>O cliente está no centro das nossas decisões. Entendemos cada necessidade para oferecer soluções que realmente contribuam para o sucesso da sua operação e do seu negócio.</p>
+        </div>
+        <div class="diferencial-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          <h3>Agilidade</h3>
+          <p>Na logística, tempo é essencial. Trabalhamos com respostas rápidas, comunicação eficiente e decisões ágeis para que sua carga siga sempre pelo melhor caminho.</p>
+        </div>
+        <div class="diferencial-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-6"/><path d="M2 12l4-4 4 3 4-3 4 3 4-4"/></svg>
+          <h3>Confiança</h3>
+          <p>Construímos relações baseadas em transparência, compromisso e responsabilidade. Acompanhamos cada operação de perto para que nossos clientes tenham segurança em cada etapa.</p>
+        </div>
+        <div class="diferencial-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8-5.1-4.7 6.9-.8L12 2z"/></svg>
+          <h3>Excelência</h3>
+          <p>Buscamos constantemente as melhores soluções, combinando qualidade, eficiência e atenção aos detalhes para entregar uma experiência superior.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMO TRABALHAMOS (com o vídeo do mapa como fundo) ============ -->
+  <section class="trabalhamos" id="como-trabalhamos">
+    <div class="trabalhamos-midia" aria-hidden="true">
+      <img id="trabalhamos-poster" src="mapa-inicio.jpg" alt="">
+      <video id="trabalhamos-video" muted loop playsinline preload="auto"></video>
+      <div class="trabalhamos-veu"></div>
+    </div>
+    <div class="container">
+      <div class="trabalhamos-topo reveal">
+        <p class="eyebrow eyebrow--claro">Como Trabalhamos</p>
+        <h2>Do primeiro contato ao destino, estamos com você <span class="accent">em cada etapa</span>.</h2>
+      </div>
+
+      <div class="etapas">
+        <div class="etapa reveal">
+          <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-4 4V5z"/><circle cx="9" cy="10" r=".4" fill="currentColor" stroke="none"/><circle cx="12" cy="10" r=".4" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r=".4" fill="currentColor" stroke="none"/></svg></div>
+          <span class="etapa-numero">01</span>
+          <h3>Entendemos sua necessidade</h3>
+          <p>Conhecemos sua operação, carga, origem, destino e necessidades específicas.</p>
+        </div>
+        <div class="etapa reveal">
+          <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.5-4.5"/></svg></div>
+          <span class="etapa-numero">02</span>
+          <h3>Encontramos a melhor solução</h3>
+          <p>Analisamos as opções disponíveis e buscamos a alternativa mais adequada para sua operação.</p>
+        </div>
+        <div class="etapa reveal">
+          <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="1"/><path d="M4 7l3-4h10l3 4M9 11v4M15 11v4"/></svg></div>
+          <span class="etapa-numero">03</span>
+          <h3>Agenciamos e coordenamos</h3>
+          <p>Cuidamos da contratação e coordenamos os envolvidos para garantir uma operação eficiente.</p>
+        </div>
+        <div class="etapa reveal">
+          <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16V7h10v9M13 10h4l3 3v3h-2"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div>
+          <span class="etapa-numero">04</span>
+          <h3>Acompanhamos cada etapa</h3>
+          <p>Mantemos você informado durante todo o processo, garantindo maior controle e segurança.</p>
+        </div>
+        <div class="etapa reveal">
+          <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
+          <span class="etapa-numero">05</span>
+          <h3>Chegamos ao destino</h3>
+          <p>Acompanhamos a operação até sua conclusão, buscando garantir que tudo aconteça conforme planejado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FALE COM ESPECIALISTA ============ -->
+  <section class="especialista" id="contato">
+    <div class="container">
+      <div class="especialista-intro-grupo">
+        <div class="especialista-intro reveal reveal--esq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
+          <div>
+            <h3>Fale com um especialista</h3>
+            <p>Nossa equipe está pronta para entender sua necessidade e oferecer a melhor solução para o seu negócio.</p>
+          </div>
+        </div>
+        <a href="https://wa.me/5541988766004" target="_blank" rel="noopener noreferrer" class="icone-whats" aria-label="Falar no WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+        </a>
+      </div>
+      <div class="especialista-contatos reveal reveal--dir">
+        <a href="tel:+5541988766004">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L8 9.7a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2.1z"/></svg>
+          +55 (41) 98876-6004
+        </a>
+        <a href="mailto:comercial@hargus.com.br">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          comercial@hargus.com.br
+        </a>
+        <a href="#contato" class="botao botao--roxo" data-cotacao>
+          Solicite uma cotação
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#contato" class="botao botao--outline-claro" data-trabalhe>
+          Trabalhe Conosco
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="cta-final">
+    <img src="navio-aereo.jpg" alt="" aria-hidden="true">
+    <div class="container">
+      <h2 class="reveal">Vamos encontrar o melhor caminho para <span class="accent">sua carga</span>?</h2>
+      <a href="#contato" class="botao botao--roxo" data-cotacao>
+        Solicite uma cotação
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ RODAPÉ ============ -->
+<footer class="rodape">
+  <div class="container">
+    <div class="rodape-grid">
+      <div class="rodape-sobre">
+        <img class="rodape-logo" src="logo-branco.png" alt="HARGUS Shipping Brazil">
+        <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
+      </div>
+
+      <nav aria-label="Navegação do rodapé">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#topo">Home</a></li>
+          <li><a href="#sobre">Sobre a Hargus</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#diferenciais">Diferenciais</a></li>
+          <li><a href="#como-trabalhamos">Como Trabalhamos</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Agenciamento de Cargas</a></li>
+          <li><a href="#servicos">Frete Nacional e Internacional</a></li>
+          <li><a href="#servicos">Assessoria Aduaneira</a></li>
+          <li><a href="#servicos">Importação e Exportação</a></li>
+          <li><a href="#servicos">Despacho Aduaneiro</a></li>
+          <li><a href="#servicos">Consultoria ANVISA</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contato</h4>
+        <ul class="rodape-contato">
+          <li>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+            <a href="https://wa.me/5541988766004" target="_blank" rel="noopener noreferrer">+55 (41) 98876-6004</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            <a href="mailto:comercial@hargus.com.br">comercial@hargus.com.br</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+            <a href="https://www.google.com/maps/search/?api=1&query=Av.%20Jo%C3%A3o%20Gualberto%2C%201342%20-%20Juvev%C3%AA%2C%20Curitiba%20-%20PR%2C%2080030-000" target="_blank" rel="noopener noreferrer">Av. João Gualberto, 1342<br>Juvevê - Curitiba/PR<br>CEP 80030-000</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rodape-baixo">
+      <p style="margin:0;">© <span id="ano-atual">2026</span> HARGUS SHIPPING BRAZIL. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL DE COTAÇÃO ============
+     Aberto por qualquer botão com [data-cotacao]. Sem JS (ou em navegador sem
+     <dialog>) o clique segue o href e leva à seção de contato. -->
+<dialog class="cotacao" id="cotacao" data-estado="formulario" aria-labelledby="cotacao-titulo">
+  <div class="cotacao-topo">
+    <p class="eyebrow">Solicite uma cotação</p>
+    <h2 id="cotacao-titulo">Deixe seus dados</h2>
+    <button type="button" class="cotacao-fechar" data-fechar-cotacao aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <form class="cotacao-forma" id="cotacao-forma" novalidate>
+    <p class="cotacao-intro">Nossa equipe retorna com a cotação da sua carga. É rápido.</p>
+
+    <div class="cotacao-falha" role="alert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <span>Não conseguimos enviar agora. Tente de novo em instantes ou
+        <a href="#" id="cotacao-falha-whats" target="_blank" rel="noopener noreferrer">fale direto no WhatsApp</a>.</span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-nome">Nome completo</label>
+      <input id="cotacao-nome" name="nome" type="text" autocomplete="name"
+             placeholder="Como podemos te chamar?" aria-describedby="erro-nome" required>
+      <span class="cotacao-erro" id="erro-nome"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-telefone">Telefone / WhatsApp</label>
+      <input id="cotacao-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
+             placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-telefone" required>
+      <span class="cotacao-erro" id="erro-telefone"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-email">E-mail</label>
+      <input id="cotacao-email" name="email" type="email" autocomplete="email"
+             placeholder="voce@empresa.com.br" aria-describedby="erro-email" required>
+      <span class="cotacao-erro" id="erro-email"></span>
+    </div>
+
+    <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
+    <div class="cotacao-isca" aria-hidden="true">
+      <label for="cotacao-isca">Não preencha este campo</label>
+      <input id="cotacao-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button type="submit" class="botao botao--roxo cotacao-enviar">
+      Enviar solicitação
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="cotacao-aviso">Usamos seus dados apenas para responder a esta solicitação.</p>
+  </form>
+
+  <div class="cotacao-enviando" aria-live="polite">
+    <div class="cotacao-roda" aria-hidden="true"></div>
+    <p>Enviando sua solicitação…</p>
+  </div>
+
+  <div class="cotacao-sucesso" aria-live="polite">
+    <div class="cotacao-selo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
+    </div>
+    <h3>Solicitação enviada</h3>
+    <p>Recebemos seus dados. Para adiantar, continue a conversa no WhatsApp — a mensagem já vai preenchida.</p>
+    <a class="botao botao--whats cotacao-whats" id="cotacao-whats" href="#" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+      Continuar no WhatsApp
+    </a>
+    <button type="button" class="cotacao-secundario" data-fechar-cotacao>Fechar</button>
+  </div>
+</dialog>
+
+<!-- ============ MODAL DE TRABALHE CONOSCO ============
+     Mesmo padrão do modal de cotação (aberto por [data-trabalhe], fecha por
+     [data-fechar-trabalhe]) — três telas por data-estado, currículo anexado
+     e enviado por e-mail via FormSubmit. -->
+<dialog class="cotacao cotacao--ampla" id="trabalhe" data-estado="formulario" aria-labelledby="trabalhe-titulo">
+  <div class="cotacao-topo">
+    <p class="eyebrow">Trabalhe Conosco</p>
+    <h2 id="trabalhe-titulo">Envie seu currículo</h2>
+    <button type="button" class="cotacao-fechar" data-fechar-trabalhe aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <form class="cotacao-forma" id="trabalhe-forma" novalidate>
+    <p class="cotacao-intro">Venha fazer parte de um time dinâmico e inovador. Preencha seus dados e anexe seu currículo.</p>
+
+    <div class="cotacao-falha" role="alert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <span>Não conseguimos enviar agora. Tente de novo em instantes ou envie seu currículo direto para
+        <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.</span>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="trabalhe-nome">Nome</label>
+        <input id="trabalhe-nome" name="nome" type="text" autocomplete="name"
+               placeholder="Seu nome completo" aria-describedby="erro-trabalhe-nome" required>
+        <span class="cotacao-erro" id="erro-trabalhe-nome"></span>
+      </div>
+      <div class="cotacao-campo">
+        <label for="trabalhe-email">E-mail</label>
+        <input id="trabalhe-email" name="email" type="email" autocomplete="email"
+               placeholder="voce@email.com" aria-describedby="erro-trabalhe-email" required>
+        <span class="cotacao-erro" id="erro-trabalhe-email"></span>
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="trabalhe-telefone">Telefone</label>
+        <input id="trabalhe-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
+               placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-trabalhe-telefone" required>
+        <span class="cotacao-erro" id="erro-trabalhe-telefone"></span>
+      </div>
+      <div class="cotacao-campo">
+        <label for="trabalhe-cargo">Cargo Desejado</label>
+        <input id="trabalhe-cargo" name="cargo" type="text"
+               placeholder="Ex.: Analista de Logística" aria-describedby="erro-trabalhe-cargo" required>
+        <span class="cotacao-erro" id="erro-trabalhe-cargo"></span>
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="trabalhe-cidade">Cidade</label>
+        <input id="trabalhe-cidade" name="cidade" type="text" autocomplete="address-level2"
+               placeholder="Sua cidade" aria-describedby="erro-trabalhe-cidade" required>
+        <span class="cotacao-erro" id="erro-trabalhe-cidade"></span>
+      </div>
+      <div class="cotacao-campo">
+        <label for="trabalhe-estado">Estado</label>
+        <input id="trabalhe-estado" name="estado" type="text" autocomplete="address-level1"
+               placeholder="UF" maxlength="2" style="text-transform:uppercase"
+               aria-describedby="erro-trabalhe-estado" required>
+        <span class="cotacao-erro" id="erro-trabalhe-estado"></span>
+      </div>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="trabalhe-curriculo">Currículo</label>
+      <input id="trabalhe-curriculo" name="curriculo" type="file" accept=".pdf,.doc,.docx"
+             aria-describedby="erro-trabalhe-curriculo" required>
+      <span class="cotacao-erro" id="erro-trabalhe-curriculo"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="trabalhe-mensagem">Mensagem</label>
+      <textarea id="trabalhe-mensagem" name="mensagem" rows="4" placeholder="Conte um pouco sobre você (opcional)"></textarea>
+    </div>
+
+    <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
+    <div class="cotacao-isca" aria-hidden="true">
+      <label for="trabalhe-isca">Não preencha este campo</label>
+      <input id="trabalhe-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <label class="trabalhe-consentimento" for="trabalhe-consentimento">
+      <input id="trabalhe-consentimento" type="checkbox" aria-describedby="erro-trabalhe-consentimento" required>
+      <span>Concordo que meus dados sejam recolhidos e armazenados.</span>
+    </label>
+    <span class="cotacao-erro" id="erro-trabalhe-consentimento"></span>
+
+    <button type="submit" class="botao botao--roxo cotacao-enviar">
+      Enviar candidatura
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="cotacao-aviso">Usamos seus dados apenas para avaliar sua candidatura.</p>
+  </form>
+
+  <div class="cotacao-enviando" aria-live="polite">
+    <div class="cotacao-roda" aria-hidden="true"></div>
+    <p>Enviando sua candidatura…</p>
+  </div>
+
+  <div class="cotacao-sucesso" aria-live="polite">
+    <div class="cotacao-selo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
+    </div>
+    <h3>Currículo enviado</h3>
+    <p>Recebemos sua candidatura. Nossa equipe vai avaliar seu perfil e entrar em contato caso haja uma oportunidade compatível.</p>
+    <button type="button" class="botao botao--roxo cotacao-enviar" data-fechar-trabalhe>Fechar</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+
+  var reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.getElementById('ano-atual').textContent = new Date().getFullYear();
+
+  /* ============ NAV: estado sólido + menu mobile ============ */
+  var nav = document.getElementById('nav');
+  var hamburguer = document.getElementById('hamburguer');
+  var menuMobile = document.getElementById('menu-mobile');
+
+  var scrollTravado = 0;
+
+  /* Sem isto o dedo rola o site por baixo do painel aberto e, ao fechar, a
+     página reaparece em outro ponto. position:fixed no <body> é o que segura de
+     verdade no iOS — o topo negativo preserva onde a leitura estava. */
+  function travarPagina(travar){
+    if (travar){
+      scrollTravado = window.scrollY;
+      document.body.style.top = (-scrollTravado) + 'px';
+      document.body.classList.add('menu-travado');
+    } else if (document.body.classList.contains('menu-travado')){
+      document.body.classList.remove('menu-travado');
+      document.body.style.top = '';
+      /* devolver o scroll com scroll-behavior:smooth ligado faria a página voar
+         de volta; desligado por um instante, ela só reaparece onde estava */
+      var raiz = document.documentElement;
+      raiz.style.scrollBehavior = 'auto';
+      window.scrollTo(0, scrollTravado);
+      raiz.style.scrollBehavior = '';
+    }
+  }
+
+  function abrirMenu(aberto){
+    hamburguer.setAttribute('aria-expanded', String(aberto));
+    hamburguer.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+    menuMobile.classList.toggle('aberto', aberto);
+    travarPagina(aberto);
+    /* com o painel branco encostado embaixo dela, a nav transparente sobre a
+       foto do hero ficava solta no ar: aberta, ela vira sólida junto */
+    nav.classList.toggle('nav--solida', aberto || window.scrollY > 40);
+  }
+  hamburguer.addEventListener('click', function(){
+    abrirMenu(hamburguer.getAttribute('aria-expanded') !== 'true');
+  });
+  menuMobile.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ abrirMenu(false); });
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') abrirMenu(false);
+  });
+
+  /* ============ COTAÇÃO: modal de captação ============
+     Qualquer botão [data-cotacao] abre o mesmo <dialog>. O envio vai por
+     FormSubmit (o site é estático, não há servidor próprio para receber POST)
+     e a conversa segue no WhatsApp da HARGUS com a mensagem já montada. */
+
+  /* Para onde a demanda chega. O FormSubmit só passa a entregar depois que o
+     dono deste endereço clicar uma vez no e-mail de confirmação que ele manda
+     no primeiro envio — até lá o formulário mostra o aviso de falha. */
+  var COTACAO_DESTINO = 'Luiz@horizoncomercial.com.br';
+
+  /* Número real da HARGUS (mesmo do rodapé), só dígitos com o 55 na frente. */
+  var WHATSAPP_HARGUS = '5541988766004';
+
+  var dialogo = document.getElementById('cotacao');
+
+  /* Navegador sem <dialog>: nada é interceptado e o href="#contato" dos botões
+     leva à seção de contato, como antes deste modal existir. */
+  if (dialogo && typeof dialogo.showModal === 'function') (function(){
+    var forma = document.getElementById('cotacao-forma');
+    var isca = document.getElementById('cotacao-isca');
+    var linkWhats = document.getElementById('cotacao-whats');
+    var linkFalha = document.getElementById('cotacao-falha-whats');
+    var campos = {
+      nome:     document.getElementById('cotacao-nome'),
+      telefone: document.getElementById('cotacao-telefone'),
+      email:    document.getElementById('cotacao-email')
+    };
+    var nomes = Object.keys(campos);
+    var quemAbriu = null;
+
+    var regras = {
+      nome: function(v){
+        return v.trim().length >= 2 ? '' : 'Digite seu nome.';
+      },
+      telefone: function(v){
+        var d = v.replace(/\D/g, '');
+        return (d.length === 10 || d.length === 11) ? '' : 'Informe DDD e número, ex.: (41) 99999-9999.';
+      },
+      email: function(v){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Digite um e-mail válido.';
+      }
+    };
+
+    function mostrarErro(nome, texto){
+      document.getElementById('erro-' + nome).textContent = texto;
+      if (texto) campos[nome].setAttribute('aria-invalid', 'true');
+      else campos[nome].removeAttribute('aria-invalid');
+      return !texto;
+    }
+    function validar(nome){ return mostrarErro(nome, regras[nome](campos[nome].value)); }
+
+    /* (41) 99999-9999 enquanto digita — número colado de outro lugar vem com
+       pontuação variada e a máscara normaliza tudo antes da validação */
+    function mascarar(v){
+      var d = v.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 2)  return d;
+      if (d.length <= 6)  return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    }
+    campos.telefone.addEventListener('input', function(){ this.value = mascarar(this.value); });
+
+    /* só cobra o campo depois que a pessoa sai dele; a partir daí corrige ao vivo */
+    nomes.forEach(function(nome){
+      campos[nome].addEventListener('blur', function(){ validar(nome); });
+      campos[nome].addEventListener('input', function(){
+        if (campos[nome].getAttribute('aria-invalid') === 'true') validar(nome);
+      });
+    });
+
+    function linkDoWhats(dados){
+      var texto = 'Olá! Gostaria de solicitar uma cotação.';
+      if (dados){
+        texto += '\n\nNome: ' + dados.nome +
+                 '\nTelefone: ' + dados.telefone +
+                 '\nE-mail: ' + dados.email;
+      }
+      return 'https://wa.me/' + WHATSAPP_HARGUS + '?text=' + encodeURIComponent(texto);
+    }
+
+    function abrir(origem){
+      quemAbriu = origem || null;
+      abrirMenu(false);            /* veio do menu mobile: destrava antes de travar de novo */
+      dialogo.dataset.estado = 'formulario';
+      dialogo.dataset.falhou = 'nao';
+      linkFalha.href = linkDoWhats(null);
+      dialogo.showModal();
+      travarPagina(true);
+      campos.nome.focus();
+    }
+    function fechar(){ dialogo.close(); }
+
+    /* um só lugar de limpeza: vale para o X, para o Esc e para o clique no fundo */
+    dialogo.addEventListener('close', function(){
+      travarPagina(false);
+      forma.reset();
+      nomes.forEach(function(nome){ mostrarErro(nome, ''); });
+      dialogo.dataset.estado = 'formulario';
+      dialogo.dataset.falhou = 'nao';
+      /* preventScroll: travarPagina acabou de devolver a posição de leitura e
+         focar o botão de origem a puxaria de volta para onde ele está */
+      if (quemAbriu){ quemAbriu.focus({ preventScroll: true }); quemAbriu = null; }
+    });
+
+    /* o <dialog> não tem preenchimento próprio, então ele só é o alvo do
+       clique quando o toque cai no fundo escurecido, fora do conteúdo */
+    dialogo.addEventListener('click', function(e){ if (e.target === dialogo) fechar(); });
+    document.querySelectorAll('[data-fechar-cotacao]').forEach(function(b){
+      b.addEventListener('click', fechar);
+    });
+    document.querySelectorAll('[data-cotacao]').forEach(function(b){
+      b.addEventListener('click', function(e){ e.preventDefault(); abrir(b); });
+    });
+
+    forma.addEventListener('submit', function(e){
+      e.preventDefault();
+      /* .map antes do .every: valida todos os campos, não para no primeiro */
+      var valido = nomes.map(validar).every(Boolean);
+      if (!valido){
+        campos[nomes.filter(function(n){
+          return campos[n].getAttribute('aria-invalid') === 'true';
+        })[0]].focus();
+        return;
+      }
+
+      var dados = {
+        nome: campos.nome.value.trim(),
+        telefone: campos.telefone.value.trim(),
+        email: campos.email.value.trim()
+      };
+      /* montado antes do envio: se a entrega falhar, o atalho do WhatsApp no
+         aviso de erro já sai preenchido com o que a pessoa digitou */
+      linkWhats.href = linkDoWhats(dados);
+      linkFalha.href = linkDoWhats(dados);
+      dialogo.dataset.falhou = 'nao';
+      dialogo.dataset.estado = 'enviando';
+
+      fetch('https://formsubmit.co/ajax/' + COTACAO_DESTINO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Nova solicitação de cotação — ' + dados.nome,
+          _template: 'table',
+          _captcha: 'false',
+          _honey: isca.value,
+          Nome: dados.nome,
+          Telefone: dados.telefone,
+          'E-mail': dados.email,
+          Origem: window.location.href
+        })
+      }).then(function(r){
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(resposta){
+        /* o FormSubmit responde 200 mesmo quando recusa (endereço ainda não
+           confirmado, isca preenchida): quem decide é o campo success */
+        if (resposta && String(resposta.success) === 'false'){
+          throw new Error(resposta.message || 'envio recusado');
+        }
+        dialogo.dataset.estado = 'sucesso';
+        linkWhats.focus();
+      }).catch(function(){
+        /* volta ao formulário com o que já estava digitado — perder os dados
+           num erro de rede seria pior que o próprio erro */
+        dialogo.dataset.estado = 'formulario';
+        dialogo.dataset.falhou = 'sim';
+      });
+    });
+  })();
+
+  /* ============ TRABALHE CONOSCO: modal de envio de currículo ============
+     Mesmo padrão do modal de cotação, mas o envio leva um arquivo — por isso
+     vai como multipart/FormData (não JSON) para a rota de AJAX do FormSubmit,
+     que aceita os dois formatos e anexa qualquer <input type="file"> presente. */
+
+  /* Assim como o endereço de cotação, este e-mail precisa ser confirmado uma
+     vez no FormSubmit (clique no link que eles mandam no primeiro envio) antes
+     de começar a receber — são cadastros independentes, mesmo sendo o mesmo
+     serviço. */
+  var TRABALHE_DESTINO = 'comercial@hargusbrazil.com';
+  var TRABALHE_TAMANHO_MAX = 5 * 1024 * 1024; /* 5MB — teto de anexo do FormSubmit */
+
+  var dialogoTrabalhe = document.getElementById('trabalhe');
+
+  if (dialogoTrabalhe && typeof dialogoTrabalhe.showModal === 'function') (function(){
+    var forma = document.getElementById('trabalhe-forma');
+    var isca = document.getElementById('trabalhe-isca');
+    var arquivo = document.getElementById('trabalhe-curriculo');
+    var consentimento = document.getElementById('trabalhe-consentimento');
+    var erroConsentimento = document.getElementById('erro-trabalhe-consentimento');
+    var campos = {
+      nome:     document.getElementById('trabalhe-nome'),
+      telefone: document.getElementById('trabalhe-telefone'),
+      email:    document.getElementById('trabalhe-email'),
+      cargo:    document.getElementById('trabalhe-cargo'),
+      cidade:   document.getElementById('trabalhe-cidade'),
+      estado:   document.getElementById('trabalhe-estado')
+    };
+    var nomes = Object.keys(campos);
+    var quemAbriu = null;
+
+    var regras = {
+      nome:     function(v){ return v.trim().length >= 2 ? '' : 'Digite seu nome.'; },
+      telefone: function(v){
+        var d = v.replace(/\D/g, '');
+        return (d.length === 10 || d.length === 11) ? '' : 'Informe DDD e número, ex.: (41) 99999-9999.';
+      },
+      email:  function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Digite um e-mail válido.'; },
+      cargo:  function(v){ return v.trim().length >= 2 ? '' : 'Informe o cargo desejado.'; },
+      cidade: function(v){ return v.trim().length >= 2 ? '' : 'Informe sua cidade.'; },
+      estado: function(v){ return /^[A-Za-z]{2}$/.test(v.trim()) ? '' : 'Use a sigla do estado, ex.: PR.'; }
+    };
+
+    function mostrarErro(nome, texto, campo){
+      document.getElementById('erro-' + nome).textContent = texto;
+      var alvo = campo || campos[nome];
+      if (alvo){
+        if (texto) alvo.setAttribute('aria-invalid', 'true');
+        else alvo.removeAttribute('aria-invalid');
+      }
+      return !texto;
+    }
+    function validar(nome){ return mostrarErro('trabalhe-' + nome, regras[nome](campos[nome].value), campos[nome]); }
+
+    function validarArquivo(){
+      var f = arquivo.files[0];
+      if (!f) return mostrarErro('trabalhe-curriculo', 'Anexe seu currículo.', arquivo);
+      if (f.size > TRABALHE_TAMANHO_MAX) return mostrarErro('trabalhe-curriculo', 'O arquivo deve ter até 5MB.', arquivo);
+      return mostrarErro('trabalhe-curriculo', '', arquivo);
+    }
+    function validarConsentimento(){
+      var ok = consentimento.checked;
+      erroConsentimento.textContent = ok ? '' : 'É necessário concordar para enviar.';
+      return ok;
+    }
+
+    /* (41) 99999-9999 enquanto digita, igual ao campo do modal de cotação */
+    function mascarar(v){
+      var d = v.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 2)  return d;
+      if (d.length <= 6)  return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    }
+    campos.telefone.addEventListener('input', function(){ this.value = mascarar(this.value); });
+
+    nomes.forEach(function(nome){
+      campos[nome].addEventListener('blur', function(){ validar(nome); });
+      campos[nome].addEventListener('input', function(){
+        if (campos[nome].getAttribute('aria-invalid') === 'true') validar(nome);
+      });
+    });
+    arquivo.addEventListener('change', validarArquivo);
+    consentimento.addEventListener('change', validarConsentimento);
+
+    function abrir(origem){
+      quemAbriu = origem || null;
+      abrirMenu(false);
+      dialogoTrabalhe.dataset.estado = 'formulario';
+      dialogoTrabalhe.dataset.falhou = 'nao';
+      dialogoTrabalhe.showModal();
+      travarPagina(true);
+      campos.nome.focus();
+    }
+    function fechar(){ dialogoTrabalhe.close(); }
+
+    dialogoTrabalhe.addEventListener('close', function(){
+      travarPagina(false);
+      forma.reset();
+      nomes.forEach(function(nome){ mostrarErro('trabalhe-' + nome, '', campos[nome]); });
+      mostrarErro('trabalhe-curriculo', '', arquivo);
+      erroConsentimento.textContent = '';
+      dialogoTrabalhe.dataset.estado = 'formulario';
+      dialogoTrabalhe.dataset.falhou = 'nao';
+      if (quemAbriu){ quemAbriu.focus({ preventScroll: true }); quemAbriu = null; }
+    });
+
+    dialogoTrabalhe.addEventListener('click', function(e){ if (e.target === dialogoTrabalhe) fechar(); });
+    document.querySelectorAll('[data-fechar-trabalhe]').forEach(function(b){
+      b.addEventListener('click', fechar);
+    });
+    document.querySelectorAll('[data-trabalhe]').forEach(function(b){
+      b.addEventListener('click', function(e){ e.preventDefault(); abrir(b); });
+    });
+
+    forma.addEventListener('submit', function(e){
+      e.preventDefault();
+      var validoCampos = nomes.map(validar).every(Boolean);
+      var validoArquivo = validarArquivo();
+      var validoConsentimento = validarConsentimento();
+      if (!(validoCampos && validoArquivo && validoConsentimento)){
+        if (!validoCampos){
+          campos[nomes.filter(function(n){
+            return campos[n].getAttribute('aria-invalid') === 'true';
+          })[0]].focus();
+        } else if (!validoArquivo){
+          arquivo.focus();
+        } else {
+          consentimento.focus();
+        }
+        return;
+      }
+
+      var dados = new FormData(forma);
+      dados.set('_subject', 'Nova candidatura — ' + campos.nome.value.trim());
+      dados.set('_template', 'table');
+      dados.set('_captcha', 'false');
+      dados.set('_honey', isca.value);
+      dados.append('Origem', window.location.href);
+
+      dialogoTrabalhe.dataset.falhou = 'nao';
+      dialogoTrabalhe.dataset.estado = 'enviando';
+
+      fetch('https://formsubmit.co/ajax/' + TRABALHE_DESTINO, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: dados
+      }).then(function(r){
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(resposta){
+        if (resposta && String(resposta.success) === 'false'){
+          throw new Error(resposta.message || 'envio recusado');
+        }
+        dialogoTrabalhe.dataset.estado = 'sucesso';
+      }).catch(function(){
+        dialogoTrabalhe.dataset.estado = 'formulario';
+        dialogoTrabalhe.dataset.falhou = 'sim';
+      });
+    });
+  })();
+
+  /* ============ HERO: vídeo opcional no lugar da foto ============ */
+  var VIDEO_HERO = 'navio-loop.mp4'; /* se não existir, a <img> permanece e nada quebra */
+  (function tentarVideoHero(){
+    var caixa = document.getElementById('hero-midia-caixa');
+    var imgAtual = document.getElementById('hero-imagem');
+    var cortina = document.getElementById('hero-cortina');
+    var v = document.createElement('video');
+    v.muted = true;
+    /* com movimento reduzido, mantém o loop nativo simples (sem cortina) */
+    v.loop = reduzMovimento;
+    v.playsInline = true;
+    v.setAttribute('aria-hidden', 'true');
+    v.addEventListener('canplay', function(){
+      /* 'canplay' pode disparar de novo depois do primeiro loop/rebuffer —
+         a troca de <img> por <video> só deve acontecer uma vez */
+      if (v.id === 'hero-imagem') return;
+      v.id = 'hero-imagem';
+      caixa.insertBefore(v, imgAtual);
+      imgAtual.remove();
+      v.play().catch(function(){});
+    });
+    v.addEventListener('error', function(){ /* sem vídeo: mantém a foto */ });
+
+    /* disfarça o corte seco do loop: a cortina começa a subir ainda com o
+       vídeo em movimento — dispara quando falta exatamente o tempo da subida
+       para o vídeo acabar, então ele só some de vista já dentro da cortina,
+       nunca congelado. Ela reinicia escondida, e a cortina só começa a descer
+       depois de garantir que o vídeo já está rodando de novo — assim ele
+       nunca é revelado parado no frame zero. */
+    if (!reduzMovimento){
+      var DURACAO_CORTINA = 1600;  /* ms — bate com a transition do CSS */
+      var TEMPO_COBERTA = 1100;    /* ms — quanto a cortina fica fechada */
+      var cortinaEmCiclo = false;
+
+      function iniciarCicloCortina(){
+        if (cortinaEmCiclo) return;
+        cortinaEmCiclo = true;
+        cortina.classList.add('hero-cortina--ativa');
+        setTimeout(function(){
+          /* cortina já cobriu tudo — reinicia o vídeo escondido e libera a
+             detecção pro próximo ciclo (a partir daqui "resta muito tempo") */
+          v.currentTime = 0;
+          v.play().catch(function(){});
+          cortinaEmCiclo = false;
+        }, DURACAO_CORTINA);
+        setTimeout(function(){
+          cortina.classList.remove('hero-cortina--ativa');
+        }, DURACAO_CORTINA + TEMPO_COBERTA);
+      }
+
+      v.addEventListener('timeupdate', function(){
+        if (!v.duration || cortinaEmCiclo) return;
+        var restanteMs = (v.duration - v.currentTime) * 1000;
+        if (restanteMs <= DURACAO_CORTINA) iniciarCicloCortina();
+      });
+      /* reforço: se o navegador nunca disparar um timeupdate perto o
+         suficiente do fim, garante que a cortina ainda dispare */
+      v.addEventListener('ended', iniciarCicloCortina);
+    }
+
+    v.src = VIDEO_HERO;
+    v.load();
+  })();
+
+  /* ============ COMO TRABALHAMOS: vídeo do mapa como fundo, em loop ambiente ============ */
+  var MAPA_DESKTOP = 'mapa-rotas.mp4';
+  var MAPA_MOBILE = 'mapa-rotas-mobile.mp4';
+  /* Os arcos roxos Brasil-África só ficam vivos entre 3.6s e 4.0s dos 5.04s do clipe;
+     depois de 4.2s desbotam para um lilás pálido. Por isso o loop reinicia logo depois
+     do pico (4.0s) em vez de ir até o fim — evita terminar cada volta numa imagem
+     desbotada bem no instante em que ela pula de volta pro começo. */
+  var FIM_DO_LOOP = 4.0;
+
+  var trabalhamosVideo = document.getElementById('trabalhamos-video');
+  var trabalhamosSecao = document.getElementById('como-trabalhamos');
+
+  if (!reduzMovimento){
+    var telaEstreitaMQ = window.matchMedia('(max-width: 860px)');
+    trabalhamosVideo.src = telaEstreitaMQ.matches ? MAPA_MOBILE : MAPA_DESKTOP;
+    trabalhamosVideo.addEventListener('canplaythrough', function(){
+      trabalhamosVideo.classList.add('pronto');
+    });
+    trabalhamosVideo.addEventListener('timeupdate', function(){
+      if (trabalhamosVideo.currentTime >= FIM_DO_LOOP) trabalhamosVideo.currentTime = 0;
+    });
+    trabalhamosVideo.load();
+
+    /* só toca enquanto a seção está na tela — evita gastar CPU/decodificação à toa */
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(entradas){
+        if (entradas[0].isIntersecting) trabalhamosVideo.play().catch(function(){});
+        else trabalhamosVideo.pause();
+      }, { threshold:.1 }).observe(trabalhamosSecao);
+    } else {
+      trabalhamosVideo.play().catch(function(){});
+    }
+  }
+  /* com prefers-reduced-motion, o vídeo nunca recebe src: só o poster é exibido */
+
+  /* ============ REVELAÇÃO AO ROLAR: fade/slide quando o elemento entra na tela ============ */
+  var elementosRevelaveis = document.querySelectorAll('.reveal, .servico-card');
+  if (reduzMovimento || !('IntersectionObserver' in window)){
+    elementosRevelaveis.forEach(function(el){ el.classList.add('visivel'); });
+  } else {
+    var observador = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(entrada){
+        if (entrada.isIntersecting){
+          entrada.target.classList.add('visivel');
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold:.15, rootMargin:'0px 0px -8% 0px' });
+    elementosRevelaveis.forEach(function(el){ observador.observe(el); });
+  }
+
+  /* ============ SOBRE: parallax do gradiente + virada da tinta ============
+     Uma leitura de layout por quadro (getBoundingClientRect) e cinco variáveis
+     CSS escritas na seção. Tudo o que se mexe depois disso é transform, opacity
+     e cor — quem anima é o compositor, não o layout. */
+  var sobre = document.getElementById('sobre');
+  var textoSobre = sobre.querySelector('.sobre-texto');
+  var medidas;
+
+  /* offsetLeft/offsetWidth em vez de getBoundingClientRect: são medidas de
+     layout, imunes ao translate da animação de entrada do bloco de texto */
+  function medirSobre(){
+    var x = 0;
+    for (var el = textoSobre; el && el !== sobre; el = el.offsetParent) x += el.offsetLeft;
+    /* a rampa mora no CSS (muda por @media): é lida aqui, junto das medidas,
+       para que fundo e tinta nunca saiam de sincronia */
+    var rampa = parseFloat(getComputedStyle(sobre).getPropertyValue('--rampa'));
+    medidas = {
+      secao: sobre.offsetWidth, esq: x, largura: textoSobre.offsetWidth,
+      rampa: rampa > 0 ? rampa : .6
+    };
+  }
+
+  function atualizarSobre(){
+    var alturaTela = window.innerHeight || document.documentElement.clientHeight;
+    var caixa = sobre.getBoundingClientRect();
+
+    /* travessia: 0 = topo da seção encostando no fundo da tela · 1 = base saindo por cima */
+    var travessia = (alturaTela - caixa.top) / (alturaTela + caixa.height);
+    travessia = Math.min(1, Math.max(0, travessia));
+
+    /* a cor entra assim que a seção aparece e fecha antes de ela estar toda na
+       tela — quem rola em ritmo normal vê o gradiente cheio, não a transição */
+    var coloracao = Math.min(1, Math.max(0, (travessia - .18) / .32));
+
+    /* Mesma rampa do .sobre-veu, em pixels da seção: em x0 o véu ainda é
+       transparente (cor cheia) e RAMPA larguras de seção adiante ele já é
+       branco de vez. Os números saem direto do transform do véu. */
+    var RAMPA = medidas.rampa;
+    var S = medidas.secao;
+    var x0 = (coloracao * (1 + RAMPA) - RAMPA) * S;
+
+    /* A tinta vira num trecho bem mais curto que o fundo (α de .44 a .56): é o
+       que mantém no máximo uma palavra por vez no meio-tom em que nem o preto
+       nem o branco contrastariam com o fundo. */
+    var xa = x0 + .44 * RAMPA * S;
+    var xb = x0 + .56 * RAMPA * S;
+    var viradaEsq = ((medidas.esq - x0) / (RAMPA * S) - .44) / .12;
+
+    sobre.style.setProperty('--coloracao', coloracao.toFixed(3));
+    /* o .sobre-fundo sobra 14% da largura para cada lado; deslocar mais do que
+       essa sobra descobre a borda do gradiente. Em telas largas 190px cabem
+       folgados, em 390px não — daí o teto proporcional à seção. */
+    var amplitude = Math.min(190, medidas.secao * .22);
+    sobre.style.setProperty('--desloc', ((travessia - .5) * amplitude).toFixed(1) + 'px');
+    sobre.style.setProperty('--tinta0', ((xa - medidas.esq) / medidas.largura * 100).toFixed(1) + '%');
+    sobre.style.setProperty('--tinta1', ((xb - medidas.esq) / medidas.largura * 100).toFixed(1) + '%');
+    /* usada pelos dois elementos que não são texto (o traço do eyebrow e a seta
+       do link) e que moram na borda esquerda do bloco, junto às primeiras letras */
+    sobre.style.setProperty('--virada-esq', Math.min(1, Math.max(0, viradaEsq)).toFixed(3));
+  }
+
+  /* ============ SCROLL: estado sólido da nav + parallax do SOBRE, coalescidos por rAF ============
+     Sem trilhos sticky no site — quem reage ao scroll é só a nav e a seção SOBRE. */
+  var pedirAtualizacao = false;
+
+  function atualizar(){
+    pedirAtualizacao = false;
+    nav.classList.toggle('nav--solida', window.scrollY > 40 || menuMobile.classList.contains('aberto'));
+    if (!reduzMovimento) atualizarSobre();
+  }
+
+  function pedirTick(){
+    if (!pedirAtualizacao){
+      pedirAtualizacao = true;
+      requestAnimationFrame(atualizar);
+    }
+  }
+
+  window.addEventListener('scroll', pedirTick, { passive: true });
+  /* redimensionar muda a altura da seção, a da tela e a caixa do texto: sem
+     remedir, a virada da tinta fica presa na geometria antiga */
+  window.addEventListener('resize', function(){
+    /* acima de 860px o painel volta a display:none — se ele ainda estivesse
+       "aberto", a página ficaria travada sem nada na tela explicando por quê */
+    if (window.innerWidth > 860) abrirMenu(false);
+    if (!reduzMovimento) medirSobre();
+    pedirTick();
+  }, { passive: true });
+
+  if (!reduzMovimento) medirSobre();
+  atualizar();
+})();
+</script>
+</body>
+</html>
