@@ -188,7 +188,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav .container{
   display:flex; align-items:center; justify-content:space-between; gap:24px;
 }
-.nav-logo{ position:relative; display:block; width:150px; height:44px; flex:none; }
+.nav-logo{ position:relative; display:block; width:150px; height:44px; flex:none; margin-left:-16px; }
 .nav-logo img{
   position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:left center;
   transition:opacity .3s ease;
@@ -198,21 +198,21 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav.nav--solida .nav-logo .logo-branca{ opacity:0; }
 
 .nav-menu{
-  display:flex; align-items:center; gap:clamp(12px, 1vw, 18px);
+  display:flex; align-items:center; gap:clamp(8px, .6vw, 14px);
   list-style:none; margin:0; padding:0;
 }
 .nav-menu a{
-  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
   color:var(--branco); padding:6px 2px 2px; border-bottom:2px solid transparent;
-  line-height:1.3;
+  line-height:1.3; white-space:nowrap;
   transition:color .3s ease, border-color .2s ease;
 }
 .nav.nav--solida .nav-menu a{ color:var(--preto); }
 .nav-menu a:hover, .nav-menu a.ativo{ border-color:var(--verde-claro); }
 .nav.nav--solida .nav-menu a:hover, .nav.nav--solida .nav-menu a.ativo{ color:var(--verde); }
 
-.nav-controles{ display:flex; align-items:center; gap:26px; flex:none; }
-.nav-cta{ flex:none; }
+.nav-controles{ display:flex; align-items:center; gap:14px; flex:none; }
+.nav-cta{ flex:none; padding:12px 18px; font-size:11.5px; gap:6px; }
 
 .nav-cta-caixa{ position:relative; flex:none; }
 .nav-cta-seta{ width:14px !important; height:14px !important; transition:transform .2s ease; }
@@ -235,7 +235,6 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav-cta-menu a svg{ width:18px; height:18px; flex:none; color:var(--verde); }
 .nav-cta-menu-whats{ color:#128c4b !important; }
 .nav-cta-menu-whats svg{ color:#25D366; }
-
 .icone-whats{
   flex:none; width:38px; height:38px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
@@ -990,7 +989,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <div class="nav-controles">
       <div class="nav-cta-caixa">
         <a href="#contato" class="botao botao--roxo nav-cta" id="nav-cta-gatilho" aria-haspopup="true" aria-expanded="false" aria-controls="nav-cta-menu">
-          Solicite uma cotação
+          Entrar em Contato
           <svg class="nav-cta-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </a>
         <div class="nav-cta-menu" id="nav-cta-menu">
