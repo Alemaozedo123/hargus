@@ -344,10 +344,17 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .hero-conteudo{
   position:relative; z-index:2; width:100%;
 }
+/* Esta linha desceu para debaixo do título (era a sobrancelha acima dele) e
+   herdou o lugar do parágrafo descritivo, que saiu. As duas regras que a
+   pintavam viraram uma só: .hero-conteudo p vencia .hero-eyebrow em
+   especificidade, então o font-size:12.5px daqui nunca chegou a valer — o
+   que a tela sempre mostrou foi 1.05rem. Fundidas, o valor efetivo fica à
+   vista em vez de escondido num conflito. */
 .hero-eyebrow{
-  color:rgba(255,255,255,.85); font-size:12.5px; font-weight:600;
-  letter-spacing:.18em; text-transform:uppercase; margin:0 0 22px;
-  text-shadow:0 2px 12px rgba(0,10,8,.55);
+  color:rgba(255,255,255,.85); font-size:1.05rem; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase;
+  max-width:44ch; margin:0 0 2em;
+  text-shadow:0 2px 14px rgba(0,10,8,.5);
 }
 .hero-conteudo h1{
   color:var(--branco); font-size:clamp(2.6rem, 6vw, 4.6rem); max-width:14ch; margin-bottom:.3em;
@@ -356,23 +363,18 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .hero-conteudo h1 .accent{ font-style:normal; }
 /* peso 300 deixa o circunflexo de "você" fino e pontudo demais no tamanho do hero */
 .hero-conteudo h1 .hero-voce{ font-weight:400; }
-.hero-conteudo p{
-  color:rgba(255,255,255,.85); font-size:1.05rem; max-width:44ch; margin-bottom:2em;
-  text-shadow:0 2px 14px rgba(0,10,8,.5);
-}
 .hero-botoes{ display:flex; gap:18px; flex-wrap:wrap; }
 
 /* entrada suave do texto da hero ao carregar a página (independe do scroll) */
-.hero-eyebrow, .hero-conteudo h1, .hero-conteudo p, .hero-botoes{
+.hero-conteudo h1, .hero-eyebrow, .hero-botoes{
   animation:entrada-hero .9s cubic-bezier(.16,.8,.24,1) both;
 }
-.hero-eyebrow{ animation-delay:.15s; }
-.hero-conteudo h1{ animation-delay:.32s; }
-.hero-conteudo p{ animation-delay:.52s; }
-.hero-botoes{ animation-delay:.68s; }
+.hero-conteudo h1{ animation-delay:.15s; }
+.hero-eyebrow{ animation-delay:.32s; }
+.hero-botoes{ animation-delay:.52s; }
 @keyframes entrada-hero{ from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:translateY(0); } }
 @media (prefers-reduced-motion: reduce){
-  .hero-eyebrow, .hero-conteudo h1, .hero-conteudo p, .hero-botoes{ animation:none; opacity:1; transform:none; }
+  .hero-conteudo h1, .hero-eyebrow, .hero-botoes{ animation:none; opacity:1; transform:none; }
 }
 
 /* A onda passa por cima do conteudo da hero (z-index 3 contra 2) para cobrir
@@ -1123,9 +1125,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     <div class="container">
       <div class="hero-conteudo" id="hero-conteudo">
-        <p class="hero-eyebrow">Agenciamento de cargas e soluções logísticas</p>
         <h1>Conectamos<br><span class="accent hero-voce">você</span> ao<br><span class="accent">seu destino</span></h1>
-        <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
+        <p class="hero-eyebrow">Agenciamento de cargas e soluções logísticas</p>
         <div class="hero-botoes">
           <a href="#contato" class="botao botao--roxo" id="cta-escolha-gatilho" aria-haspopup="dialog">
             Entrar em Contato
