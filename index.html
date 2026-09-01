@@ -375,8 +375,13 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   .hero-eyebrow, .hero-conteudo h1, .hero-conteudo p, .hero-botoes{ animation:none; opacity:1; transform:none; }
 }
 
+/* A onda passa por cima do conteudo da hero (z-index 3 contra 2) para cobrir
+   o corte do video, e por isso engolia o clique na metade de baixo do botao
+   de contato, que fica bem na altura dela. Ela e decorativa (aria-hidden):
+   pointer-events:none devolve o clique para quem esta embaixo. */
 .onda-divisor{
   position:absolute; left:0; right:0; bottom:-1px; z-index:3; line-height:0;
+  pointer-events:none;
 }
 .onda-divisor svg{ width:100%; height:auto; display:block; }
 
