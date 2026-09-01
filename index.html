@@ -198,11 +198,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav.nav--solida .nav-logo .logo-branca{ opacity:0; }
 
 .nav-menu{
-  display:flex; align-items:center; gap:clamp(8px, .6vw, 14px);
+  display:flex; align-items:center; gap:clamp(6px, .4vw, 10px);
   list-style:none; margin:0; padding:0;
 }
 .nav-menu a{
-  font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+  font-size:11px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
   color:var(--branco); padding:6px 2px 2px; border-bottom:2px solid transparent;
   line-height:1.3; white-space:nowrap;
   transition:color .3s ease, border-color .2s ease;
@@ -211,8 +211,10 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav-menu a:hover, .nav-menu a.ativo{ border-color:var(--verde-claro); }
 .nav.nav--solida .nav-menu a:hover, .nav.nav--solida .nav-menu a.ativo{ color:var(--verde); }
 
-.nav-controles{ display:flex; align-items:center; gap:14px; flex:none; }
-.nav-cta{ flex:none; padding:12px 18px; font-size:11.5px; gap:6px; }
+.nav-controles{ display:flex; align-items:center; gap:8px; flex:none; }
+.nav-cta{ flex:none; padding:10px 12px; font-size:11px; gap:5px; }
+.nav-rastreio{ flex:none; padding:10px 12px; font-size:11px; gap:5px; }
+.nav-rastreio svg{ width:14px; height:14px; }
 
 .nav-cta-caixa{ position:relative; flex:none; }
 .nav-cta-seta{ width:14px !important; height:14px !important; transition:transform .2s ease; }
@@ -1003,8 +1005,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           </a>
         </div>
       </div>
-      <a href="https://wa.me/5541988766004" target="_blank" rel="noopener noreferrer" class="icone-whats" aria-label="Falar no WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.33 4.95L2 22l5.3-1.38a9.86 9.86 0 004.74 1.21h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.12-2.9-6.99A9.82 9.82 0 0012.04 2zm5.8 14.15c-.24.68-1.42 1.31-1.96 1.36-.5.05-1.13.07-1.82-.11-.42-.11-.96-.29-1.65-.59-2.9-1.25-4.8-4.17-4.94-4.36-.15-.19-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.07.66.5.24.59.83 2.02.9 2.17.07.14.12.31.02.5-.1.19-.15.31-.29.48l-.44.51c-.15.14-.3.3-.13.59.17.29.76 1.25 1.63 2.03 1.12 1 2.07 1.31 2.36 1.45.29.15.46.12.63-.07.17-.19.73-.85.93-1.14.19-.29.39-.24.65-.14.27.09 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.7-.17 1.38z"/></svg>
+
+      <!-- Placeholder: ferramenta de rastreio ainda não existe — trocar href="#"
+           pelo link real assim que a ferramenta estiver no ar. -->
+      <a href="#" class="botao botao--outline-claro nav-rastreio">
+        Rastrear Carga
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
       </a>
 
       <button class="nav-hamburguer" id="hamburguer" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu">
@@ -1024,6 +1030,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <a href="#contato" class="botao botao--roxo" data-cotacao>
       Solicite uma cotação
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <!-- Placeholder: ferramenta de rastreio ainda não existe — trocar href="#"
+         pelo link real assim que a ferramenta estiver no ar. -->
+    <a href="#" class="botao botao--outline-escuro">
+      Rastrear Carga
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
     </a>
   </nav>
 </header>
