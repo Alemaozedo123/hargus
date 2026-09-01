@@ -198,11 +198,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav.nav--solida .nav-logo .logo-branca{ opacity:0; }
 
 .nav-menu{
-  display:flex; align-items:center; gap:clamp(6px, .4vw, 10px);
+  display:flex; align-items:center; gap:clamp(8px, .6vw, 14px);
   list-style:none; margin:0; padding:0;
 }
 .nav-menu a{
-  font-size:11px; font-weight:600; letter-spacing:.02em; text-transform:uppercase;
+  font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
   color:var(--branco); padding:6px 2px 2px; border-bottom:2px solid transparent;
   line-height:1.3; white-space:nowrap;
   transition:color .3s ease, border-color .2s ease;
@@ -211,10 +211,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav-menu a:hover, .nav-menu a.ativo{ border-color:var(--verde-claro); }
 .nav.nav--solida .nav-menu a:hover, .nav.nav--solida .nav-menu a.ativo{ color:var(--verde); }
 
-.nav-controles{ display:flex; align-items:center; gap:8px; flex:none; }
-.nav-cta{ flex:none; padding:10px 12px; font-size:11px; gap:5px; }
-.nav-rastreio{ flex:none; padding:10px 12px; font-size:11px; gap:5px; }
-.nav-rastreio svg{ width:14px; height:14px; }
+.nav-controles{ display:flex; align-items:center; gap:14px; flex:none; }
+.nav-cta{ flex:none; padding:12px 18px; font-size:11.5px; gap:6px; }
 
 .nav-cta-caixa{ position:relative; flex:none; }
 .nav-cta-seta{ width:14px !important; height:14px !important; transition:transform .2s ease; }
@@ -268,7 +266,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
    A nav é position:fixed; sem isto, o salto do href="#contato" (e dos demais
    itens do menu) para na borda exata da seção e o título fica escondido atrás
    da nav. scroll-margin-top empurra o alvo para baixo da nav antes de parar. */
-#topo, #sobre, #servicos, #diferenciais, #como-trabalhamos, #contato{
+#topo, #sobre, #servicos, #diferenciais, #como-trabalhamos, #trabalhe-conosco, #contato{
   scroll-margin-top:calc(var(--nav-h) + 16px);
 }
 
@@ -599,6 +597,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 @media (prefers-reduced-motion: reduce){
   .etapa:not(:last-child)::after{ transform:scaleX(1); transition:none; }
 }
+
+/* ============ TRABALHE CONOSCO (seção) ============ */
+.trabalhe-secao{ background:#f7f8f7; padding:110px 0; }
+.trabalhe-secao-conteudo{ max-width:620px; }
+.trabalhe-secao-conteudo h2{ font-size:clamp(1.9rem,3.2vw,2.5rem); }
+.trabalhe-secao-conteudo p{ font-size:1rem; margin:20px 0 32px; max-width:56ch; }
 
 /* ============ FALE COM ESPECIALISTA ============ */
 .especialista{
@@ -983,8 +987,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#diferenciais">Diferenciais</a></li>
         <li><a href="#como-trabalhamos">Como Trabalhamos</a></li>
+        <li><a href="#trabalhe-conosco">Trabalhe Conosco</a></li>
         <li><a href="#contato">Contato</a></li>
-        <li><a href="#contato" data-trabalhe>Trabalhe Conosco</a></li>
       </ul>
     </nav>
 
@@ -1006,13 +1010,6 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         </div>
       </div>
 
-      <!-- Placeholder: ferramenta de rastreio ainda não existe — trocar href="#"
-           pelo link real assim que a ferramenta estiver no ar. -->
-      <a href="#" class="botao botao--outline-claro nav-rastreio">
-        Rastrear Carga
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
-      </a>
-
       <button class="nav-hamburguer" id="hamburguer" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu">
         <span></span>
       </button>
@@ -1025,17 +1022,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <a href="#servicos">Serviços</a>
     <a href="#diferenciais">Diferenciais</a>
     <a href="#como-trabalhamos">Como Trabalhamos</a>
+    <a href="#trabalhe-conosco">Trabalhe Conosco</a>
     <a href="#contato">Contato</a>
-    <a href="#contato" data-trabalhe>Trabalhe Conosco</a>
     <a href="#contato" class="botao botao--roxo" data-cotacao>
       Solicite uma cotação
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-    </a>
-    <!-- Placeholder: ferramenta de rastreio ainda não existe — trocar href="#"
-         pelo link real assim que a ferramenta estiver no ar. -->
-    <a href="#" class="botao botao--outline-escuro">
-      Rastrear Carga
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
     </a>
   </nav>
 </header>
@@ -1062,9 +1053,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
             Solicite uma cotação
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="#contato" class="botao botao--outline-claro" data-trabalhe>
-            Trabalhe Conosco
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <!-- Placeholder: ferramenta de rastreio ainda não existe — trocar href="#"
+               pelo link real assim que a ferramenta estiver no ar. -->
+          <a href="#" class="botao botao--outline-claro">
+            Rastrear Carga
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
           </a>
         </div>
       </div>
@@ -1245,6 +1238,21 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           <h3>Chegamos ao destino</h3>
           <p>Acompanhamos a operação até sua conclusão, buscando garantir que tudo aconteça conforme planejado.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRABALHE CONOSCO ============ -->
+  <section class="trabalhe-secao" id="trabalhe-conosco">
+    <div class="container">
+      <div class="trabalhe-secao-conteudo reveal">
+        <p class="eyebrow">Trabalhe Conosco</p>
+        <h2>Venha fazer parte do time <span class="accent">HARGUS</span>.</h2>
+        <p>Estamos sempre em busca de pessoas que compartilhem nossos valores de agilidade, confiança e excelência. Envie seu currículo e ajude a construir o futuro da nossa logística.</p>
+        <a href="#contato" class="botao botao--roxo" data-trabalhe>
+          Enviar currículo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
     </div>
   </section>
