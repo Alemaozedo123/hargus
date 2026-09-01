@@ -3,6 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ============ POLÍTICA DE CONTEÚDO ============
+     O GitHub Pages não deixa configurar cabeçalhos HTTP, então a CSP vai por
+     <meta> — vale para tudo, menos frame-ancestors (clickjacking), que só
+     funciona como cabeçalho de verdade. O que ela garante aqui: a página só
+     consegue falar com o formsubmit.co (connect-src), não carrega script,
+     plugin nem imagem de terceiro, e um <base> injetado não muda o destino
+     dos links. O 'unsafe-inline' em script-src é obrigatório porque todo o
+     JS e o CSS deste site são inline — trocar por hash quebraria a cada
+     edição, e não há superfície de XSS aqui (nada do que o visitante digita
+     vira HTML: os textos entram por textContent). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src https://formsubmit.co; form-action 'self'; base-uri 'none'; object-src 'none'">
+<!-- links externos (WhatsApp, Maps) recebem só a origem, nunca a URL cheia -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- protótipo em avaliação: fora dos buscadores até subir no domínio oficial -->
 <meta name="robots" content="noindex, nofollow">
 <title>HARGUS Shipping Brazil — Conectamos você ao seu destino</title>
@@ -1808,9 +1821,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         telefone: campos.telefone.value.trim(),
         email: campos.email.value.trim()
       };
-      /* montado antes do envio: se a entrega falhar, o atalho do WhatsApp no
-         aviso de erro já sai preenchido com o que a pessoa digitou */
-      linkWhats.href = linkDoWhats(dados);
+      /* Só o atalho de FALHA leva os dados na URL: ali eles são a razão de ser
+         do link (a entrega não aconteceu, e sem isso o lead se perde). No de
+         sucesso o e-mail já foi entregue, então repetir nome/telefone/e-mail
+         na query string só serviria para deixá-los no histórico do navegador. */
+      linkWhats.href = linkDoWhats(null);
       linkFalha.href = linkDoWhats(dados);
       dialogo.dataset.falhou = 'nao';
       dialogo.dataset.estado = 'enviando';
@@ -1859,6 +1874,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
      serviço. */
   var TRABALHE_DESTINO = 'comercial@hargusbrazil.com';
   var TRABALHE_TAMANHO_MAX = 5 * 1024 * 1024; /* 5MB — teto de anexo do FormSubmit */
+  /* o accept="" do <input> é só sugestão do seletor de arquivos: o navegador
+     deixa escolher "todos os arquivos" e mandar o que for. Esta lista é a que
+     de fato barra. Continua sendo validação de cliente — quem montar o POST
+     na mão passa por cima —, então quem abrir o anexo na caixa de entrada
+     ainda precisa desconfiar do que recebe. */
+  var TRABALHE_EXTENSOES = ['.pdf', '.doc', '.docx'];
 
   var dialogoTrabalhe = document.getElementById('trabalhe');
 
@@ -1905,6 +1926,13 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     function validarArquivo(){
       var f = arquivo.files[0];
       if (!f) return mostrarErro('trabalhe-curriculo', 'Anexe seu currículo.', arquivo);
+      var nome = f.name.toLowerCase();
+      var aceito = TRABALHE_EXTENSOES.some(function(ext){
+        return nome.slice(-ext.length) === ext;
+      });
+      if (!aceito) return mostrarErro('trabalhe-curriculo', 'Envie um arquivo PDF, DOC ou DOCX.', arquivo);
+      /* 0 byte chega como anexo vazio e ninguém percebe até abrir o e-mail */
+      if (!f.size) return mostrarErro('trabalhe-curriculo', 'O arquivo está vazio.', arquivo);
       if (f.size > TRABALHE_TAMANHO_MAX) return mostrarErro('trabalhe-curriculo', 'O arquivo deve ter até 5MB.', arquivo);
       return mostrarErro('trabalhe-curriculo', '', arquivo);
     }
