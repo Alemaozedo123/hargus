@@ -840,6 +840,30 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .cotacao--ampla{ width:min(640px, calc(100vw - 28px)); }
 .cotacao-linha{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 
+/* <select> imita o <input> do formulário; a seta é desenhada no próprio
+   background porque appearance:none tira a nativa */
+.cotacao-campo select{
+  width:100%; font-family:inherit; font-size:15px; font-weight:400; color:var(--preto);
+  padding:12px 38px 12px 14px; border:1px solid #d9dcda; border-radius:4px; background:var(--branco);
+  appearance:none; -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A4A4A' stroke-width='2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center; background-size:16px;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.cotacao-campo select:focus{
+  outline:none; border-color:var(--verde-claro); box-shadow:0 0 0 3px rgba(62,158,126,.18);
+}
+/* opção vazia em cinza: enquanto nada foi escolhido, o campo parece um
+   placeholder, não uma resposta já dada */
+.cotacao-campo select:invalid, .cotacao-campo select option[value=""]{ color:#a7aca9; }
+
+/* divisor da parte opcional do formulário */
+.cotacao-secao{
+  margin:26px 0 16px; padding-top:20px; border-top:1px solid #e6e9e7;
+  font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--preto);
+}
+.cotacao-secao span{ font-weight:400; letter-spacing:0; text-transform:none; color:var(--cinza-texto); }
+
 .cotacao-campo textarea{
   width:100%; font-family:inherit; font-size:15px; font-weight:400; color:var(--preto);
   padding:12px 14px; border:1px solid #d9dcda; border-radius:4px; background:var(--branco);
@@ -882,7 +906,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   .cotacao-topo h2{ font-size:1.3rem; }
   .cotacao-forma, .cotacao-enviando, .cotacao-sucesso{ padding:22px 22px 24px; }
   /* 16px é o mínimo para o iOS não dar zoom sozinho ao focar o campo */
-  .cotacao-campo input, .cotacao-campo textarea{ font-size:16px; }
+  /* 16px e o piso que evita o zoom automatico do iOS ao focar o campo -
+     vale para o <select> tambem, nao so para input e textarea */
+  .cotacao-campo input, .cotacao-campo textarea, .cotacao-campo select{ font-size:16px; }
   .cotacao-linha{ grid-template-columns:1fr; gap:0; }
   .cotacao--ampla{ width:calc(100vw - 20px); }
   .cotacao-campo input[type="file"]{ font-size:13px; }
@@ -1452,7 +1478,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   </div>
 </dialog>
 
-<dialog class="cotacao" id="cotacao" data-estado="formulario" aria-labelledby="cotacao-titulo">
+<dialog class="cotacao cotacao--ampla" id="cotacao" data-estado="formulario" aria-labelledby="cotacao-titulo">
   <div class="cotacao-topo">
     <p class="eyebrow">Solicite uma cotação</p>
     <h2 id="cotacao-titulo">Deixe seus dados</h2>
@@ -1462,7 +1488,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   </div>
 
   <form class="cotacao-forma" id="cotacao-forma" novalidate>
-    <p class="cotacao-intro">Nossa equipe retorna com a cotação da sua carga. É rápido.</p>
+    <p class="cotacao-intro">Precisamos só do contato para responder. Os detalhes da carga são opcionais — quanto mais você preencher, mais precisa vem a cotação.</p>
 
     <div class="cotacao-falha" role="alert">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
@@ -1489,6 +1515,101 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <input id="cotacao-email" name="email" type="email" autocomplete="email"
              placeholder="voce@empresa.com.br" aria-describedby="erro-email" required>
       <span class="cotacao-erro" id="erro-email"></span>
+    </div>
+
+    <!-- ============ DADOS DA CARGA ============
+         Nenhum destes é obrigatório: o <script> só manda para o e-mail os que
+         vierem preenchidos, para a mensagem não encher de linhas vazias. -->
+    <p class="cotacao-secao">Dados da carga <span>— opcional</span></p>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-descricao">Descrição completa da mercadoria</label>
+      <textarea id="cotacao-descricao" name="descricao" rows="3" placeholder="O que é, para que serve, embalagem..."></textarea>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-valor">Valor da mercadoria</label>
+        <input id="cotacao-valor" name="valor" type="text" placeholder="Ex.: USD 12.000,00">
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-ncm">NCM</label>
+        <input id="cotacao-ncm" name="ncm" type="text" inputmode="numeric" placeholder="Ex.: 8471.30.19">
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-incoterm">Incoterm</label>
+        <select id="cotacao-incoterm" name="incoterm">
+          <option value="">Selecione</option>
+          <option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option>
+          <option>CFR</option><option>CIF</option><option>CPT</option><option>CIP</option>
+          <option>DAP</option><option>DPU</option><option>DDP</option>
+        </select>
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-pais">País de origem</label>
+        <input id="cotacao-pais" name="pais" type="text" placeholder="Ex.: China">
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-porto-origem">Porto de origem</label>
+        <input id="cotacao-porto-origem" name="porto_origem" type="text" placeholder="Ex.: Shanghai">
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-porto-destino">Porto de destino</label>
+        <input id="cotacao-porto-destino" name="porto_destino" type="text" placeholder="Ex.: Paranaguá">
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-tipo-carga">Carga geral ou especial</label>
+        <select id="cotacao-tipo-carga" name="tipo_carga">
+          <option value="">Selecione</option>
+          <option>Geral</option>
+          <option>Especial</option>
+        </select>
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-temperatura">Controle de temperatura</label>
+        <input id="cotacao-temperatura" name="temperatura" type="text" placeholder="Se sim, qual? Ex.: 2 °C a 8 °C">
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-quantidade">Quantidade</label>
+        <input id="cotacao-quantidade" name="quantidade" type="text" placeholder="Ex.: 12 pallets">
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-peso">Peso bruto</label>
+        <input id="cotacao-peso" name="peso" type="text" placeholder="Ex.: 4.800 kg">
+      </div>
+    </div>
+
+    <div class="cotacao-linha">
+      <div class="cotacao-campo">
+        <label for="cotacao-volume">Volume (CBM)</label>
+        <input id="cotacao-volume" name="volume" type="text" placeholder="Ex.: 18,5">
+      </div>
+      <div class="cotacao-campo">
+        <label for="cotacao-modal">Modal de transporte</label>
+        <select id="cotacao-modal" name="modal">
+          <option value="">Selecione</option>
+          <option>Aéreo</option>
+          <option>Marítimo</option>
+          <option>Rodoviário</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-enderecos">Endereços para coleta e/ou entrega</label>
+      <textarea id="cotacao-enderecos" name="enderecos" rows="2" placeholder="Caso seja necessário"></textarea>
     </div>
 
     <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
@@ -1745,6 +1866,25 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   /* Número real da HARGUS (mesmo do rodapé), só dígitos com o 55 na frente. */
   var WHATSAPP_HARGUS = '5541988766004';
 
+  /* Campos opcionais da carga: [id do campo, rotulo que aparece no e-mail].
+     Nenhum entra na validacao; so os preenchidos viram linha na mensagem. */
+  var COTACAO_CARGA = [
+    ['cotacao-descricao',     'Descrição da mercadoria'],
+    ['cotacao-valor',         'Valor da mercadoria'],
+    ['cotacao-ncm',           'NCM'],
+    ['cotacao-incoterm',      'Incoterm'],
+    ['cotacao-pais',          'País de origem'],
+    ['cotacao-porto-origem',  'Porto de origem'],
+    ['cotacao-porto-destino', 'Porto de destino'],
+    ['cotacao-tipo-carga',    'Carga geral ou especial'],
+    ['cotacao-temperatura',   'Controle de temperatura'],
+    ['cotacao-quantidade',    'Quantidade'],
+    ['cotacao-peso',          'Peso bruto'],
+    ['cotacao-volume',        'Volume (CBM)'],
+    ['cotacao-modal',         'Modal de transporte'],
+    ['cotacao-enderecos',     'Endereços para coleta/entrega']
+  ];
+
   var dialogo = document.getElementById('cotacao');
 
   /* Navegador sem <dialog>: nada é interceptado e o href="#contato" dos botões
@@ -1871,19 +2011,27 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       dialogo.dataset.falhou = 'nao';
       dialogo.dataset.estado = 'enviando';
 
+      var corpo = {
+        _subject: 'Nova solicitação de cotação — ' + dados.nome,
+        _template: 'table',
+        _captcha: 'false',
+        _honey: isca.value,
+        Nome: dados.nome,
+        Telefone: dados.telefone,
+        'E-mail': dados.email
+      };
+      /* campo vazio nao vira linha no e-mail: quem le ve so o que foi informado */
+      COTACAO_CARGA.forEach(function(par){
+        var campo = document.getElementById(par[0]);
+        var valor = campo && campo.value.trim();
+        if (valor) corpo[par[1]] = valor;
+      });
+      corpo.Origem = window.location.href;
+
       fetch('https://formsubmit.co/ajax/' + COTACAO_DESTINO, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: 'Nova solicitação de cotação — ' + dados.nome,
-          _template: 'table',
-          _captcha: 'false',
-          _honey: isca.value,
-          Nome: dados.nome,
-          Telefone: dados.telefone,
-          'E-mail': dados.email,
-          Origem: window.location.href
-        })
+        body: JSON.stringify(corpo)
       }).then(function(r){
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
