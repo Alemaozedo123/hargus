@@ -1750,7 +1750,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   /* Para onde a demanda chega. O FormSubmit só passa a entregar depois que o
      dono deste endereço clicar uma vez no e-mail de confirmação que ele manda
      no primeiro envio — até lá o formulário mostra o aviso de falha. */
-  var COTACAO_DESTINO = 'Luiz@horizoncomercial.com.br';
+  var COTACAO_DESTINO = 'comercial@hargusbrazil.com';
 
   /* Campos opcionais da carga: [id do campo, rotulo que aparece no e-mail].
      Nenhum entra na validacao; so os preenchidos viram linha na mensagem. */
@@ -1926,10 +1926,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
      vai como multipart/FormData (não JSON) para a rota de AJAX do FormSubmit,
      que aceita os dois formatos e anexa qualquer <input type="file"> presente. */
 
-  /* Assim como o endereço de cotação, este e-mail precisa ser confirmado uma
-     vez no FormSubmit (clique no link que eles mandam no primeiro envio) antes
-     de começar a receber — são cadastros independentes, mesmo sendo o mesmo
-     serviço. */
+  /* Mesmo endereço de COTACAO_DESTINO: o FormSubmit confirma por endereço, não
+     por formulário, então a mesma confirmação já vale para os dois envios. */
   var TRABALHE_DESTINO = 'comercial@hargusbrazil.com';
   var TRABALHE_TAMANHO_MAX = 5 * 1024 * 1024; /* 5MB — teto de anexo do FormSubmit */
   /* o accept="" do <input> é só sugestão do seletor de arquivos: o navegador
