@@ -1044,8 +1044,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     </nav>
 
     <div class="nav-controles">
-      <!-- Placeholder: o portal do cliente ainda não existe — trocar o
-           href="#" pelo link real assim que ele estiver no ar. -->
+      <!-- Placeholder: o portal do cliente ainda não existe — trocar o href="#"
+           pelo link real assim que ele estiver no ar. São DOIS: este e o
+           .nav-portal-mobile lá embaixo, no painel do menu. -->
       <a href="#" class="botao botao--outline-claro nav-cta nav-portal">
         Portal do Cliente
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
@@ -1068,6 +1069,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <a href="#contato" class="botao botao--roxo" data-cotacao>
       Solicite uma cotação
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <!-- Irmão do .nav-portal do cabeçalho: aquele some abaixo de 1240px, então
+         o portal precisa existir aqui também. Os dois href="#" trocam juntos. -->
+    <a href="#" class="botao botao--outline-escuro nav-portal-mobile">
+      Portal do Cliente
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
     </a>
   </nav>
 </header>
