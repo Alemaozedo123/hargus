@@ -673,6 +673,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .especialista-contatos{ display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
 .especialista-contatos a{ display:flex; align-items:center; gap:10px; font-size:14px; font-weight:500; }
 .especialista-contatos svg{ width:20px; height:20px; flex:none; }
+/* os botões (Tire sua dúvida / Solicite uma cotação) não são o link de
+   e-mail acima: herdavam o font-size:14px dele em vez do 12.5px padrão de
+   .botao usado no resto do site — essa regra é só pra desfazer isso. */
+.especialista-contatos .botao{ font-size:12.5px; font-weight:600; }
+.especialista-contatos .botao svg{ width:16px; height:16px; }
 
 /* ============ CTA FINAL ============ */
 .cta-final{ position:relative; padding:120px 0; overflow:hidden; background:var(--verde); }
@@ -1374,7 +1379,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           </a>
           <a href="#contato" class="botao botao--outline-claro" data-duvida>
             <span data-en="Ask your question">Tire sua dúvida</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 9.5a3.5 3.5 0 116 2.5c-.9.9-1.5 1.6-1.5 3"/><circle cx="13" cy="17.5" r=".4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="9"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="16.5" r=".4" fill="currentColor" stroke="none"/></svg>
           </a>
           <a href="#contato" class="botao botao--roxo" data-cotacao>
             <span data-en="Request a quote">Solicite uma cotação</span>
@@ -1476,30 +1481,6 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     </div>
 
     <div class="cotacao-campo">
-      <label for="cotacao-area-atuacao" data-en="What industry does your company operate in?">Em qual área sua empresa atua?</label>
-      <select id="cotacao-area-atuacao" name="area_atuacao" aria-describedby="erro-areaAtuacao" required>
-        <option value="" data-en="Select">Selecione</option>
-        <option data-en="Automotive/naval/aerospace">Automobilística/naval/aeronáutica</option>
-        <option data-en="Food/beverages">Alimentícia/bebidas</option>
-        <option data-en="Construction">Construção civil</option>
-        <option data-en="Clean/solar energy">Energia Limpa/Solar</option>
-        <option data-en="Electronics/IT equipment">Equipamentos eletrônicos/informática</option>
-        <option data-en="Timber/furniture">Madeireira/moveleira</option>
-        <option data-en="Machinery">Maquinários</option>
-        <option data-en="Metallurgy/steel">Metalúrgica/siderúrgica</option>
-        <option data-en="Pulp and paper">Papel e celulose</option>
-        <option data-en="Chemical/petrochemical">Química/petroquímica</option>
-        <option data-en="Textile">Têxtil</option>
-      </select>
-      <span class="cotacao-erro" id="erro-areaAtuacao"></span>
-    </div>
-
-    <div class="cotacao-campo">
-      <label for="cotacao-area-outro" data-en="Other (if your industry isn&#39;t listed)">Outro (se sua área não estiver na lista)</label>
-      <input id="cotacao-area-outro" name="area_atuacao_outro" type="text" placeholder="Descreva sua área de atuação" data-en-placeholder="Describe your industry">
-    </div>
-
-    <div class="cotacao-campo">
       <label for="cotacao-nome" data-en="Full name">Nome completo</label>
       <input id="cotacao-nome" name="nome" type="text" autocomplete="name"
              placeholder="Como podemos te chamar?" data-en-placeholder="What should we call you?" aria-describedby="erro-nome" required>
@@ -1518,6 +1499,29 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <input id="cotacao-email" name="email" type="email" autocomplete="email"
              placeholder="voce@empresa.com.br" data-en-placeholder="you@company.com" aria-describedby="erro-email" required>
       <span class="cotacao-erro" id="erro-email"></span>
+    </div>
+
+    <!-- list= liga o input a um <datalist>: aparecem sugestões da lista ao
+         digitar, mas o texto não fica preso a elas — quem não se encaixa em
+         nenhuma opção escreve a própria área no mesmo campo. -->
+    <div class="cotacao-campo">
+      <label for="cotacao-area-atuacao" data-en="What industry does your company operate in?">Em qual área sua empresa atua?</label>
+      <input id="cotacao-area-atuacao" name="area_atuacao" type="text" list="cotacao-area-lista" autocomplete="off"
+             placeholder="Selecione da lista ou digite a sua" data-en-placeholder="Pick from the list or type your own" aria-describedby="erro-areaAtuacao" required>
+      <datalist id="cotacao-area-lista">
+        <option data-en="Automotive/naval/aerospace">Automobilística/naval/aeronáutica</option>
+        <option data-en="Food/beverages">Alimentícia/bebidas</option>
+        <option data-en="Construction">Construção civil</option>
+        <option data-en="Clean/solar energy">Energia Limpa/Solar</option>
+        <option data-en="Electronics/IT equipment">Equipamentos eletrônicos/informática</option>
+        <option data-en="Timber/furniture">Madeireira/moveleira</option>
+        <option data-en="Machinery">Maquinários</option>
+        <option data-en="Metallurgy/steel">Metalúrgica/siderúrgica</option>
+        <option data-en="Pulp and paper">Papel e celulose</option>
+        <option data-en="Chemical/petrochemical">Química/petroquímica</option>
+        <option data-en="Textile">Têxtil</option>
+      </datalist>
+      <span class="cotacao-erro" id="erro-areaAtuacao"></span>
     </div>
 
     <!-- ============ DADOS DA CARGA ============
@@ -1989,17 +1993,17 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     var forma = document.getElementById('cotacao-forma');
     var isca = document.getElementById('cotacao-isca');
     var campos = {
-      areaAtuacao: document.getElementById('cotacao-area-atuacao'),
       nome:     document.getElementById('cotacao-nome'),
       telefone: document.getElementById('cotacao-telefone'),
-      email:    document.getElementById('cotacao-email')
+      email:    document.getElementById('cotacao-email'),
+      areaAtuacao: document.getElementById('cotacao-area-atuacao')
     };
     var nomes = Object.keys(campos);
     var quemAbriu = null;
 
     var regras = {
       areaAtuacao: function(v){
-        return v ? '' : hargusMsg('Selecione a área de atuação da empresa.', "Select your company's industry.");
+        return v.trim() ? '' : hargusMsg('Conte em qual área sua empresa atua.', "Tell us your company's industry.");
       },
       nome: function(v){
         return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.');
@@ -2085,10 +2089,10 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       }
 
       var dados = {
-        areaAtuacao: campos.areaAtuacao.value,
         nome: campos.nome.value.trim(),
         telefone: campos.telefone.value.trim(),
-        email: campos.email.value.trim()
+        email: campos.email.value.trim(),
+        areaAtuacao: campos.areaAtuacao.value.trim()
       };
       dialogo.dataset.falhou = 'nao';
       dialogo.dataset.estado = 'enviando';
@@ -2103,9 +2107,6 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         'E-mail': dados.email,
         'Área de atuação': dados.areaAtuacao
       };
-      /* "Outro" só some no e-mail se a pessoa realmente escreveu algo ali */
-      var areaOutro = document.getElementById('cotacao-area-outro').value.trim();
-      if (areaOutro) corpo['Área de atuação (outro)'] = areaOutro;
       /* campo vazio nao vira linha no e-mail: quem le ve so o que foi informado */
       COTACAO_CARGA.forEach(function(par){
         var campo = document.getElementById(par[0]);
