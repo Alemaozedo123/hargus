@@ -407,7 +407,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .intro h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); }
 .intro h2 .linha-clara{ display:block; color:var(--verde-claro); font-style:italic; }
 .intro p{ max-width:46ch; font-size:1rem; margin-top:20px; }
-.intro-apresentacao{ margin-top:8px; }
+/* preenchido igual aos CTAs principais (em vez do contorno discreto): pedido
+   explícito do cliente por mais destaque nesse botão específico */
+.intro-apresentacao{ margin-top:18px; box-shadow:0 10px 26px rgba(51,2,67,.22); }
 .intro-imagem img{ width:100%; height:auto; filter:drop-shadow(0 22px 32px rgba(0,53,39,.18)); }
 
 /* ============ SOBRE (parallax: do branco para o gradiente institucional) ============
@@ -1163,7 +1165,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           <span class="intro-marca" aria-hidden="true"></span>
           <h2 data-en-html='Logistics can be complex.<span class="linha-clara">Your path doesn&#39;t have to be.</span>'>A logística pode ser complexa.<span class="linha-clara">O seu caminho não precisa ser.</span></h2>
           <p data-en="At HARGUS, we turn logistics challenges into intelligent solutions, connecting companies to the best opportunities with efficiency and trust.">Na HARGUS, transformamos desafios logísticos em soluções inteligentes, conectando empresas às melhores oportunidades com eficiência e confiança.</p>
-          <a href="apresentacao-hargus-pt.pdf" download class="botao botao--outline-escuro intro-apresentacao" id="link-apresentacao">
+          <a href="apresentacao-hargus-pt.pdf" download class="botao botao--roxo intro-apresentacao" id="link-apresentacao">
             <span data-en="DOWNLOAD PRESENTATION">BAIXAR APRESENTAÇÃO</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
           </a>
