@@ -18,8 +18,8 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <!-- protótipo em avaliação: fora dos buscadores até subir no domínio oficial -->
 <meta name="robots" content="noindex, nofollow">
-<title>HARGUS Shipping Brazil — Conectamos você ao seu destino</title>
-<meta name="description" content="Agenciamento de cargas e soluções logísticas em Curitiba/PR. Frete nacional e internacional, assessoria aduaneira, importação, exportação e consultoria ANVISA.">
+<title data-en="HARGUS Shipping Brazil — Connecting you to your destination">HARGUS Shipping Brazil — Conectamos você ao seu destino</title>
+<meta name="description" data-en-content="Cargo forwarding and logistics solutions in Curitiba/PR, Brazil. National and international freight, customs brokerage, import, export, and ANVISA consulting." content="Agenciamento de cargas e soluções logísticas em Curitiba/PR. Frete nacional e internacional, assessoria aduaneira, importação, exportação e consultoria ANVISA.">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -224,6 +224,31 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .nav-controles{ display:flex; align-items:center; gap:14px; flex:none; }
 .nav-cta{ flex:none; padding:12px 18px; font-size:11.5px; gap:6px; }
 
+/* ============ SELETOR DE IDIOMA (PT/EN) ============
+   Mesma lógica de cor do .nav-portal: nasce claro sobre a foto do hero e
+   escurece quando a nav vira sólida. */
+.nav-idioma{
+  display:flex; align-items:center; gap:6px; flex:none;
+  font-size:11.5px; font-weight:600; letter-spacing:.06em;
+}
+.idioma-btn{
+  background:none; border:none; padding:4px 2px; color:rgba(255,255,255,.6);
+  transition:color .3s ease;
+}
+.nav.nav--solida .idioma-btn{ color:rgba(0,0,0,.4); }
+.idioma-btn.ativo{ color:var(--branco); }
+.nav.nav--solida .idioma-btn.ativo{ color:var(--verde); }
+.nav-idioma-sep{ color:inherit; opacity:.4; }
+.nav.nav--solida .nav-idioma-sep{ color:var(--preto); }
+
+.menu-mobile-idioma{
+  display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600;
+  letter-spacing:.06em; color:var(--verde);
+}
+.menu-mobile-idioma .idioma-btn{ color:rgba(0,53,39,.45); padding:4px 6px; }
+.menu-mobile-idioma .idioma-btn.ativo{ color:var(--verde); }
+.menu-mobile-idioma .nav-idioma-sep{ color:rgba(0,53,39,.3); }
+
 /* O botao do portal nasce claro porque a nav comeca transparente sobre a
    foto do navio. Quando ela vira branca, branco-no-branco sumiria: texto e
    borda passam a preto, e o hover inverte para fundo preto. */
@@ -382,6 +407,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 .intro h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); }
 .intro h2 .linha-clara{ display:block; color:var(--verde-claro); font-style:italic; }
 .intro p{ max-width:46ch; font-size:1rem; margin-top:20px; }
+.intro-apresentacao{ margin-top:8px; }
 .intro-imagem img{ width:100%; height:auto; filter:drop-shadow(0 22px 32px rgba(0,53,39,.18)); }
 
 /* ============ SOBRE (parallax: do branco para o gradiente institucional) ============
@@ -1033,22 +1059,32 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     <nav aria-label="Navegação principal">
       <ul class="nav-menu">
-        <li><a href="#topo" class="ativo">Home</a></li>
-        <li><a href="#sobre">Sobre a Hargus</a></li>
-        <li><a href="#servicos">Serviços</a></li>
-        <li><a href="#diferenciais">Diferenciais</a></li>
-        <li><a href="#como-trabalhamos">Como Trabalhamos</a></li>
-        <li><a href="#trabalhe-conosco">Trabalhe Conosco</a></li>
-        <li><a href="#contato">Contato</a></li>
+        <li><a href="#topo" class="ativo" data-en="Home">Home</a></li>
+        <li><a href="#sobre" data-en="About Hargus">Sobre a Hargus</a></li>
+        <li><a href="#servicos" data-en="Services">Serviços</a></li>
+        <li><a href="#diferenciais" data-en="Key Differentiators">Diferenciais</a></li>
+        <li><a href="#como-trabalhamos" data-en="How We Work">Como Trabalhamos</a></li>
+        <li><a href="#trabalhe-conosco" data-en="Careers">Trabalhe Conosco</a></li>
+        <li><a href="#contato" data-en="Contact">Contato</a></li>
       </ul>
     </nav>
 
     <div class="nav-controles">
+      <!-- Seletor de idioma: troca todo o texto marcado com [data-en]/[data-en-html]
+           via JS (ver <script>, seção IDIOMA). O painel mobile tem uma cópia
+           equivalente — os dois ficam em sincronia porque aplicarIdioma()
+           atualiza .idioma-btn em qualquer lugar do documento. -->
+      <div class="nav-idioma" role="group" aria-label="Idioma / Language">
+        <button type="button" class="idioma-btn ativo" data-lang="pt">PT</button>
+        <span class="nav-idioma-sep" aria-hidden="true">|</span>
+        <button type="button" class="idioma-btn" data-lang="en">EN</button>
+      </div>
+
       <!-- Placeholder: o portal do cliente ainda não existe — trocar o href="#"
            pelo link real assim que ele estiver no ar. São DOIS: este e o
            .nav-portal-mobile lá embaixo, no painel do menu. -->
       <a href="#" class="botao botao--outline-claro nav-cta nav-portal">
-        Portal do Cliente
+        <span data-en="Client Portal">Portal do Cliente</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
       </a>
 
@@ -1059,23 +1095,28 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   </div>
 
   <nav class="nav-menu-mobile" id="menu-mobile" aria-label="Navegação móvel">
-    <a href="#topo">Home</a>
-    <a href="#sobre">Sobre a Hargus</a>
-    <a href="#servicos">Serviços</a>
-    <a href="#diferenciais">Diferenciais</a>
-    <a href="#como-trabalhamos">Como Trabalhamos</a>
-    <a href="#trabalhe-conosco">Trabalhe Conosco</a>
-    <a href="#contato">Contato</a>
+    <a href="#topo" data-en="Home">Home</a>
+    <a href="#sobre" data-en="About Hargus">Sobre a Hargus</a>
+    <a href="#servicos" data-en="Services">Serviços</a>
+    <a href="#diferenciais" data-en="Key Differentiators">Diferenciais</a>
+    <a href="#como-trabalhamos" data-en="How We Work">Como Trabalhamos</a>
+    <a href="#trabalhe-conosco" data-en="Careers">Trabalhe Conosco</a>
+    <a href="#contato" data-en="Contact">Contato</a>
     <a href="#contato" class="botao botao--roxo" data-cotacao>
-      Solicite uma cotação
+      <span data-en="Request a quote">Solicite uma cotação</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
     <!-- Irmão do .nav-portal do cabeçalho: aquele some abaixo de 1240px, então
          o portal precisa existir aqui também. Os dois href="#" trocam juntos. -->
     <a href="#" class="botao botao--outline-escuro nav-portal-mobile">
-      Portal do Cliente
+      <span data-en="Client Portal">Portal do Cliente</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
     </a>
+    <div class="menu-mobile-idioma" role="group" aria-label="Idioma / Language">
+      <button type="button" class="idioma-btn ativo" data-lang="pt">Português</button>
+      <span class="nav-idioma-sep" aria-hidden="true">|</span>
+      <button type="button" class="idioma-btn" data-lang="en">English</button>
+    </div>
   </nav>
 </header>
 
@@ -1093,11 +1134,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     <div class="container">
       <div class="hero-conteudo" id="hero-conteudo">
-        <h1>Conectamos<br><span class="accent hero-voce">você</span> ao<br><span class="accent">seu destino</span></h1>
-        <p class="hero-eyebrow">Agenciamento de cargas e soluções logísticas</p>
+        <h1 data-en-html='Connecting<br><span class="accent hero-voce">you</span> to<br><span class="accent">your destination</span>'>Conectamos<br><span class="accent hero-voce">você</span> ao<br><span class="accent">seu destino</span></h1>
+        <p class="hero-eyebrow" data-en="Cargo forwarding and logistics solutions">Agenciamento de cargas e soluções logísticas</p>
         <div class="hero-botoes">
           <a href="#contato" class="botao botao--roxo" data-cotacao>
-            Solicite uma cotação
+            <span data-en="Request a quote">Solicite uma cotação</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
@@ -1120,8 +1161,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <div class="intro-grid">
         <div class="intro-conteudo reveal reveal--esq">
           <span class="intro-marca" aria-hidden="true"></span>
-          <h2>A logística pode ser complexa.<span class="linha-clara">O seu caminho não precisa ser.</span></h2>
-          <p>Na HARGUS, transformamos desafios logísticos em soluções inteligentes, conectando empresas às melhores oportunidades com eficiência e confiança.</p>
+          <h2 data-en-html='Logistics can be complex.<span class="linha-clara">Your path doesn&#39;t have to be.</span>'>A logística pode ser complexa.<span class="linha-clara">O seu caminho não precisa ser.</span></h2>
+          <p data-en="At HARGUS, we turn logistics challenges into intelligent solutions, connecting companies to the best opportunities with efficiency and trust.">Na HARGUS, transformamos desafios logísticos em soluções inteligentes, conectando empresas às melhores oportunidades com eficiência e confiança.</p>
+          <a href="apresentacao-hargus-pt.pdf" download class="botao botao--outline-escuro intro-apresentacao" id="link-apresentacao">
+            <span data-en="DOWNLOAD PRESENTATION">BAIXAR APRESENTAÇÃO</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          </a>
         </div>
         <div class="intro-imagem reveal reveal--dir">
           <img src="containers.png" alt="Dois contêineres marítimos empilhados pintados com a marca HARGUS Shipping Brazil.">
@@ -1146,14 +1191,14 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <img class="sobre-logo reveal" src="logo-branco.png" alt="HARGUS Shipping Brazil">
       <div class="sobre-painel reveal reveal--dir">
         <div class="sobre-texto">
-          <p class="eyebrow">Sobre a Hargus</p>
-          <h2>Mais que agenciar cargas.<br>Conectamos <span class="accent">soluções</span>.</h2>
-          <p>A Hargus nasceu para tornar a logística mais simples, eficiente e confiável. Atuamos no agenciamento de cargas, conectando empresas às melhores soluções de transporte e comércio exterior.</p>
-          <p>Mais do que movimentar cargas, buscamos entender cada operação, encontrar o melhor caminho e acompanhar cada etapa, construindo relações de confiança e parceria com nossos clientes.</p>
-          <p>Com foco em sucesso do cliente, agilidade e confiança, trabalhamos para transformar desafios logísticos em soluções que geram valor para o negócio.</p>
+          <p class="eyebrow" data-en="About Hargus">Sobre a Hargus</p>
+          <h2 data-en-html='More than cargo forwarding.<br>We connect <span class="accent">solutions</span>.'>Mais que agenciar cargas.<br>Conectamos <span class="accent">soluções</span>.</h2>
+          <p data-en="Hargus was created to make logistics simpler, more efficient, and more reliable. We work in cargo forwarding, connecting companies to the best transportation and foreign trade solutions.">A Hargus nasceu para tornar a logística mais simples, eficiente e confiável. Atuamos no agenciamento de cargas, conectando empresas às melhores soluções de transporte e comércio exterior.</p>
+          <p data-en="More than moving cargo, we seek to understand every operation, find the best path, and follow each stage, building relationships of trust and partnership with our clients.">Mais do que movimentar cargas, buscamos entender cada operação, encontrar o melhor caminho e acompanhar cada etapa, construindo relações de confiança e parceria com nossos clientes.</p>
+          <p data-en="Focused on customer success, agility, and trust, we work to turn logistics challenges into solutions that generate value for your business.">Com foco em sucesso do cliente, agilidade e confiança, trabalhamos para transformar desafios logísticos em soluções que geram valor para o negócio.</p>
           <a href="#servicos" class="sobre-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            Conectamos você ao seu destino
+            <span data-en="Connecting you to your destination">Conectamos você ao seu destino</span>
           </a>
         </div>
       </div>
@@ -1163,41 +1208,41 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   <section class="servicos" id="servicos">
     <div class="container">
       <div class="servicos-topo reveal">
-        <p class="eyebrow">Serviços</p>
-        <h2>Soluções completas<br>para <span class="accent">sua logística</span>.</h2>
-        <p>Atuamos em todas as etapas da cadeia logística para entregar a melhor experiência e resultados para o seu negócio.</p>
+        <p class="eyebrow" data-en="Services">Serviços</p>
+        <h2 data-en-html='Complete solutions<br>for <span class="accent">your logistics</span>.'>Soluções completas<br>para <span class="accent">sua logística</span>.</h2>
+        <p data-en="We operate across every stage of the logistics chain to deliver the best experience and results for your business.">Atuamos em todas as etapas da cadeia logística para entregar a melhor experiência e resultados para o seu negócio.</p>
       </div>
 
       <div class="servicos-grid">
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="11" rx="1"/><path d="M3 8l3-4h12l3 4M8 12v3M12 12v3M16 12v3"/></svg>
-          <h3>Agenciamento de Cargas</h3>
-          <p>Gestão e coordenação da operação de transporte.</p>
+          <h3 data-en="Freight Forwarding">Agenciamento de Cargas</h3>
+          <p data-en="Transport operation management and coordination.">Gestão e coordenação da operação de transporte.</p>
         </article>
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3z"/></svg>
-          <h3>Frete Nacional e Internacional</h3>
-          <p>Soluções de transporte para movimentação de cargas no Brasil e no exterior.</p>
+          <h3 data-en="National &amp; International Freight">Frete Nacional e Internacional</h3>
+          <p data-en="Transportation solutions for cargo movement within Brazil and abroad.">Soluções de transporte para movimentação de cargas no Brasil e no exterior.</p>
         </article>
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9 15.5l2 2 4-4.5"/></svg>
-          <h3>Assessoria Aduaneira</h3>
-          <p>Orientação e suporte em processos e operações aduaneiras.</p>
+          <h3 data-en="Customs Consulting">Assessoria Aduaneira</h3>
+          <p data-en="Guidance and support for customs procedures and operations.">Orientação e suporte em processos e operações aduaneiras.</p>
         </article>
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13M17 8l-3-3M17 8l-3 3"/><path d="M20 16H7M7 16l3-3M7 16l3 3"/></svg>
-          <h3>Assessoria em Importação e Exportação</h3>
-          <p>Suporte estratégico e operacional nas operações de comércio exterior.</p>
+          <h3 data-en="Import &amp; Export Advisory">Assessoria em Importação e Exportação</h3>
+          <p data-en="Strategic and operational support for foreign trade operations.">Suporte estratégico e operacional nas operações de comércio exterior.</p>
         </article>
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15h5M9.5 18h3"/></svg>
-          <h3>Despacho Aduaneiro</h3>
-          <p>Gestão dos processos de desembaraço junto aos órgãos competentes.</p>
+          <h3 data-en="Customs Clearance">Despacho Aduaneiro</h3>
+          <p data-en="Management of clearance processes with the relevant authorities.">Gestão dos processos de desembaraço junto aos órgãos competentes.</p>
         </article>
         <article class="servico-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/><path d="M12 9v6M9 12h6"/></svg>
-          <h3>Consultoria ANVISA</h3>
-          <p>Suporte para operações sujeitas às exigências e regulamentações da ANVISA.</p>
+          <h3 data-en="ANVISA Consulting">Consultoria ANVISA</h3>
+          <p data-en="Support for operations subject to ANVISA requirements and regulations.">Suporte para operações sujeitas às exigências e regulamentações da ANVISA.</p>
         </article>
       </div>
     </div>
@@ -1207,29 +1252,29 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   <section class="diferenciais" id="diferenciais">
     <div class="container">
       <div class="diferenciais-topo reveal">
-        <p class="eyebrow">Diferenciais</p>
-        <h2>Por que escolher<br>a <span class="accent">HARGUS</span>?</h2>
+        <p class="eyebrow" data-en="Key Differentiators">Diferenciais</p>
+        <h2 data-en-html='Why choose<br><span class="accent">HARGUS</span>?'>Por que escolher<br>a <span class="accent">HARGUS</span>?</h2>
       </div>
       <div class="diferenciais-grid">
         <div class="diferencial-item reveal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
-          <h3>Sucesso do Cliente</h3>
-          <p>O cliente está no centro das nossas decisões. Entendemos cada necessidade para oferecer soluções que realmente contribuam para o sucesso da sua operação e do seu negócio.</p>
+          <h3 data-en="Customer Success">Sucesso do Cliente</h3>
+          <p data-en="The customer is at the center of our decisions. We understand every need to deliver solutions that truly contribute to the success of your operation and your business.">O cliente está no centro das nossas decisões. Entendemos cada necessidade para oferecer soluções que realmente contribuam para o sucesso da sua operação e do seu negócio.</p>
         </div>
         <div class="diferencial-item reveal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
-          <h3>Agilidade</h3>
-          <p>Na logística, tempo é essencial. Trabalhamos com respostas rápidas, comunicação eficiente e decisões ágeis para que sua carga siga sempre pelo melhor caminho.</p>
+          <h3 data-en="Agility">Agilidade</h3>
+          <p data-en="In logistics, time is essential. We work with fast responses, efficient communication, and agile decisions so your cargo always takes the best path.">Na logística, tempo é essencial. Trabalhamos com respostas rápidas, comunicação eficiente e decisões ágeis para que sua carga siga sempre pelo melhor caminho.</p>
         </div>
         <div class="diferencial-item reveal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12l3 3 5-6"/><path d="M2 12l4-4 4 3 4-3 4 3 4-4"/></svg>
-          <h3>Confiança</h3>
-          <p>Construímos relações baseadas em transparência, compromisso e responsabilidade. Acompanhamos cada operação de perto para que nossos clientes tenham segurança em cada etapa.</p>
+          <h3 data-en="Trust">Confiança</h3>
+          <p data-en="We build relationships based on transparency, commitment, and responsibility. We closely monitor every operation so our clients feel secure at every stage.">Construímos relações baseadas em transparência, compromisso e responsabilidade. Acompanhamos cada operação de perto para que nossos clientes tenham segurança em cada etapa.</p>
         </div>
         <div class="diferencial-item reveal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8-5.1-4.7 6.9-.8L12 2z"/></svg>
-          <h3>Excelência</h3>
-          <p>Buscamos constantemente as melhores soluções, combinando qualidade, eficiência e atenção aos detalhes para entregar uma experiência superior.</p>
+          <h3 data-en="Excellence">Excelência</h3>
+          <p data-en="We constantly pursue the best solutions, combining quality, efficiency, and attention to detail to deliver a superior experience.">Buscamos constantemente as melhores soluções, combinando qualidade, eficiência e atenção aos detalhes para entregar uma experiência superior.</p>
         </div>
       </div>
     </div>
@@ -1244,40 +1289,40 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     </div>
     <div class="container">
       <div class="trabalhamos-topo reveal">
-        <p class="eyebrow eyebrow--claro">Como Trabalhamos</p>
-        <h2>Do primeiro contato ao destino, estamos com você <span class="accent">em cada etapa</span>.</h2>
+        <p class="eyebrow eyebrow--claro" data-en="How We Work">Como Trabalhamos</p>
+        <h2 data-en-html='From first contact to delivery, we are with you <span class="accent">every step of the way</span>.'>Do primeiro contato ao destino, estamos com você <span class="accent">em cada etapa</span>.</h2>
       </div>
 
       <div class="etapas">
         <div class="etapa reveal">
           <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-4 4V5z"/><circle cx="9" cy="10" r=".4" fill="currentColor" stroke="none"/><circle cx="12" cy="10" r=".4" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r=".4" fill="currentColor" stroke="none"/></svg></div>
           <span class="etapa-numero">01</span>
-          <h3>Entendemos sua necessidade</h3>
-          <p>Conhecemos sua operação, carga, origem, destino e necessidades específicas.</p>
+          <h3 data-en="Understanding your needs">Entendemos sua necessidade</h3>
+          <p data-en="We learn about your operation, cargo, origin, destination, and specific requirements.">Conhecemos sua operação, carga, origem, destino e necessidades específicas.</p>
         </div>
         <div class="etapa reveal">
           <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.5-4.5"/></svg></div>
           <span class="etapa-numero">02</span>
-          <h3>Encontramos a melhor solução</h3>
-          <p>Analisamos as opções disponíveis e buscamos a alternativa mais adequada para sua operação.</p>
+          <h3 data-en="Finding the best solution">Encontramos a melhor solução</h3>
+          <p data-en="We analyze the available options and look for the most suitable alternative for your operation.">Analisamos as opções disponíveis e buscamos a alternativa mais adequada para sua operação.</p>
         </div>
         <div class="etapa reveal">
           <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="1"/><path d="M4 7l3-4h10l3 4M9 11v4M15 11v4"/></svg></div>
           <span class="etapa-numero">03</span>
-          <h3>Agenciamos e coordenamos</h3>
-          <p>Cuidamos da contratação e coordenamos os envolvidos para garantir uma operação eficiente.</p>
+          <h3 data-en="Forwarding &amp; coordinating">Agenciamos e coordenamos</h3>
+          <p data-en="We handle contracting and coordinate everyone involved to ensure an efficient operation.">Cuidamos da contratação e coordenamos os envolvidos para garantir uma operação eficiente.</p>
         </div>
         <div class="etapa reveal">
           <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16V7h10v9M13 10h4l3 3v3h-2"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg></div>
           <span class="etapa-numero">04</span>
-          <h3>Acompanhamos cada etapa</h3>
-          <p>Mantemos você informado durante todo o processo, garantindo maior controle e segurança.</p>
+          <h3 data-en="Monitoring every stage">Acompanhamos cada etapa</h3>
+          <p data-en="We keep you informed throughout the process, ensuring greater control and security.">Mantemos você informado durante todo o processo, garantindo maior controle e segurança.</p>
         </div>
         <div class="etapa reveal">
           <div class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
           <span class="etapa-numero">05</span>
-          <h3>Chegamos ao destino</h3>
-          <p>Acompanhamos a operação até sua conclusão, buscando garantir que tudo aconteça conforme planejado.</p>
+          <h3 data-en="Arriving at the destination">Chegamos ao destino</h3>
+          <p data-en="We follow the operation through to completion, making sure everything happens as planned.">Acompanhamos a operação até sua conclusão, buscando garantir que tudo aconteça conforme planejado.</p>
         </div>
       </div>
     </div>
@@ -1299,11 +1344,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <div class="trabalhe-secao" id="trabalhe-conosco">
       <div class="container">
         <div class="trabalhe-secao-conteudo reveal reveal--esq">
-          <p class="eyebrow eyebrow--claro">Trabalhe Conosco</p>
-          <h2>Venha fazer parte do time <span class="accent">HARGUS</span>.</h2>
-          <p>Estamos sempre em busca de pessoas que compartilhem nossos valores de agilidade, confiança e excelência. Envie seu currículo e ajude a construir o futuro da nossa logística.</p>
+          <p class="eyebrow eyebrow--claro" data-en="Careers">Trabalhe Conosco</p>
+          <h2 data-en-html='Come be part of the <span class="accent">HARGUS</span> team.'>Venha fazer parte do time <span class="accent">HARGUS</span>.</h2>
+          <p data-en="We're always looking for people who share our values of agility, trust, and excellence. Send your resume and help build the future of our logistics.">Estamos sempre em busca de pessoas que compartilhem nossos valores de agilidade, confiança e excelência. Envie seu currículo e ajude a construir o futuro da nossa logística.</p>
           <a href="#contato" class="botao botao--roxo" data-trabalhe>
-            Enviar currículo
+            <span data-en="Send your resume">Enviar currículo</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
@@ -1317,8 +1362,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
           <div class="especialista-intro reveal reveal--esq">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.5 7-6.5s7 2.9 7 6.5"/></svg>
             <div>
-              <h3>Fale com um especialista</h3>
-              <p>Nossa equipe está pronta para entender sua necessidade e oferecer a melhor solução para o seu negócio.</p>
+              <h3 data-en="Talk to a specialist">Fale com um especialista</h3>
+              <p data-en="Our team is ready to understand your needs and offer the best solution for your business.">Nossa equipe está pronta para entender sua necessidade e oferecer a melhor solução para o seu negócio.</p>
             </div>
           </div>
           </div>
@@ -1332,7 +1377,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
             comercial@hargusbrazil.com
           </a>
           <a href="#contato" class="botao botao--roxo" data-cotacao>
-            Solicite uma cotação
+            <span data-en="Request a quote">Solicite uma cotação</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
@@ -1344,9 +1389,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   <section class="cta-final">
     <img src="navio-aereo.jpg" alt="" aria-hidden="true">
     <div class="container">
-      <h2 class="reveal">Vamos encontrar o melhor caminho para <span class="accent">sua carga</span>?</h2>
+      <h2 class="reveal" data-en-html='Let&#39;s find the best route for <span class="accent">your cargo</span>?'>Vamos encontrar o melhor caminho para <span class="accent">sua carga</span>?</h2>
       <a href="#contato" class="botao botao--roxo" data-cotacao>
-        Solicite uma cotação
+        <span data-en="Request a quote">Solicite uma cotação</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -1360,35 +1405,35 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     <div class="rodape-grid">
       <div class="rodape-sobre">
         <img class="rodape-logo" src="logo-branco.png" alt="HARGUS Shipping Brazil">
-        <p>Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
+        <p data-en="Complete logistics solutions with agility, safety, and efficiency to connect your company to the world.">Soluções logísticas completas com agilidade, segurança e eficiência para conectar sua empresa ao mundo.</p>
       </div>
 
       <nav aria-label="Navegação do rodapé">
-        <h4>Navegação</h4>
+        <h4 data-en="Navigation">Navegação</h4>
         <ul>
-          <li><a href="#topo">Home</a></li>
-          <li><a href="#sobre">Sobre a Hargus</a></li>
-          <li><a href="#servicos">Serviços</a></li>
-          <li><a href="#diferenciais">Diferenciais</a></li>
-          <li><a href="#como-trabalhamos">Como Trabalhamos</a></li>
-          <li><a href="#contato">Contato</a></li>
+          <li><a href="#topo" data-en="Home">Home</a></li>
+          <li><a href="#sobre" data-en="About Hargus">Sobre a Hargus</a></li>
+          <li><a href="#servicos" data-en="Services">Serviços</a></li>
+          <li><a href="#diferenciais" data-en="Key Differentiators">Diferenciais</a></li>
+          <li><a href="#como-trabalhamos" data-en="How We Work">Como Trabalhamos</a></li>
+          <li><a href="#contato" data-en="Contact">Contato</a></li>
         </ul>
       </nav>
 
       <div>
-        <h4>Serviços</h4>
+        <h4 data-en="Services">Serviços</h4>
         <ul>
-          <li><a href="#servicos">Agenciamento de Cargas</a></li>
-          <li><a href="#servicos">Frete Nacional e Internacional</a></li>
-          <li><a href="#servicos">Assessoria Aduaneira</a></li>
-          <li><a href="#servicos">Importação e Exportação</a></li>
-          <li><a href="#servicos">Despacho Aduaneiro</a></li>
-          <li><a href="#servicos">Consultoria ANVISA</a></li>
+          <li><a href="#servicos" data-en="Freight Forwarding">Agenciamento de Cargas</a></li>
+          <li><a href="#servicos" data-en="National &amp; International Freight">Frete Nacional e Internacional</a></li>
+          <li><a href="#servicos" data-en="Customs Consulting">Assessoria Aduaneira</a></li>
+          <li><a href="#servicos" data-en="Import &amp; Export">Importação e Exportação</a></li>
+          <li><a href="#servicos" data-en="Customs Clearance">Despacho Aduaneiro</a></li>
+          <li><a href="#servicos" data-en="ANVISA Consulting">Consultoria ANVISA</a></li>
         </ul>
       </div>
 
       <div>
-        <h4>Contato</h4>
+        <h4 data-en="Contact">Contato</h4>
         <ul class="rodape-contato">
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L8 9.7a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2.1z"/></svg>
@@ -1407,7 +1452,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     </div>
 
     <div class="rodape-baixo">
-      <p style="margin:0;">© <span id="ano-atual">2026</span> HARGUS SHIPPING BRAZIL. Todos os direitos reservados.</p>
+      <p style="margin:0;">© <span id="ano-atual">2026</span> HARGUS SHIPPING BRAZIL. <span data-en="All rights reserved.">Todos os direitos reservados.</span></p>
     </div>
   </div>
 </footer>
@@ -1417,60 +1462,61 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
      <dialog>) o clique segue o href e leva à seção de contato. -->
 <dialog class="cotacao cotacao--ampla" id="cotacao" data-estado="formulario" aria-labelledby="cotacao-titulo">
   <div class="cotacao-topo">
-    <p class="eyebrow">Solicite uma cotação</p>
-    <h2 id="cotacao-titulo">Deixe seus dados</h2>
+    <p class="eyebrow" data-en="Request a quote">Solicite uma cotação</p>
+    <h2 id="cotacao-titulo" data-en="Leave your details">Deixe seus dados</h2>
     <button type="button" class="cotacao-fechar" data-fechar-cotacao aria-label="Fechar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
 
   <form class="cotacao-forma" id="cotacao-forma" novalidate>
-    <p class="cotacao-intro">Precisamos só do contato para responder. Os detalhes da carga são opcionais — quanto mais você preencher, mais precisa vem a cotação.</p>
+    <p class="cotacao-intro" data-en="We only need your contact info to reply. Cargo details are optional — the more you fill in, the more accurate your quote will be.">Precisamos só do contato para responder. Os detalhes da carga são opcionais — quanto mais você preencher, mais precisa vem a cotação.</p>
 
     <div class="cotacao-falha" role="alert">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
-      <span>Não conseguimos enviar agora. Tente de novo em instantes ou escreva para
+      <span data-en-html='We couldn&#39;t send this right now. Please try again shortly or write to
+        <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.'>Não conseguimos enviar agora. Tente de novo em instantes ou escreva para
         <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.</span>
     </div>
 
     <div class="cotacao-campo">
-      <label for="cotacao-nome">Nome completo</label>
+      <label for="cotacao-nome" data-en="Full name">Nome completo</label>
       <input id="cotacao-nome" name="nome" type="text" autocomplete="name"
-             placeholder="Como podemos te chamar?" aria-describedby="erro-nome" required>
+             placeholder="Como podemos te chamar?" data-en-placeholder="What should we call you?" aria-describedby="erro-nome" required>
       <span class="cotacao-erro" id="erro-nome"></span>
     </div>
 
     <div class="cotacao-campo">
-      <label for="cotacao-telefone">Telefone</label>
+      <label for="cotacao-telefone" data-en="Phone">Telefone</label>
       <input id="cotacao-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
              placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-telefone" required>
       <span class="cotacao-erro" id="erro-telefone"></span>
     </div>
 
     <div class="cotacao-campo">
-      <label for="cotacao-email">E-mail</label>
+      <label for="cotacao-email" data-en="Email">E-mail</label>
       <input id="cotacao-email" name="email" type="email" autocomplete="email"
-             placeholder="voce@empresa.com.br" aria-describedby="erro-email" required>
+             placeholder="voce@empresa.com.br" data-en-placeholder="you@company.com" aria-describedby="erro-email" required>
       <span class="cotacao-erro" id="erro-email"></span>
     </div>
 
     <!-- ============ DADOS DA CARGA ============
          Nenhum destes é obrigatório: o <script> só manda para o e-mail os que
          vierem preenchidos, para a mensagem não encher de linhas vazias. -->
-    <p class="cotacao-secao">Dados da carga <span>— opcional</span></p>
+    <p class="cotacao-secao" data-en-html='Cargo details <span>&mdash; optional</span>'>Dados da carga <span>— opcional</span></p>
 
     <div class="cotacao-campo">
-      <label for="cotacao-descricao">Descrição completa da mercadoria</label>
-      <textarea id="cotacao-descricao" name="descricao" rows="3" placeholder="O que é, para que serve, embalagem..."></textarea>
+      <label for="cotacao-descricao" data-en="Full description of the goods">Descrição completa da mercadoria</label>
+      <textarea id="cotacao-descricao" name="descricao" rows="3" placeholder="O que é, para que serve, embalagem..." data-en-placeholder="What it is, its purpose, packaging..."></textarea>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="cotacao-valor">Valor da mercadoria</label>
-        <input id="cotacao-valor" name="valor" type="text" placeholder="Ex.: USD 12.000,00">
+        <label for="cotacao-valor" data-en="Value of the goods">Valor da mercadoria</label>
+        <input id="cotacao-valor" name="valor" type="text" placeholder="Ex.: USD 12.000,00" data-en-placeholder="E.g.: USD 12,000.00">
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-ncm">NCM</label>
+        <label for="cotacao-ncm" data-en="NCM / HS Code">NCM</label>
         <input id="cotacao-ncm" name="ncm" type="text" inputmode="numeric" placeholder="Ex.: 8471.30.19">
       </div>
     </div>
@@ -1479,101 +1525,101 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <div class="cotacao-campo">
         <label for="cotacao-incoterm">Incoterm</label>
         <select id="cotacao-incoterm" name="incoterm">
-          <option value="">Selecione</option>
+          <option value="" data-en="Select">Selecione</option>
           <option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option>
           <option>CFR</option><option>CIF</option><option>CPT</option><option>CIP</option>
           <option>DAP</option><option>DPU</option><option>DDP</option>
         </select>
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-pais">País de origem</label>
-        <input id="cotacao-pais" name="pais" type="text" placeholder="Ex.: China">
+        <label for="cotacao-pais" data-en="Country of origin">País de origem</label>
+        <input id="cotacao-pais" name="pais" type="text" placeholder="Ex.: China" data-en-placeholder="E.g.: China">
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="cotacao-porto-origem">Porto de origem</label>
-        <input id="cotacao-porto-origem" name="porto_origem" type="text" placeholder="Ex.: Shanghai">
+        <label for="cotacao-porto-origem" data-en="Port of origin">Porto de origem</label>
+        <input id="cotacao-porto-origem" name="porto_origem" type="text" placeholder="Ex.: Shanghai" data-en-placeholder="E.g.: Shanghai">
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-porto-destino">Porto de destino</label>
-        <input id="cotacao-porto-destino" name="porto_destino" type="text" placeholder="Ex.: Paranaguá">
+        <label for="cotacao-porto-destino" data-en="Port of destination">Porto de destino</label>
+        <input id="cotacao-porto-destino" name="porto_destino" type="text" placeholder="Ex.: Paranaguá" data-en-placeholder="E.g.: Paranaguá">
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="cotacao-tipo-carga">Carga geral ou especial</label>
+        <label for="cotacao-tipo-carga" data-en="General or special cargo">Carga geral ou especial</label>
         <select id="cotacao-tipo-carga" name="tipo_carga">
-          <option value="">Selecione</option>
-          <option>Geral</option>
-          <option>Especial</option>
+          <option value="" data-en="Select">Selecione</option>
+          <option data-en="General">Geral</option>
+          <option data-en="Special">Especial</option>
         </select>
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-temperatura">Controle de temperatura</label>
-        <input id="cotacao-temperatura" name="temperatura" type="text" placeholder="Se sim, qual? Ex.: 2 °C a 8 °C">
+        <label for="cotacao-temperatura" data-en="Temperature control">Controle de temperatura</label>
+        <input id="cotacao-temperatura" name="temperatura" type="text" placeholder="Se sim, qual? Ex.: 2 °C a 8 °C" data-en-placeholder="If yes, which range? E.g.: 2°C to 8°C">
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="cotacao-quantidade">Quantidade</label>
-        <input id="cotacao-quantidade" name="quantidade" type="text" placeholder="Ex.: 12 pallets">
+        <label for="cotacao-quantidade" data-en="Quantity">Quantidade</label>
+        <input id="cotacao-quantidade" name="quantidade" type="text" placeholder="Ex.: 12 pallets" data-en-placeholder="E.g.: 12 pallets">
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-peso">Peso bruto</label>
-        <input id="cotacao-peso" name="peso" type="text" placeholder="Ex.: 4.800 kg">
+        <label for="cotacao-peso" data-en="Gross weight">Peso bruto</label>
+        <input id="cotacao-peso" name="peso" type="text" placeholder="Ex.: 4.800 kg" data-en-placeholder="E.g.: 4,800 kg">
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
         <label for="cotacao-volume">Volume (CBM)</label>
-        <input id="cotacao-volume" name="volume" type="text" placeholder="Ex.: 18,5">
+        <input id="cotacao-volume" name="volume" type="text" placeholder="Ex.: 18,5" data-en-placeholder="E.g.: 18.5">
       </div>
       <div class="cotacao-campo">
-        <label for="cotacao-modal">Modal de transporte</label>
+        <label for="cotacao-modal" data-en="Transport mode">Modal de transporte</label>
         <select id="cotacao-modal" name="modal">
-          <option value="">Selecione</option>
-          <option>Aéreo</option>
-          <option>Marítimo</option>
-          <option>Rodoviário</option>
+          <option value="" data-en="Select">Selecione</option>
+          <option data-en="Air">Aéreo</option>
+          <option data-en="Sea">Marítimo</option>
+          <option data-en="Road">Rodoviário</option>
         </select>
       </div>
     </div>
 
     <div class="cotacao-campo">
-      <label for="cotacao-enderecos">Endereços para coleta e/ou entrega</label>
-      <textarea id="cotacao-enderecos" name="enderecos" rows="2" placeholder="Caso seja necessário"></textarea>
+      <label for="cotacao-enderecos" data-en="Pickup and/or delivery addresses">Endereços para coleta e/ou entrega</label>
+      <textarea id="cotacao-enderecos" name="enderecos" rows="2" placeholder="Caso seja necessário" data-en-placeholder="If applicable"></textarea>
     </div>
 
     <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
     <div class="cotacao-isca" aria-hidden="true">
-      <label for="cotacao-isca">Não preencha este campo</label>
+      <label for="cotacao-isca" data-en="Do not fill in this field">Não preencha este campo</label>
       <input id="cotacao-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
     </div>
 
     <button type="submit" class="botao botao--roxo cotacao-enviar">
-      Enviar solicitação
+      <span data-en="Submit request">Enviar solicitação</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </button>
-    <p class="cotacao-aviso">Usamos seus dados apenas para responder a esta solicitação.</p>
+    <p class="cotacao-aviso" data-en="We only use your data to respond to this request.">Usamos seus dados apenas para responder a esta solicitação.</p>
   </form>
 
   <div class="cotacao-enviando" aria-live="polite">
     <div class="cotacao-roda" aria-hidden="true"></div>
-    <p>Enviando sua solicitação…</p>
+    <p data-en="Submitting your request…">Enviando sua solicitação…</p>
   </div>
 
   <div class="cotacao-sucesso" aria-live="polite">
     <div class="cotacao-selo" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
     </div>
-    <h3>Solicitação enviada</h3>
-    <p>Recebemos seus dados. Nossa equipe retorna com a cotação da sua carga em breve.</p>
-    <button type="button" class="botao botao--roxo cotacao-enviar" id="cotacao-sucesso-fechar" data-fechar-cotacao>Fechar</button>
+    <h3 data-en="Request submitted">Solicitação enviada</h3>
+    <p data-en="We've received your details. Our team will get back to you with a quote for your cargo shortly.">Recebemos seus dados. Nossa equipe retorna com a cotação da sua carga em breve.</p>
+    <button type="button" class="botao botao--roxo cotacao-enviar" id="cotacao-sucesso-fechar" data-fechar-cotacao data-en="Close">Fechar</button>
   </div>
 </dialog>
 
@@ -1583,61 +1629,62 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
      e enviado por e-mail via FormSubmit. -->
 <dialog class="cotacao cotacao--ampla" id="trabalhe" data-estado="formulario" aria-labelledby="trabalhe-titulo">
   <div class="cotacao-topo">
-    <p class="eyebrow">Trabalhe Conosco</p>
-    <h2 id="trabalhe-titulo">Envie seu currículo</h2>
+    <p class="eyebrow" data-en="Careers">Trabalhe Conosco</p>
+    <h2 id="trabalhe-titulo" data-en="Submit your resume">Envie seu currículo</h2>
     <button type="button" class="cotacao-fechar" data-fechar-trabalhe aria-label="Fechar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
 
   <form class="cotacao-forma" id="trabalhe-forma" novalidate>
-    <p class="cotacao-intro">Venha fazer parte de um time dinâmico e inovador. Preencha seus dados e anexe seu currículo.</p>
+    <p class="cotacao-intro" data-en="Come be part of a dynamic, innovative team. Fill in your details and attach your resume.">Venha fazer parte de um time dinâmico e inovador. Preencha seus dados e anexe seu currículo.</p>
 
     <div class="cotacao-falha" role="alert">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
-      <span>Não conseguimos enviar agora. Tente de novo em instantes ou envie seu currículo direto para
+      <span data-en-html='We couldn&#39;t send this right now. Please try again shortly or send your resume directly to
+        <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.'>Não conseguimos enviar agora. Tente de novo em instantes ou envie seu currículo direto para
         <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.</span>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="trabalhe-nome">Nome</label>
+        <label for="trabalhe-nome" data-en="Name">Nome</label>
         <input id="trabalhe-nome" name="nome" type="text" autocomplete="name"
-               placeholder="Seu nome completo" aria-describedby="erro-trabalhe-nome" required>
+               placeholder="Seu nome completo" data-en-placeholder="Your full name" aria-describedby="erro-trabalhe-nome" required>
         <span class="cotacao-erro" id="erro-trabalhe-nome"></span>
       </div>
       <div class="cotacao-campo">
-        <label for="trabalhe-email">E-mail</label>
+        <label for="trabalhe-email" data-en="Email">E-mail</label>
         <input id="trabalhe-email" name="email" type="email" autocomplete="email"
-               placeholder="voce@email.com" aria-describedby="erro-trabalhe-email" required>
+               placeholder="voce@email.com" data-en-placeholder="you@email.com" aria-describedby="erro-trabalhe-email" required>
         <span class="cotacao-erro" id="erro-trabalhe-email"></span>
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="trabalhe-telefone">Telefone</label>
+        <label for="trabalhe-telefone" data-en="Phone">Telefone</label>
         <input id="trabalhe-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
                placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-trabalhe-telefone" required>
         <span class="cotacao-erro" id="erro-trabalhe-telefone"></span>
       </div>
       <div class="cotacao-campo">
-        <label for="trabalhe-cargo">Cargo Desejado</label>
+        <label for="trabalhe-cargo" data-en="Desired Position">Cargo Desejado</label>
         <input id="trabalhe-cargo" name="cargo" type="text"
-               placeholder="Ex.: Analista de Logística" aria-describedby="erro-trabalhe-cargo" required>
+               placeholder="Ex.: Analista de Logística" data-en-placeholder="E.g.: Logistics Analyst" aria-describedby="erro-trabalhe-cargo" required>
         <span class="cotacao-erro" id="erro-trabalhe-cargo"></span>
       </div>
     </div>
 
     <div class="cotacao-linha">
       <div class="cotacao-campo">
-        <label for="trabalhe-cidade">Cidade</label>
+        <label for="trabalhe-cidade" data-en="City">Cidade</label>
         <input id="trabalhe-cidade" name="cidade" type="text" autocomplete="address-level2"
-               placeholder="Sua cidade" aria-describedby="erro-trabalhe-cidade" required>
+               placeholder="Sua cidade" data-en-placeholder="Your city" aria-describedby="erro-trabalhe-cidade" required>
         <span class="cotacao-erro" id="erro-trabalhe-cidade"></span>
       </div>
       <div class="cotacao-campo">
-        <label for="trabalhe-estado">Estado</label>
+        <label for="trabalhe-estado" data-en="State">Estado</label>
         <input id="trabalhe-estado" name="estado" type="text" autocomplete="address-level1"
                placeholder="UF" maxlength="2" style="text-transform:uppercase"
                aria-describedby="erro-trabalhe-estado" required>
@@ -1646,48 +1693,48 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     </div>
 
     <div class="cotacao-campo">
-      <label for="trabalhe-curriculo">Currículo</label>
+      <label for="trabalhe-curriculo" data-en="Resume">Currículo</label>
       <input id="trabalhe-curriculo" name="curriculo" type="file" accept=".pdf,.doc,.docx"
              aria-describedby="erro-trabalhe-curriculo" required>
       <span class="cotacao-erro" id="erro-trabalhe-curriculo"></span>
     </div>
 
     <div class="cotacao-campo">
-      <label for="trabalhe-mensagem">Mensagem</label>
-      <textarea id="trabalhe-mensagem" name="mensagem" rows="4" placeholder="Conte um pouco sobre você (opcional)"></textarea>
+      <label for="trabalhe-mensagem" data-en="Message">Mensagem</label>
+      <textarea id="trabalhe-mensagem" name="mensagem" rows="4" placeholder="Conte um pouco sobre você (opcional)" data-en-placeholder="Tell us a bit about yourself (optional)"></textarea>
     </div>
 
     <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
     <div class="cotacao-isca" aria-hidden="true">
-      <label for="trabalhe-isca">Não preencha este campo</label>
+      <label for="trabalhe-isca" data-en="Do not fill in this field">Não preencha este campo</label>
       <input id="trabalhe-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
     </div>
 
     <label class="trabalhe-consentimento" for="trabalhe-consentimento">
       <input id="trabalhe-consentimento" type="checkbox" aria-describedby="erro-trabalhe-consentimento" required>
-      <span>Concordo que meus dados sejam recolhidos e armazenados.</span>
+      <span data-en="I agree that my data will be collected and stored.">Concordo que meus dados sejam recolhidos e armazenados.</span>
     </label>
     <span class="cotacao-erro" id="erro-trabalhe-consentimento"></span>
 
     <button type="submit" class="botao botao--roxo cotacao-enviar">
-      Enviar candidatura
+      <span data-en="Submit application">Enviar candidatura</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </button>
-    <p class="cotacao-aviso">Usamos seus dados apenas para avaliar sua candidatura.</p>
+    <p class="cotacao-aviso" data-en="We only use your data to evaluate your application.">Usamos seus dados apenas para avaliar sua candidatura.</p>
   </form>
 
   <div class="cotacao-enviando" aria-live="polite">
     <div class="cotacao-roda" aria-hidden="true"></div>
-    <p>Enviando sua candidatura…</p>
+    <p data-en="Submitting your application…">Enviando sua candidatura…</p>
   </div>
 
   <div class="cotacao-sucesso" aria-live="polite">
     <div class="cotacao-selo" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
     </div>
-    <h3>Currículo enviado</h3>
-    <p>Recebemos sua candidatura. Nossa equipe vai avaliar seu perfil e entrar em contato caso haja uma oportunidade compatível.</p>
-    <button type="button" class="botao botao--roxo cotacao-enviar" data-fechar-trabalhe>Fechar</button>
+    <h3 data-en="Resume submitted">Currículo enviado</h3>
+    <p data-en="We've received your application. Our team will review your profile and get in touch if a matching opportunity comes up.">Recebemos sua candidatura. Nossa equipe vai avaliar seu perfil e entrar em contato caso haja uma oportunidade compatível.</p>
+    <button type="button" class="botao botao--roxo cotacao-enviar" data-fechar-trabalhe data-en="Close">Fechar</button>
   </div>
 </dialog>
 
@@ -1749,6 +1796,62 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     if (e.key === 'Escape') abrirMenu(false);
   });
 
+  /* ============ IDIOMA: PT/EN ============
+     As duas versões de cada texto convivem no HTML: a visível (português,
+     como sempre existiu) e um data-en/data-en-html/data-en-placeholder/
+     data-en-content ao lado. Trocar de idioma é só percorrer quem tem esses
+     atributos e virar o conteúdo — nenhum arquivo é duplicado, e o <title>
+     entra na mesma varredura porque setar .textContent nele já atualiza
+     document.title sozinho. A escolha persiste entre visitas via localStorage.
+
+     window.HARGUS_IDIOMA fica global de propósito: as validações dos dois
+     formulários (mais abaixo neste mesmo <script>) leem essa variável para
+     decidir em que idioma mostrar a mensagem de erro. */
+  var CHAVE_IDIOMA = 'hargus-idioma';
+  window.HARGUS_IDIOMA = localStorage.getItem(CHAVE_IDIOMA) === 'en' ? 'en' : 'pt';
+  window.hargusMsg = function(pt, en){ return window.HARGUS_IDIOMA === 'en' ? en : pt; };
+
+  var elementosIdioma = document.querySelectorAll('[data-en], [data-en-html], [data-en-placeholder], [data-en-content]');
+  /* guarda o português de cada elemento uma única vez — assim o PT continua
+     vivendo só no HTML, nunca reescrito aqui */
+  elementosIdioma.forEach(function(el){
+    if (el.hasAttribute('data-en-html')) el.dataset.ptHtml = el.innerHTML;
+    else if (el.hasAttribute('data-en-placeholder')) el.dataset.ptPlaceholder = el.placeholder;
+    else if (el.hasAttribute('data-en-content')) el.dataset.ptContent = el.getAttribute('content');
+    else el.dataset.pt = el.textContent;
+  });
+
+  function aplicarIdioma(lang){
+    var en = lang === 'en';
+    document.documentElement.lang = en ? 'en' : 'pt-BR';
+
+    elementosIdioma.forEach(function(el){
+      if (el.hasAttribute('data-en-html')) el.innerHTML = en ? el.dataset.enHtml : el.dataset.ptHtml;
+      else if (el.hasAttribute('data-en-placeholder')) el.placeholder = en ? el.dataset.enPlaceholder : el.dataset.ptPlaceholder;
+      else if (el.hasAttribute('data-en-content')) el.setAttribute('content', en ? el.dataset.enContent : el.dataset.ptContent);
+      else el.textContent = en ? el.dataset.en : el.dataset.pt;
+    });
+
+    /* troca também o PDF que o botão de apresentação baixa */
+    var linkApresentacao = document.getElementById('link-apresentacao');
+    if (linkApresentacao){
+      linkApresentacao.href = en ? 'apresentacao-hargus-en.pdf' : 'apresentacao-hargus-pt.pdf';
+    }
+
+    document.querySelectorAll('.idioma-btn').forEach(function(b){
+      b.classList.toggle('ativo', b.dataset.lang === lang);
+    });
+
+    window.HARGUS_IDIOMA = lang;
+    localStorage.setItem(CHAVE_IDIOMA, lang);
+  }
+
+  document.querySelectorAll('.idioma-btn').forEach(function(b){
+    b.addEventListener('click', function(){ aplicarIdioma(b.dataset.lang); });
+  });
+
+  aplicarIdioma(window.HARGUS_IDIOMA);
+
   /* ============ COTAÇÃO: modal de captação ============
      Qualquer botão [data-cotacao] abre o mesmo <dialog>. O envio vai por
      FormSubmit (o site é estático, não há servidor próprio para receber POST)
@@ -1795,14 +1898,14 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     var regras = {
       nome: function(v){
-        return v.trim().length >= 2 ? '' : 'Digite seu nome.';
+        return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.');
       },
       telefone: function(v){
         var d = v.replace(/\D/g, '');
-        return (d.length === 10 || d.length === 11) ? '' : 'Informe DDD e número, ex.: (41) 99999-9999.';
+        return (d.length === 10 || d.length === 11) ? '' : hargusMsg('Informe DDD e número, ex.: (41) 99999-9999.', 'Enter area code and number, e.g.: (41) 99999-9999.');
       },
       email: function(v){
-        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Digite um e-mail válido.';
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : hargusMsg('Digite um e-mail válido.', 'Enter a valid email address.');
       }
     };
 
@@ -1964,15 +2067,15 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     var quemAbriu = null;
 
     var regras = {
-      nome:     function(v){ return v.trim().length >= 2 ? '' : 'Digite seu nome.'; },
+      nome:     function(v){ return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.'); },
       telefone: function(v){
         var d = v.replace(/\D/g, '');
-        return (d.length === 10 || d.length === 11) ? '' : 'Informe DDD e número, ex.: (41) 99999-9999.';
+        return (d.length === 10 || d.length === 11) ? '' : hargusMsg('Informe DDD e número, ex.: (41) 99999-9999.', 'Enter area code and number, e.g.: (41) 99999-9999.');
       },
-      email:  function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'Digite um e-mail válido.'; },
-      cargo:  function(v){ return v.trim().length >= 2 ? '' : 'Informe o cargo desejado.'; },
-      cidade: function(v){ return v.trim().length >= 2 ? '' : 'Informe sua cidade.'; },
-      estado: function(v){ return /^[A-Za-z]{2}$/.test(v.trim()) ? '' : 'Use a sigla do estado, ex.: PR.'; }
+      email:  function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : hargusMsg('Digite um e-mail válido.', 'Enter a valid email address.'); },
+      cargo:  function(v){ return v.trim().length >= 2 ? '' : hargusMsg('Informe o cargo desejado.', 'Enter the desired position.'); },
+      cidade: function(v){ return v.trim().length >= 2 ? '' : hargusMsg('Informe sua cidade.', 'Enter your city.'); },
+      estado: function(v){ return /^[A-Za-z]{2}$/.test(v.trim()) ? '' : hargusMsg('Use a sigla do estado, ex.: PR.', 'Use the 2-letter state code, e.g.: PR.'); }
     };
 
     function mostrarErro(nome, texto, campo){
@@ -1988,20 +2091,20 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     function validarArquivo(){
       var f = arquivo.files[0];
-      if (!f) return mostrarErro('trabalhe-curriculo', 'Anexe seu currículo.', arquivo);
+      if (!f) return mostrarErro('trabalhe-curriculo', hargusMsg('Anexe seu currículo.', 'Attach your resume.'), arquivo);
       var nome = f.name.toLowerCase();
       var aceito = TRABALHE_EXTENSOES.some(function(ext){
         return nome.slice(-ext.length) === ext;
       });
-      if (!aceito) return mostrarErro('trabalhe-curriculo', 'Envie um arquivo PDF, DOC ou DOCX.', arquivo);
+      if (!aceito) return mostrarErro('trabalhe-curriculo', hargusMsg('Envie um arquivo PDF, DOC ou DOCX.', 'Upload a PDF, DOC, or DOCX file.'), arquivo);
       /* 0 byte chega como anexo vazio e ninguém percebe até abrir o e-mail */
-      if (!f.size) return mostrarErro('trabalhe-curriculo', 'O arquivo está vazio.', arquivo);
-      if (f.size > TRABALHE_TAMANHO_MAX) return mostrarErro('trabalhe-curriculo', 'O arquivo deve ter até 5MB.', arquivo);
+      if (!f.size) return mostrarErro('trabalhe-curriculo', hargusMsg('O arquivo está vazio.', 'The file is empty.'), arquivo);
+      if (f.size > TRABALHE_TAMANHO_MAX) return mostrarErro('trabalhe-curriculo', hargusMsg('O arquivo deve ter até 5MB.', 'The file must be up to 5MB.'), arquivo);
       return mostrarErro('trabalhe-curriculo', '', arquivo);
     }
     function validarConsentimento(){
       var ok = consentimento.checked;
-      erroConsentimento.textContent = ok ? '' : 'É necessário concordar para enviar.';
+      erroConsentimento.textContent = ok ? '' : hargusMsg('É necessário concordar para enviar.', 'You must agree before submitting.');
       return ok;
     }
 
