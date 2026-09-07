@@ -1372,6 +1372,10 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
             comercial@hargusbrazil.com
           </a>
+          <a href="#contato" class="botao botao--outline-claro" data-duvida>
+            <span data-en="Ask your question">Tire sua dúvida</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 9.5a3.5 3.5 0 116 2.5c-.9.9-1.5 1.6-1.5 3"/><circle cx="13" cy="17.5" r=".4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="9"/></svg>
+          </a>
           <a href="#contato" class="botao botao--roxo" data-cotacao>
             <span data-en="Request a quote">Solicite uma cotação</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1469,6 +1473,30 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <span data-en-html='We couldn&#39;t send this right now. Please try again shortly or write to
         <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.'>Não conseguimos enviar agora. Tente de novo em instantes ou escreva para
         <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.</span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-area-atuacao" data-en="What industry does your company operate in?">Em qual área sua empresa atua?</label>
+      <select id="cotacao-area-atuacao" name="area_atuacao" aria-describedby="erro-areaAtuacao" required>
+        <option value="" data-en="Select">Selecione</option>
+        <option data-en="Automotive/naval/aerospace">Automobilística/naval/aeronáutica</option>
+        <option data-en="Food/beverages">Alimentícia/bebidas</option>
+        <option data-en="Construction">Construção civil</option>
+        <option data-en="Clean/solar energy">Energia Limpa/Solar</option>
+        <option data-en="Electronics/IT equipment">Equipamentos eletrônicos/informática</option>
+        <option data-en="Timber/furniture">Madeireira/moveleira</option>
+        <option data-en="Machinery">Maquinários</option>
+        <option data-en="Metallurgy/steel">Metalúrgica/siderúrgica</option>
+        <option data-en="Pulp and paper">Papel e celulose</option>
+        <option data-en="Chemical/petrochemical">Química/petroquímica</option>
+        <option data-en="Textile">Têxtil</option>
+      </select>
+      <span class="cotacao-erro" id="erro-areaAtuacao"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="cotacao-area-outro" data-en="Other (if your industry isn&#39;t listed)">Outro (se sua área não estiver na lista)</label>
+      <input id="cotacao-area-outro" name="area_atuacao_outro" type="text" placeholder="Descreva sua área de atuação" data-en-placeholder="Describe your industry">
     </div>
 
     <div class="cotacao-campo">
@@ -1730,6 +1758,86 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   </div>
 </dialog>
 
+<!-- ============ MODAL DE TIRE SUA DÚVIDA ============
+     Mesmo padrão dos outros dois modais (aberto por [data-duvida], fecha por
+     [data-fechar-duvida]). Cai na mesma caixa funcional (FormSubmit → mesmo
+     e-mail dos outros dois) — dali um representante manda a mensagem de
+     WhatsApp para o telefone que a pessoa deixou aqui. Não é integração
+     automática com WhatsApp, é o time que responde manualmente. -->
+<dialog class="cotacao cotacao--ampla" id="duvida" data-estado="formulario" aria-labelledby="duvida-titulo">
+  <div class="cotacao-topo">
+    <p class="eyebrow" data-en="Ask your question">Tire sua dúvida</p>
+    <h2 id="duvida-titulo" data-en="Leave your question">Deixe sua dúvida</h2>
+    <button type="button" class="cotacao-fechar" data-fechar-duvida aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <form class="cotacao-forma" id="duvida-forma" novalidate>
+    <p class="cotacao-intro" data-en="Leave your details and your question below. One of our representatives will reach out to you on WhatsApp shortly.">Deixe seus dados e sua dúvida abaixo. Um dos nossos representantes vai te chamar no WhatsApp em breve.</p>
+
+    <div class="cotacao-falha" role="alert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>
+      <span data-en-html='We couldn&#39;t send this right now. Please try again shortly or write to
+        <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.'>Não conseguimos enviar agora. Tente de novo em instantes ou escreva para
+        <a href="mailto:comercial@hargusbrazil.com">comercial@hargusbrazil.com</a>.</span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="duvida-nome" data-en="Full name">Nome completo</label>
+      <input id="duvida-nome" name="nome" type="text" autocomplete="name"
+             placeholder="Como podemos te chamar?" data-en-placeholder="What should we call you?" aria-describedby="erro-duvida-nome" required>
+      <span class="cotacao-erro" id="erro-duvida-nome"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="duvida-telefone" data-en="Phone (WhatsApp)">Telefone (WhatsApp)</label>
+      <input id="duvida-telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel"
+             placeholder="(41) 99999-9999" maxlength="16" aria-describedby="erro-duvida-telefone" required>
+      <span class="cotacao-erro" id="erro-duvida-telefone"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="duvida-email" data-en="Email">E-mail</label>
+      <input id="duvida-email" name="email" type="email" autocomplete="email"
+             placeholder="voce@empresa.com.br" data-en-placeholder="you@company.com" aria-describedby="erro-duvida-email" required>
+      <span class="cotacao-erro" id="erro-duvida-email"></span>
+    </div>
+
+    <div class="cotacao-campo">
+      <label for="duvida-mensagem" data-en="Tell us your question">Nos conte sua dúvida</label>
+      <textarea id="duvida-mensagem" name="mensagem" rows="4" placeholder="Como podemos te ajudar?" data-en-placeholder="How can we help?" aria-describedby="erro-duvida-mensagem" required></textarea>
+      <span class="cotacao-erro" id="erro-duvida-mensagem"></span>
+    </div>
+
+    <!-- isca de spam do FormSubmit: humano nunca vê, robô preenche e o envio é descartado -->
+    <div class="cotacao-isca" aria-hidden="true">
+      <label for="duvida-isca" data-en="Do not fill in this field">Não preencha este campo</label>
+      <input id="duvida-isca" name="_honey" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button type="submit" class="botao botao--roxo cotacao-enviar">
+      <span data-en="Submit question">Enviar dúvida</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <p class="cotacao-aviso" data-en="We only use your data to respond to your question.">Usamos seus dados apenas para responder sua dúvida.</p>
+  </form>
+
+  <div class="cotacao-enviando" aria-live="polite">
+    <div class="cotacao-roda" aria-hidden="true"></div>
+    <p data-en="Submitting your question…">Enviando sua dúvida…</p>
+  </div>
+
+  <div class="cotacao-sucesso" aria-live="polite">
+    <div class="cotacao-selo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 7"/></svg>
+    </div>
+    <h3 data-en="Question received">Dúvida recebida</h3>
+    <p data-en="We've received your question. One of our representatives will reach out to you on WhatsApp shortly.">Recebemos sua dúvida. Um dos nossos representantes vai te chamar no WhatsApp em breve.</p>
+    <button type="button" class="botao botao--roxo cotacao-enviar" data-fechar-duvida data-en="Close">Fechar</button>
+  </div>
+</dialog>
+
 <script>
 (function(){
   'use strict';
@@ -1881,6 +1989,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     var forma = document.getElementById('cotacao-forma');
     var isca = document.getElementById('cotacao-isca');
     var campos = {
+      areaAtuacao: document.getElementById('cotacao-area-atuacao'),
       nome:     document.getElementById('cotacao-nome'),
       telefone: document.getElementById('cotacao-telefone'),
       email:    document.getElementById('cotacao-email')
@@ -1889,6 +1998,9 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
     var quemAbriu = null;
 
     var regras = {
+      areaAtuacao: function(v){
+        return v ? '' : hargusMsg('Selecione a área de atuação da empresa.', "Select your company's industry.");
+      },
       nome: function(v){
         return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.');
       },
@@ -1973,6 +2085,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       }
 
       var dados = {
+        areaAtuacao: campos.areaAtuacao.value,
         nome: campos.nome.value.trim(),
         telefone: campos.telefone.value.trim(),
         email: campos.email.value.trim()
@@ -1987,8 +2100,12 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         _honey: isca.value,
         Nome: dados.nome,
         Telefone: dados.telefone,
-        'E-mail': dados.email
+        'E-mail': dados.email,
+        'Área de atuação': dados.areaAtuacao
       };
+      /* "Outro" só some no e-mail se a pessoa realmente escreveu algo ali */
+      var areaOutro = document.getElementById('cotacao-area-outro').value.trim();
+      if (areaOutro) corpo['Área de atuação (outro)'] = areaOutro;
       /* campo vazio nao vira linha no e-mail: quem le ve so o que foi informado */
       COTACAO_CARGA.forEach(function(par){
         var campo = document.getElementById(par[0]);
@@ -2192,6 +2309,141 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       }).catch(function(){
         dialogoTrabalhe.dataset.estado = 'formulario';
         dialogoTrabalhe.dataset.falhou = 'sim';
+      });
+    });
+  })();
+
+  /* ============ TIRE SUA DÚVIDA: modal de contato geral ============
+     Mesmo padrão dos outros dois modais. Cai na mesma caixa funcional
+     (DUVIDA_DESTINO) — dali um representante liga o WhatsApp manualmente
+     para o número deixado aqui, não é integração automática. */
+  var DUVIDA_DESTINO = 'comercial@hargusbrazil.com';
+  var dialogoDuvida = document.getElementById('duvida');
+
+  if (dialogoDuvida && typeof dialogoDuvida.showModal === 'function') (function(){
+    var forma = document.getElementById('duvida-forma');
+    var isca = document.getElementById('duvida-isca');
+    var campos = {
+      nome:     document.getElementById('duvida-nome'),
+      telefone: document.getElementById('duvida-telefone'),
+      email:    document.getElementById('duvida-email'),
+      mensagem: document.getElementById('duvida-mensagem')
+    };
+    var nomes = Object.keys(campos);
+    var quemAbriu = null;
+
+    var regras = {
+      nome:     function(v){ return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.'); },
+      telefone: function(v){
+        var d = v.replace(/\D/g, '');
+        return (d.length === 10 || d.length === 11) ? '' : hargusMsg('Informe DDD e número, ex.: (41) 99999-9999.', 'Enter area code and number, e.g.: (41) 99999-9999.');
+      },
+      email:    function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : hargusMsg('Digite um e-mail válido.', 'Enter a valid email address.'); },
+      mensagem: function(v){ return v.trim().length >= 5 ? '' : hargusMsg('Conte pra gente sua dúvida.', 'Tell us your question.'); }
+    };
+
+    function mostrarErro(nome, texto, campo){
+      document.getElementById('erro-' + nome).textContent = texto;
+      var alvo = campo || campos[nome];
+      if (alvo){
+        if (texto) alvo.setAttribute('aria-invalid', 'true');
+        else alvo.removeAttribute('aria-invalid');
+      }
+      return !texto;
+    }
+    function validar(nome){ return mostrarErro('duvida-' + nome, regras[nome](campos[nome].value), campos[nome]); }
+
+    /* (41) 99999-9999 enquanto digita, igual aos outros dois modais */
+    function mascarar(v){
+      var d = v.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 2)  return d;
+      if (d.length <= 6)  return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    }
+    campos.telefone.addEventListener('input', function(){ this.value = mascarar(this.value); });
+
+    nomes.forEach(function(nome){
+      campos[nome].addEventListener('blur', function(){ validar(nome); });
+      campos[nome].addEventListener('input', function(){
+        if (campos[nome].getAttribute('aria-invalid') === 'true') validar(nome);
+      });
+    });
+
+    function abrir(origem){
+      quemAbriu = origem || null;
+      abrirMenu(false);
+      dialogoDuvida.dataset.estado = 'formulario';
+      dialogoDuvida.dataset.falhou = 'nao';
+      dialogoDuvida.showModal();
+      travarPagina(true);
+      campos.nome.focus();
+    }
+    function fechar(){ dialogoDuvida.close(); }
+
+    dialogoDuvida.addEventListener('close', function(){
+      travarPagina(false);
+      forma.reset();
+      nomes.forEach(function(nome){ mostrarErro('duvida-' + nome, '', campos[nome]); });
+      dialogoDuvida.dataset.estado = 'formulario';
+      dialogoDuvida.dataset.falhou = 'nao';
+      if (quemAbriu){ quemAbriu.focus({ preventScroll: true }); quemAbriu = null; }
+    });
+
+    dialogoDuvida.addEventListener('click', function(e){ if (e.target === dialogoDuvida) fechar(); });
+    document.querySelectorAll('[data-fechar-duvida]').forEach(function(b){
+      b.addEventListener('click', fechar);
+    });
+    document.querySelectorAll('[data-duvida]').forEach(function(b){
+      b.addEventListener('click', function(e){ e.preventDefault(); abrir(b); });
+    });
+
+    forma.addEventListener('submit', function(e){
+      e.preventDefault();
+      var valido = nomes.map(validar).every(Boolean);
+      if (!valido){
+        campos[nomes.filter(function(n){
+          return campos[n].getAttribute('aria-invalid') === 'true';
+        })[0]].focus();
+        return;
+      }
+
+      var dados = {
+        nome: campos.nome.value.trim(),
+        telefone: campos.telefone.value.trim(),
+        email: campos.email.value.trim(),
+        mensagem: campos.mensagem.value.trim()
+      };
+      dialogoDuvida.dataset.falhou = 'nao';
+      dialogoDuvida.dataset.estado = 'enviando';
+
+      var corpo = {
+        _subject: 'Nova dúvida recebida — ' + dados.nome,
+        _template: 'table',
+        _captcha: 'false',
+        _honey: isca.value,
+        Nome: dados.nome,
+        Telefone: dados.telefone,
+        'E-mail': dados.email,
+        'Dúvida': dados.mensagem
+      };
+      corpo.Origem = window.location.href;
+
+      fetch('https://formsubmit.co/ajax/' + DUVIDA_DESTINO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(corpo)
+      }).then(function(r){
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(resposta){
+        if (resposta && String(resposta.success) === 'false'){
+          throw new Error(resposta.message || 'envio recusado');
+        }
+        dialogoDuvida.dataset.estado = 'sucesso';
+      }).catch(function(){
+        dialogoDuvida.dataset.estado = 'formulario';
+        dialogoDuvida.dataset.falhou = 'sim';
       });
     });
   })();
