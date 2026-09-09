@@ -851,8 +851,11 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
   outline:none; border-color:var(--verde-claro); box-shadow:0 0 0 3px rgba(62,158,126,.18);
 }
 /* opção vazia em cinza: enquanto nada foi escolhido, o campo parece um
-   placeholder, não uma resposta já dada */
+   placeholder, não uma resposta já dada. Sem cor própria, as opções reais
+   herdavam esse cinza do <select> (:invalid) quando a lista abria — por
+   isso elas ganham a cor normal de volta explicitamente logo abaixo. */
 .cotacao-campo select:invalid, .cotacao-campo select option[value=""]{ color:#a7aca9; }
+.cotacao-campo select option:not([value=""]){ color:var(--preto); }
 
 /* divisor da parte opcional do formulário */
 .cotacao-secao{
