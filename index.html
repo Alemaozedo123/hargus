@@ -1501,14 +1501,10 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
       <span class="cotacao-erro" id="erro-email"></span>
     </div>
 
-    <!-- list= liga o input a um <datalist>: aparecem sugestões da lista ao
-         digitar, mas o texto não fica preso a elas — quem não se encaixa em
-         nenhuma opção escreve a própria área no mesmo campo. -->
     <div class="cotacao-campo">
       <label for="cotacao-area-atuacao" data-en="What industry does your company operate in?">Em qual área sua empresa atua?</label>
-      <input id="cotacao-area-atuacao" name="area_atuacao" type="text" list="cotacao-area-lista" autocomplete="off"
-             placeholder="Selecione da lista ou digite a sua" data-en-placeholder="Pick from the list or type your own" aria-describedby="erro-areaAtuacao" required>
-      <datalist id="cotacao-area-lista">
+      <select id="cotacao-area-atuacao" name="area_atuacao" aria-describedby="erro-areaAtuacao" required>
+        <option value="" data-en="Select">Selecione</option>
         <option data-en="Automotive/naval/aerospace">Automobilística/naval/aeronáutica</option>
         <option data-en="Food/beverages">Alimentícia/bebidas</option>
         <option data-en="Construction">Construção civil</option>
@@ -1520,7 +1516,8 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
         <option data-en="Pulp and paper">Papel e celulose</option>
         <option data-en="Chemical/petrochemical">Química/petroquímica</option>
         <option data-en="Textile">Têxtil</option>
-      </datalist>
+        <option data-en="Other">Outros</option>
+      </select>
       <span class="cotacao-erro" id="erro-areaAtuacao"></span>
     </div>
 
@@ -2003,7 +2000,7 @@ body.menu-travado{ position:fixed; left:0; right:0; width:100%; overflow:hidden;
 
     var regras = {
       areaAtuacao: function(v){
-        return v.trim() ? '' : hargusMsg('Conte em qual área sua empresa atua.', "Tell us your company's industry.");
+        return v ? '' : hargusMsg('Selecione a área de atuação da empresa.', "Select your company's industry.");
       },
       nome: function(v){
         return v.trim().length >= 2 ? '' : hargusMsg('Digite seu nome.', 'Enter your name.');
